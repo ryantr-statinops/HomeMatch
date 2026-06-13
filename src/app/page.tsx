@@ -68,7 +68,7 @@ export default function Home() {
             <div className="mt-12 grid gap-8 md:grid-cols-3">
               {/* Card 1 */}
               <div className="group rounded-2xl border border-gray-100 bg-white p-8 transition-all hover:shadow-lg hover:shadow-blue-100">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl                    border-2 border-transparent bg-blue-100 text-primary transition-colors group-hover:border-primary group-hover:bg-white group-hover:text-primary">
                   <Search size={24} />
                 </div>
                 <h3 className="text-lg font-semibold text-accent">
@@ -82,7 +82,7 @@ export default function Home() {
 
               {/* Card 2 */}
               <div className="group rounded-2xl border border-gray-100 bg-white p-8 transition-all hover:shadow-lg hover:shadow-blue-100">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl                    border-2 border-transparent bg-blue-100 text-primary transition-colors group-hover:border-primary group-hover:bg-white group-hover:text-primary">
                   <MessageCircle size={24} />
                 </div>
                 <h3 className="text-lg font-semibold text-accent">
@@ -96,7 +96,7 @@ export default function Home() {
 
               {/* Card 3 */}
               <div className="group rounded-2xl border border-gray-100 bg-white p-8 transition-all hover:shadow-lg hover:shadow-blue-100">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl                    border-2 border-transparent bg-blue-100 text-primary transition-colors group-hover:border-primary group-hover:bg-white group-hover:text-primary">
                   <FileCheck size={24} />
                 </div>
                 <h3 className="text-lg font-semibold text-accent">
@@ -131,7 +131,7 @@ export default function Home() {
                     <div className="absolute right-0 top-8 hidden h-0.5 w-full bg-blue-200 md:block" />
                   )}
                   {/* Number */}
-                  <div className="relative mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary text-2xl font-bold text-white shadow-lg shadow-blue-200">
+                  <div className="relative mx-auto flex h-16 w-16 items-center justify-center rounded-full border-2 border-primary bg-white text-2xl font-bold text-primary shadow-lg shadow-blue-200">
                     {step.number}
                   </div>
                   <h3 className="mt-4 text-lg font-semibold text-accent">
@@ -149,15 +149,15 @@ export default function Home() {
         {/* ===== CTA Section ===== */}
         <section className="py-16 md:py-24">
           <Container>
-            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-primary-dark px-6 py-16 text-center text-white shadow-2xl shadow-blue-200 md:px-16">
+            <div className="relative overflow-hidden rounded-3xl border-2 border-primary bg-white px-6 py-16 text-center shadow-2xl shadow-blue-200 md:px-16">
               {/* Decorative elements */}
-              <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-white/10" />
-              <div className="absolute -bottom-8 -left-8 h-32 w-32 rounded-full bg-white/5" />
+              <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-blue-50" />
+              <div className="absolute -bottom-8 -left-8 h-32 w-32 rounded-full bg-blue-50" />
 
-              <h2 className="relative text-3xl font-bold md:text-4xl">
+              <h2 className="relative text-3xl font-bold text-primary md:text-4xl">
                 Sẵn sàng tìm phòng mới?
               </h2>
-              <p className="relative mx-auto mt-4 max-w-xl text-base leading-relaxed text-blue-100">
+              <p className="relative mx-auto mt-4 max-w-xl text-base leading-relaxed text-primary-light">
                 Đừng chần chừ! Hàng ngàn phòng trọ đang chờ bạn. Bấm Zalo ngay
                 để đội sale tư vấn miễn phí.
               </p>
@@ -166,14 +166,14 @@ export default function Home() {
                   href={site.zaloUrl || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-xl bg-white px-8 py-3.5 text-base font-semibold text-primary shadow-lg transition-all hover:bg-blue-50 hover:shadow-xl"
+                  className="inline-flex items-center gap-2 rounded-xl bg-primary px-8 py-3.5 text-base font-semibold text-white shadow-lg transition-all hover:bg-primary-dark hover:shadow-xl"
                 >
                   <MessageCircle size={20} />
                   Chat Zalo ngay
                 </a>
                 <Link
                   href="/rooms"
-                  className="inline-flex items-center gap-2 rounded-xl border-2 border-white/30 px-8 py-3.5 text-base font-semibold text-white transition-all hover:border-white/50 hover:bg-white/10"
+                  className="inline-flex items-center gap-2 rounded-xl border-2 border-primary px-8 py-3.5 text-base font-semibold text-primary transition-all hover:bg-blue-50"
                 >
                   Xem danh sách phòng
                 </Link>

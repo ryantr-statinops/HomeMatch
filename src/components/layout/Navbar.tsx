@@ -22,7 +22,7 @@ export default function Navbar() {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-sm font-bold text-white">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg border-2 border-primary bg-white text-sm font-bold text-primary">
               M
             </div>
             <span className="text-lg font-bold text-accent">{site.name}</span>
@@ -44,7 +44,7 @@ export default function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Button className="bg-primary hover:bg-primary-dark">
+              <Button variant="outline" className="border-primary text-primary hover:bg-blue-50">
                 Liên hệ Zalo
               </Button>
             </a>
@@ -80,7 +80,7 @@ export default function Navbar() {
                 rel="noopener noreferrer"
                 className="block w-full"
               >
-                <Button className="w-full bg-primary hover:bg-primary-dark">
+                <Button variant="outline" className="w-full border-primary text-primary hover:bg-blue-50">
                   Liên hệ Zalo
                 </Button>
               </a>
