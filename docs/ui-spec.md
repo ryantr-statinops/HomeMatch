@@ -15,7 +15,7 @@ Website phải:
 
 ## Primary Color
 
-Orange
+Blue
 
 ## Secondary Color
 

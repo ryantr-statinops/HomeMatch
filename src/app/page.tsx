@@ -12,10 +12,10 @@ export default function Home() {
       <Navbar />
       <main>
         {/* ===== Hero Section ===== */}
-        <section className="relative overflow-hidden bg-gradient-to-b from-orange-50 to-white pb-20 pt-16 md:pb-28 md:pt-24">
+        <section className="relative overflow-hidden bg-gradient-to-b from-blue-50 to-white pb-20 pt-16 md:pb-28 md:pt-24">
           <Container>
             <div className="mx-auto max-w-3xl text-center">
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-orange-200 bg-orange-100 px-4 py-1.5 text-sm font-medium text-primary">
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-100 px-4 py-1.5 text-sm font-medium text-primary">
                 <Sparkles size={16} />
                 Nền tảng tìm phòng trọ hàng đầu
               </div>
@@ -31,7 +31,7 @@ export default function Home() {
                 <Link href="/rooms">
                   <Button
                     size="lg"
-                    className="w-full bg-primary px-8 text-base font-semibold shadow-lg shadow-orange-200 transition-all hover:bg-primary-dark hover:shadow-xl sm:w-auto"
+                    className="w-full bg-primary px-8 text-base font-semibold shadow-lg shadow-blue-200 transition-all hover:bg-primary-dark hover:shadow-xl sm:w-auto"
                   >
                     Tìm phòng ngay
                     <ArrowRight size={18} className="ml-1" />
@@ -41,7 +41,7 @@ export default function Home() {
                   <Button
                     size="lg"
                     variant="outline"
-                    className="w-full border-2 border-accent/10 px-8 text-base font-semibold text-accent transition-all hover:border-primary/30 hover:bg-orange-50 sm:w-auto"
+                    className="w-full border-2 border-accent/10 px-8 text-base font-semibold text-accent transition-all hover:border-primary/30 hover:bg-blue-50 sm:w-auto"
                   >
                     Tìm người ở ghép
                   </Button>
@@ -67,8 +67,8 @@ export default function Home() {
 
             <div className="mt-12 grid gap-8 md:grid-cols-3">
               {/* Card 1 */}
-              <div className="group rounded-2xl border border-gray-100 bg-white p-8 transition-all hover:shadow-lg hover:shadow-orange-100">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-orange-100 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
+              <div className="group rounded-2xl border border-gray-100 bg-white p-8 transition-all hover:shadow-lg hover:shadow-blue-100">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
                   <Search size={24} />
                 </div>
                 <h3 className="text-lg font-semibold text-accent">
@@ -81,8 +81,8 @@ export default function Home() {
               </div>
 
               {/* Card 2 */}
-              <div className="group rounded-2xl border border-gray-100 bg-white p-8 transition-all hover:shadow-lg hover:shadow-orange-100">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-orange-100 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
+              <div className="group rounded-2xl border border-gray-100 bg-white p-8 transition-all hover:shadow-lg hover:shadow-blue-100">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
                   <MessageCircle size={24} />
                 </div>
                 <h3 className="text-lg font-semibold text-accent">
@@ -95,8 +95,8 @@ export default function Home() {
               </div>
 
               {/* Card 3 */}
-              <div className="group rounded-2xl border border-gray-100 bg-white p-8 transition-all hover:shadow-lg hover:shadow-orange-100">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-orange-100 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
+              <div className="group rounded-2xl border border-gray-100 bg-white p-8 transition-all hover:shadow-lg hover:shadow-blue-100">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
                   <FileCheck size={24} />
                 </div>
                 <h3 className="text-lg font-semibold text-accent">
@@ -128,10 +128,10 @@ export default function Home() {
                 <div key={step.number} className="relative text-center">
                   {/* Connector line */}
                   {index < steps.length - 1 && (
-                    <div className="absolute right-0 top-8 hidden h-0.5 w-full bg-orange-200 md:block" />
+                    <div className="absolute right-0 top-8 hidden h-0.5 w-full bg-blue-200 md:block" />
                   )}
                   {/* Number */}
-                  <div className="relative mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary text-2xl font-bold text-white shadow-lg shadow-orange-200">
+                  <div className="relative mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary text-2xl font-bold text-white shadow-lg shadow-blue-200">
                     {step.number}
                   </div>
                   <h3 className="mt-4 text-lg font-semibold text-accent">
@@ -149,7 +149,7 @@ export default function Home() {
         {/* ===== CTA Section ===== */}
         <section className="py-16 md:py-24">
           <Container>
-            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-primary-dark px-6 py-16 text-center text-white shadow-2xl shadow-orange-200 md:px-16">
+            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-primary-dark px-6 py-16 text-center text-white shadow-2xl shadow-blue-200 md:px-16">
               {/* Decorative elements */}
               <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-white/10" />
               <div className="absolute -bottom-8 -left-8 h-32 w-32 rounded-full bg-white/5" />
@@ -157,7 +157,7 @@ export default function Home() {
               <h2 className="relative text-3xl font-bold md:text-4xl">
                 Sẵn sàng tìm phòng mới?
               </h2>
-              <p className="relative mx-auto mt-4 max-w-xl text-base leading-relaxed text-orange-100">
+              <p className="relative mx-auto mt-4 max-w-xl text-base leading-relaxed text-blue-100">
                 Đừng chần chừ! Hàng ngàn phòng trọ đang chờ bạn. Bấm Zalo ngay
                 để đội sale tư vấn miễn phí.
               </p>
@@ -166,7 +166,7 @@ export default function Home() {
                   href={site.zaloUrl || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-xl bg-white px-8 py-3.5 text-base font-semibold text-primary shadow-lg transition-all hover:bg-orange-50 hover:shadow-xl"
+                  className="inline-flex items-center gap-2 rounded-xl bg-white px-8 py-3.5 text-base font-semibold text-primary shadow-lg transition-all hover:bg-blue-50 hover:shadow-xl"
                 >
                   <MessageCircle size={20} />
                   Chat Zalo ngay
