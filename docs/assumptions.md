@@ -7,6 +7,7 @@
 - Website không xử lý hợp đồng.
 - Website không xử lý đặt lịch.
 - Website không thay thế đội sale.
+-> Nhìn chung, Website là nơi show sản phẩm của startup này
 
 ---
 

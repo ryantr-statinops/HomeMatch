@@ -49,6 +49,8 @@ H --> I[Hẹn xem phòng]
 I --> J[Chốt phòng]
 ```
 
+website đóng vai trò thực hiện quá trình A --> B --> D --> F và A --> C --> E --> F
+
 ---
 
 ## Flow 1 - Tìm phòng
@@ -78,15 +80,15 @@ Sinh viên
 ## Flow 3 - Đăng nhu cầu ở ghép
 
 Khách hàng
-→ Liên hệ Sale
+→ Liên hệ Sale thông qua Zalo
 
 Sale
-→ Thu thập thông tin
+→ Thu thập thông tin, cung cấp thông tin cho Admin
 
 Admin
-→ Tạo bài ở ghép trên website
+→ Tạo bài ở ghép trên website dựa theo thông tin Sale cung cấp
 
-Người khác
+Người khác (Khách hàng nói chung)
 → Xem bài đăng
 → Liên hệ Zalo
 → Sale hỗ trợ ghép
