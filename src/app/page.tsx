@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { Search, MessageCircle, FileCheck, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import Container from "@/components/layout/Container";
 import SectionTitle from "@/components/shared/SectionTitle";
+import ValueCard from "@/components/shared/ValueCard";
 import { site } from "@/configs/site";
 import { howItWorksSteps } from "@/constants/how-it-works";
 
@@ -22,23 +22,18 @@ export default function Home() {
               tìm phòng, bấm Zalo và để đội sale của chúng tôi hỗ trợ bạn.
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Link href="/rooms">
-                <Button
-                  size="lg"
-                  className="w-full bg-primary px-8 text-base font-semibold shadow-lg shadow-blue-200 transition-all hover:bg-primary-dark hover:shadow-xl sm:w-auto"
-                >
-                  Tìm phòng ngay
-                  <ArrowRight size={18} className="ml-1" />
-                </Button>
+              <Link
+                href="/rooms"
+                className="inline-flex h-9 items-center justify-center gap-2 rounded-xl bg-primary px-8 text-base font-semibold text-white shadow-lg shadow-blue-200 transition-all hover:bg-primary-dark hover:shadow-xl"
+              >
+                Tìm phòng ngay
+                <ArrowRight size={18} className="ml-1" />
               </Link>
-              <Link href="/roommates">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="w-full border-2 border-accent/10 px-8 text-base font-semibold text-accent transition-all hover:border-primary/30 hover:bg-blue-50 sm:w-auto"
-                >
-                  Tìm người ở ghép
-                </Button>
+              <Link
+                href="/roommates"
+                className="inline-flex h-9 items-center justify-center gap-2 rounded-xl border-2 border-accent/10 px-8 text-base font-semibold text-accent transition-all hover:border-primary/30 hover:bg-blue-50"
+              >
+                Tìm người ở ghép
               </Link>
             </div>
           </div>
@@ -58,47 +53,21 @@ export default function Home() {
           />
 
           <div className="mt-12 grid gap-8 md:grid-cols-3">
-            {/* Card 1 */}
-            <div className="group rounded-2xl border border-gray-100 bg-white p-8 transition-all hover:shadow-lg hover:shadow-blue-100">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl border-2 border-transparent bg-blue-100 text-primary transition-colors group-hover:border-primary group-hover:bg-white group-hover:text-primary">
-                <Search size={24} />
-              </div>
-              <h3 className="text-lg font-semibold text-accent">
-                Đa dạng phòng trọ
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-accent-light">
-                Hệ thống phòng trọ rộng khắp các quận tại TP. HCM, từ phòng
-                bình dân đến cao cấp, phù hợp mọi nhu cầu và ngân sách.
-              </p>
-            </div>
-
-            {/* Card 2 */}
-            <div className="group rounded-2xl border border-gray-100 bg-white p-8 transition-all hover:shadow-lg hover:shadow-blue-100">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl border-2 border-transparent bg-blue-100 text-primary transition-colors group-hover:border-primary group-hover:bg-white group-hover:text-primary">
-                <MessageCircle size={24} />
-              </div>
-              <h3 className="text-lg font-semibold text-accent">
-                Tư vấn qua Zalo
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-accent-light">
-                Kết nối trực tiếp với đội ngũ sale giàu kinh nghiệm qua Zalo.
-                Được tư vấn miễn phí, không cam kết.
-              </p>
-            </div>
-
-            {/* Card 3 */}
-            <div className="group rounded-2xl border border-gray-100 bg-white p-8 transition-all hover:shadow-lg hover:shadow-blue-100">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl border-2 border-transparent bg-blue-100 text-primary transition-colors group-hover:border-primary group-hover:bg-white group-hover:text-primary">
-                <FileCheck size={24} />
-              </div>
-              <h3 className="text-lg font-semibold text-accent">
-                Hỗ trợ ở ghép
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-accent-light">
-                Không chỉ tìm phòng, chúng tôi còn giúp bạn kết nối với những
-                người bạn ở ghép tiềm năng, phù hợp tính cách và sở thích.
-              </p>
-            </div>
+            <ValueCard
+              icon={Search}
+              title="Đa dạng phòng trọ"
+              description="Hệ thống phòng trọ rộng khắp các quận tại TP. HCM, từ phòng bình dân đến cao cấp, phù hợp mọi nhu cầu và ngân sách."
+            />
+            <ValueCard
+              icon={MessageCircle}
+              title="Tư vấn qua Zalo"
+              description="Kết nối trực tiếp với đội ngũ sale giàu kinh nghiệm qua Zalo. Được tư vấn miễn phí, không cam kết."
+            />
+            <ValueCard
+              icon={FileCheck}
+              title="Hỗ trợ ở ghép"
+              description="Không chỉ tìm phòng, chúng tôi còn giúp bạn kết nối với những người bạn ở ghép tiềm năng, phù hợp tính cách và sở thích."
+            />
           </div>
         </Container>
       </section>
@@ -108,7 +77,7 @@ export default function Home() {
         <Container>
           <SectionTitle
             title="Cách hoạt động"
-            description="Chỉ 4 bước đơn giản để tìm được phòng trọ hoặc bạn ở ghép ưng ý."
+            description="Chỉ 5 bước đơn giản để tìm được phòng trọ hoặc bạn ở ghép ưng ý."
           />
 
           <div className="mt-12 grid gap-6 md:grid-cols-3 lg:grid-cols-5">

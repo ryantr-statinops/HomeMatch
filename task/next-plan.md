@@ -20,9 +20,10 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 | Phase 1.7 — Layout Architecture | ✅ DONE | `bd8d99f` |
 | Phase 1.8 — Navbar Redesign | ✅ DONE | `bd8d99f` |
 | Phase 1.9 — UI Polish | ✅ DONE | `bd8d99f` |
-| Phase 1.10 — Project Cleanup | ✅ DONE | — |
-| Phase 2 — Google Sheet API | ⏳ PENDING | — |
-| Phase 3 — Room Listing | ⏳ PENDING | — |
+| Phase 1.10 — Project Cleanup | ✅ DONE | `624a64d` |
+| Phase 2A — Apps Script API Code | ✅ DONE | — |
+| Phase 2B — Frontend API Client | ✅ DONE | — |
+| Phase 3 — Room Listing | ✅ DONE | — |
 | Phase 4 — Room Detail | ⏳ PENDING | — |
 | Phase 5 — Roommate Listing | ⏳ PENDING | — |
 | Phase 6 — Roommate Detail | ⏳ PENDING | — |
@@ -63,126 +64,103 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 - Brand colors: Blue-600 (#2563EB) + White
 
 ## Phase 1.6 — Rebrand Royal Blue ✅
-- Brand colors: Royal Blue `#1E40AF` cho primary, accent, primary-light
+- Brand colors: Royal Blue `#1E40AF` cho primary, accent
 - Fix `@theme inline` override bug (shadcn CSS vars đè lên `@theme`)
 - Fix Turbopack error: downgrade tailwindcss `v4.3.1` → `v4.0.7`
-- Cập nhật `docs/ui-spec.md`, `task/mvp-plan/01-project-setup.md`
-- Fix How It Works: thêm bước "Xem phòng" (4→5 bước)
-- Fix responsive grid: `md:grid-cols-3 lg:grid-cols-5`
 
 ## Phase 1.7 — Layout Architecture ✅
 - Chuyển Navbar + Footer từ `page.tsx` vào `layout.tsx`
 - Flex layout: `min-h-screen flex-col` + main `flex-1` (sticky footer)
-- Xoá import và JSX dư thừa khỏi `page.tsx`
 
 ## Phase 1.8 — Navbar Redesign ✅
 - Nền: trắng → Royal Blue (`bg-primary`)
-- Text: đổi màu cho brand, nav links, hamburger icon
-- Nút Zalo: outline → filled (`bg-white text-primary`)
-- Nav links: tăng cỡ chữ (`text-sm` → `text-base`), màu trắng
-- Thêm logo `.webp`, bo tròn góc, tăng kích thước 32→35px
+- Nav links: trắng, tăng cỡ chữ (`text-sm` → `text-base`)
+- Nút Zalo: filled (`bg-white text-primary`)
+- Logo `.webp`, bo tròn, 35px
 
 ## Phase 1.9 — UI Polish ✅
-- Xoá gradient fade Hero section (`bg-gradient-to-b` → `bg-white`)
-- Xoá decorative circles CTA section
-- Xoá badge "Nền tảng tìm phòng trọ hàng đầu"
+- Xoá gradient Hero, decorative circles CTA, badge "Nền tảng..."
+- Màu: `--color-primary-light: #3b82f6`, `--color-accent: #1e40af`
 
 ## Phase 1.10 — Project Cleanup ✅
-- Xoá `.gitkeep` không cần thiết (12 files)
-- Xoá `public/icons/`, `public/images/` (empty)
-- Tạo `.env.example`
-- Move `shadcn` từ dependencies → devDependencies
-- Fix docs: Next.js 15→16 (`folder-structure.md`, `tech-stack.md`, `mvp-plan/00-overview.md`)
-- Fix `docs/ui-spec.md`: Featured Rooms → About + How It Works
-- Fix system-architecture.md reference in `task/README.md`
-- Code quality: fix `<a>` wrapping `<Button>` trong Navbar
-- Code quality: fix `new Date().getFullYear()` → hardcode 2026 trong Footer
-- Code quality: fix `min-h-screen` dư thừa trong `loading.tsx`, `not-found.tsx`
-- Code quality: extract steps array vào `src/constants/how-it-works.ts`
-- Shared component: `SectionTitle` + áp dụng vào `page.tsx`
+- Xoá 12 `.gitkeep`, xoá `public/icons/`, `public/images/`
+- Tạo `.env.example`, move `shadcn` → devDependencies
+- Fix docs (Next.js 15→16, ui-spec sections)
+- Fix code quality (Navbar <a> wrapping, Footer year, loading/not-found min-h-screen)
+- Extract steps → constants, create SectionTitle + ValueCard components
+
+## Phase 2A — Apps Script API ✅
+- `apps-script/` folder: Code.js, sheets.js, rooms.js, roommates.js, leads.js, utils.js
+- Cập nhật docs (api-contracts V2, folder-structure)
+
+## Phase 2B — Frontend API Client ✅
+- `src/lib/api-client.ts` — Fetch wrapper với mock fallback
+- `src/types/room.ts`, `src/types/roommate-post.ts` — TypeScript types
+- `src/constants/routes.ts` — Route constants
+- `src/services/room.service.ts` — 6 mock rooms + filter
+- `src/services/roommate.service.ts` — 3 mock posts
+
+## Phase 3 — Room Listing ✅
+- `src/components/room/RoomCard.tsx` — Card (ảnh, giá, địa chỉ, diện tích)
+- `src/components/room/RoomFilter.tsx` — Blue card collapsed, filter panel expanded
+- `src/components/room/RoomList.tsx` — Client component (loading/filter/empty states)
+- `src/app/rooms/page.tsx` — Room listing page
+- UI Polish: bỏ search text, bỏ description header, icon lọc
 
 ---
 
 # Current Priority
 
-1. **Phase 2 — Google Sheet API** (Apps Script endpoints)
-2. Phase 3 — Room Listing page
-3. Phase 4 — Room Detail page
-4. Phase 5 — Roommate Listing page
-5. Phase 6 — Roommate Detail page
-6. Phase 8 — Zalo Contact integration
-7. Phase 9 — Deployment to Cloudflare Pages
-8. Phase 10 — Final Review
+1. ✅ Phase 2A — Apps Script API Code (cần user clasp push + deploy)
+2. ✅ Phase 2B — Frontend API Client
+3. ✅ Phase 3 — Room Listing
+4. **Phase 4 — Room Detail page** `/rooms/[slug]`
+5. Phase 5 — Roommate Listing page
+6. Phase 6 — Roommate Detail page
+7. Phase 8 — Zalo Contact integration
+8. Phase 9 — Deployment to Cloudflare Pages
+9. Phase 10 — Final Review
 
 ---
 
-# Files Need To Create (Future Phases)
+# Next Session Plan — Phase 4: Room Detail
 
-## Types (Phase 3)
+**Mục tiêu:** Xây trang chi tiết phòng `/rooms/[slug]`
+
+**Cần làm:**
+- [ ] `src/app/rooms/[slug]/page.tsx` — Room detail page (server component)
+- [ ] `src/components/room/RoomDetail.tsx` — Detail content component
+- [ ] `src/components/room/RoomGallery.tsx` — Image gallery (carousel/thumbnails)
+- [ ] `src/components/shared/ContactButton.tsx` — Zalo contact button
+
+**Trang Room Detail gồm:**
+- Breadcrumb: Trang chủ / Danh sách phòng / [Tên phòng]
+- Image gallery (nhiều ảnh)
+- Thông tin: giá, địa chỉ, diện tích, hợp đồng
+- Tiện ích (grid checkboxes)
+- Chi phí khác (điện, nước, phí quản lý, giữ xe)
+- Mô tả phòng
+- Nút "Liên hệ Zalo" (gọi API createLead)
+- Related rooms (3 phòng cùng khu vực)
+
+---
+
+# Files Created (This Session)
+
+## Phase 2B
+- `src/lib/api-client.ts`
 - `src/types/room.ts`
-- `src/types/room-image.ts`
 - `src/types/roommate-post.ts`
-- `src/types/lead.ts`
-- `src/types/sale.ts`
-
-## Constants (Phase 3)
 - `src/constants/routes.ts`
-- `src/constants/roommate-types.ts`
-- `src/constants/room-status.ts`
-
-## Services (Phase 2-3)
 - `src/services/room.service.ts`
 - `src/services/roommate.service.ts`
-- `src/services/analytics.service.ts`
 
-## Features (Phase 3-6)
-- `src/features/rooms/api.ts`
-- `src/features/rooms/mapper.ts`
-- `src/features/rooms/schema.ts`
-- `src/features/rooms/utils.ts`
-- `src/features/roommates/api.ts`
-- `src/features/roommates/mapper.ts`
-- `src/features/roommates/schema.ts`
-- `src/features/roommates/utils.ts`
-
-## Hooks (Phase 3)
-- `src/hooks/useRooms.ts`
-- `src/hooks/useRoommates.ts`
-
-## Lib (Phase 2-3)
-- `src/lib/api-client.ts`
-- `src/lib/google-analytics.ts`
-
-## Page Components (Phase 3-6)
+## Phase 3
 - `src/components/room/RoomCard.tsx`
-- `src/components/room/RoomGallery.tsx`
 - `src/components/room/RoomFilter.tsx`
 - `src/components/room/RoomList.tsx`
-- `src/components/room/RoomDetail.tsx`
-- `src/components/roommate/RoommateCard.tsx`
-- `src/components/roommate/RoommateList.tsx`
-- `src/components/roommate/RoommateFilter.tsx`
-- `src/components/roommate/RoommateDetail.tsx`
-- `src/components/shared/EmptyState.tsx`
-- `src/components/shared/ContactButton.tsx`
-
-## Pages (Phase 3-6)
 - `src/app/rooms/page.tsx`
-- `src/app/rooms/[slug]/page.tsx`
-- `src/app/roommates/page.tsx`
-- `src/app/roommates/[id]/page.tsx`
 
----
-
-# Known Issues / Improvements
-
-## Fixed ✅
-- [x] **Navbar/Footer trong page.tsx** — Đã chuyển vào `layout.tsx`.
-- [x] **Chưa có logo assets** — Đã thêm `public/logo/logo.webp`.
-- [x] **`<a>` wrapping `<Button>`** — Đã fix style `<a>` trực tiếp.
-- [x] **`new Date().getFullYear()` trong Footer** — Đã hardcode 2026.
-- [x] **Chưa có SectionTitle shared component** — Đã tạo và áp dụng.
-- [x] **Steps array trong page.tsx** — Đã chuyển vào `constants/how-it-works.ts`.
-
-## Remaining
-_(None — project is clean and ready for Phase 2)_
+## Shared
+- `src/components/shared/ValueCard.tsx`
+- `src/components/shared/EmptyState.tsx`

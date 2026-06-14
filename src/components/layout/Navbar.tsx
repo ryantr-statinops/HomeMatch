@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
+import { cn } from "@/lib/utils";
 import Container from "@/components/layout/Container";
 import { site } from "@/configs/site";
 
@@ -12,6 +13,9 @@ const navLinks = [
   { href: "/rooms", label: "Tìm phòng" },
   { href: "/roommates", label: "Ở ghép" },
 ];
+
+const zaloButtonClass =
+  "flex items-center justify-center gap-1.5 rounded-lg bg-white px-2.5 py-1.5 text-sm font-medium text-primary transition-all hover:bg-gray-100";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -47,7 +51,7 @@ export default function Navbar() {
               href={site.zaloUrl || "#"}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-white px-2.5 py-1.5 text-sm font-medium text-primary transition-all hover:bg-gray-100"
+              className={cn(zaloButtonClass, "inline-flex")}
             >
               Liên hệ Zalo
             </a>
@@ -81,7 +85,7 @@ export default function Navbar() {
                 href={site.zaloUrl || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-white px-2.5 py-1.5 text-sm font-medium text-primary transition-all hover:bg-gray-100"
+                className={cn(zaloButtonClass, "w-full")}
               >
                 Liên hệ Zalo
               </a>

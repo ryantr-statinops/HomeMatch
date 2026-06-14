@@ -19,6 +19,8 @@ Project sử dụng:
 ```text
 project-root/
 
+├── apps-script/
+
 ├── docs/
 
 ├── public/

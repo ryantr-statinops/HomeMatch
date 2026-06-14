@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { MapPin, MessageCircle } from "lucide-react";
 import Container from "@/components/layout/Container";
 import { site } from "@/configs/site";
@@ -11,9 +12,13 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-sm font-bold text-white">
-                M
-              </div>
+              <Image
+                src="/logo/logo.webp"
+                alt={site.name}
+                width={32}
+                height={32}
+                className="h-8 w-auto rounded-lg"
+              />
               <span className="text-lg font-bold text-accent">
                 {site.name}
               </span>
