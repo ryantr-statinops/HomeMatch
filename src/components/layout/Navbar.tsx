@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Container from "@/components/layout/Container";
@@ -17,15 +18,19 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-gray-100 bg-white/95 backdrop-blur-sm">
+    <nav className="sticky top-0 z-50 border-b border-blue-800 bg-primary">
       <Container>
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg border-2 border-primary bg-white text-sm font-bold text-primary">
-              M
-            </div>
-            <span className="text-lg font-bold text-accent">{site.name}</span>
+            <Image
+              src="/logo/logo.webp"
+              alt={site.name}
+              width={35}
+              height={35}
+              className="h-[35px] w-auto rounded-lg"
+            />
+            <span className="text-lg font-bold text-white">{site.name}</span>
           </Link>
 
           {/* Desktop nav */}
@@ -34,7 +39,7 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium text-accent-light transition-colors hover:text-primary"
+                className="text-base font-medium text-white transition-colors hover:text-blue-200"
               >
                 {link.label}
               </Link>
@@ -44,7 +49,7 @@ export default function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Button variant="outline" className="border-primary text-primary hover:bg-blue-50">
+              <Button variant="default" className="bg-white text-primary hover:bg-gray-100">
                 Liên hệ Zalo
               </Button>
             </a>
@@ -53,7 +58,7 @@ export default function Navbar() {
           {/* Mobile menu button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="flex items-center p-2 text-accent-light md:hidden"
+            className="flex items-center p-2 text-white md:hidden"
             aria-label="Toggle menu"
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -62,13 +67,13 @@ export default function Navbar() {
 
         {/* Mobile nav */}
         {isOpen && (
-          <div className="border-t border-gray-100 pb-4 pt-2 md:hidden">
+          <div className="border-t border-blue-800 pb-4 pt-2 md:hidden">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setIsOpen(false)}
-                className="block rounded-lg px-3 py-2 text-sm font-medium text-accent-light transition-colors hover:bg-blue-50 hover:text-primary"
+                className="block rounded-lg px-3 py-2 text-base font-medium text-white transition-colors hover:bg-primary-dark hover:text-blue-200"
               >
                 {link.label}
               </Link>
@@ -80,7 +85,7 @@ export default function Navbar() {
                 rel="noopener noreferrer"
                 className="block w-full"
               >
-                <Button variant="outline" className="w-full border-primary text-primary hover:bg-blue-50">
+                <Button variant="default" className="w-full bg-white text-primary hover:bg-gray-100">
                   Liên hệ Zalo
                 </Button>
               </a>

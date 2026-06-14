@@ -2,17 +2,13 @@ import Link from "next/link";
 import { Search, MessageCircle, FileCheck, ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Container from "@/components/layout/Container";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
 import { site } from "@/configs/site";
 
 export default function Home() {
   return (
     <>
-      <Navbar />
-      <main>
-        {/* ===== Hero Section ===== */}
-        <section className="relative overflow-hidden bg-gradient-to-b from-blue-50 to-white pb-20 pt-16 md:pb-28 md:pt-24">
+      {/* ===== Hero Section ===== */}
+        <section className="relative overflow-hidden bg-white pb-20 pt-16 md:pb-28 md:pt-24">
           <Container>
             <div className="mx-auto max-w-3xl text-center">
               <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-100 px-4 py-1.5 text-sm font-medium text-primary">
@@ -123,7 +119,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="mt-12 grid gap-6 md:grid-cols-4">
+            <div className="mt-12 grid gap-6 md:grid-cols-3 lg:grid-cols-5">
               {steps.map((step, index) => (
                 <div key={step.number} className="relative text-center">
                   {/* Connector line */}
@@ -150,14 +146,10 @@ export default function Home() {
         <section className="py-16 md:py-24">
           <Container>
             <div className="relative overflow-hidden rounded-3xl border-2 border-primary bg-white px-6 py-16 text-center shadow-2xl shadow-blue-200 md:px-16">
-              {/* Decorative elements */}
-              <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-blue-50" />
-              <div className="absolute -bottom-8 -left-8 h-32 w-32 rounded-full bg-blue-50" />
-
               <h2 className="relative text-3xl font-bold text-primary md:text-4xl">
                 Sẵn sàng tìm phòng mới?
               </h2>
-              <p className="relative mx-auto mt-4 max-w-xl text-base leading-relaxed text-primary-light">
+              <p className="relative mx-auto mt-4 max-w-xl text-base leading-relaxed text-primary">
                 Đừng chần chừ! Hàng ngàn phòng trọ đang chờ bạn. Bấm Zalo ngay
                 để đội sale tư vấn miễn phí.
               </p>
@@ -181,8 +173,6 @@ export default function Home() {
             </div>
           </Container>
         </section>
-      </main>
-      <Footer />
     </>
   );
 }
@@ -190,7 +180,7 @@ export default function Home() {
 const steps = [
   {
     number: 1,
-    title: "Tìm phòng",
+    title: "Tìm phòng hoặc ở ghép",
     description: "Duyệt qua hàng trăm phòng trọ hoặc bài đăng ở ghép phù hợp với bạn.",
   },
   {
@@ -200,12 +190,17 @@ const steps = [
   },
   {
     number: 3,
-    title: "Được tư vấn",
-    description: "Sale sẽ hỗ trợ bạn chi tiết về phòng, giá cả và lịch xem phòng.",
+    title: "Sale hỗ trợ",
+    description: "Sale sẽ tư vấn chi tiết về phòng, giá cả và lịch xem phòng phù hợp.",
   },
   {
     number: 4,
+    title: "Xem phòng",
+    description: "Đặt lịch hẹn xem phòng thực tế để kiểm tra và đảm bảo ưng ý.",
+  },
+  {
+    number: 5,
     title: "Chốt phòng",
-    description: "Xem phòng thực tế và chốt ở — nhanh gọn, không rắc rối.",
+    description: "Hoàn tất thủ tục và chốt ở — nhanh gọn, không rắc rối.",
   },
 ];

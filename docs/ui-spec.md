@@ -15,7 +15,7 @@ Website phải:
 
 ## Primary Color
 
-Blue
+Royal Blue (`#1E40AF` - blue-800)
 
 ## Secondary Color
 
@@ -41,6 +41,8 @@ Nội dung:
 ---
 
 ## Section 2 - How It Works
+
+Nội dung:
 
 Bước 1
 
