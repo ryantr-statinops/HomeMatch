@@ -4,7 +4,7 @@
 
 Project sử dụng:
 
-* Next.js 15
+* Next.js 16
 * App Router
 * TypeScript
 * Tailwind CSS
@@ -54,7 +54,7 @@ docs/
 ├── api-contracts.md
 
 └── diagrams/
-    └── erd-v1.drawio
+    └── erd-v1.md
 ```
 
 Mục đích:

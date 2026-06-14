@@ -66,19 +66,17 @@ Chốt phòng
 
 ---
 
-## Section 3 - Featured Rooms
+## Section 3 - About
 
 Hiển thị:
 
-6 phòng nổi bật
+3 giá trị cốt lõi (cards)
 
 ---
 
-## Section 4 - Featured Roommates
+## Section 4 - How It Works
 
-Hiển thị:
-
-6 bài ở ghép nổi bật
+5 bước quy trình
 
 ---
 

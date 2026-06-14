@@ -75,7 +75,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-8 border-t border-gray-200 pt-6 text-center text-xs text-accent-light">
-          &copy; {new Date().getFullYear()} {site.name}. All rights reserved.
+          &copy; 2026 {site.name}. All rights reserved.
         </div>
       </Container>
     </footer>

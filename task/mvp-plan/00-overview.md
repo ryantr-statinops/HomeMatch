@@ -303,7 +303,7 @@ Các bảng:
 
 Frontend
 
-* Next.js 15
+* Next.js 16
 * TypeScript
 * TailwindCSS
 * shadcn/ui

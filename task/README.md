@@ -15,7 +15,7 @@ Bước 1
 Đọc:
 
 * docs/project-rules.md
-* docs/system-architecture.md
+* docs/diagrams/system-architecture.md
 * docs/folder-structure.md
 
 ---

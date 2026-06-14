@@ -4,7 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import Container from "@/components/layout/Container";
 import { site } from "@/configs/site";
 
@@ -48,10 +47,9 @@ export default function Navbar() {
               href={site.zaloUrl || "#"}
               target="_blank"
               rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-white px-2.5 py-1.5 text-sm font-medium text-primary transition-all hover:bg-gray-100"
             >
-              <Button variant="default" className="bg-white text-primary hover:bg-gray-100">
-                Liên hệ Zalo
-              </Button>
+              Liên hệ Zalo
             </a>
           </div>
 
@@ -83,11 +81,9 @@ export default function Navbar() {
                 href={site.zaloUrl || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block w-full"
+                className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-white px-2.5 py-1.5 text-sm font-medium text-primary transition-all hover:bg-gray-100"
               >
-                <Button variant="default" className="w-full bg-white text-primary hover:bg-gray-100">
-                  Liên hệ Zalo
-                </Button>
+                Liên hệ Zalo
               </a>
             </div>
           </div>

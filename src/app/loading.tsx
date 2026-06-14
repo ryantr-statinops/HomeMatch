@@ -1,6 +1,6 @@
 export default function Loading() {
   return (
-    <div className="flex min-h-screen items-center justify-center">
+    <div className="flex items-center justify-center py-20">
       <p className="text-accent-light">Đang tải...</p>
     </div>
   );

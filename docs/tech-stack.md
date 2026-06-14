@@ -16,7 +16,7 @@ Mục tiêu của hệ thống:
 
 ## Framework
 
-Next.js 15
+Next.js 16
 
 ## Language
 
