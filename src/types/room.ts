@@ -45,6 +45,7 @@ export type Room = {
   price: number;
   area: number;
   contractType: string;
+  floor: string;
   amenities: RoomAmenities;
   rules: {
     gioGiac: string;

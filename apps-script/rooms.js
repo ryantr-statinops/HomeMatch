@@ -148,13 +148,18 @@ function parseBool(value) {
 
 /**
  * Parse chi phí dạng "3.800đ/kWh" → number (3800).
- * Bỏ dấu chấm, ký tự không phải số, giữ lại số nguyên.
+ *
+ * Cách hoạt động:
+ * 1. Xoá dấu chấm (phân cách hàng nghìn): "25.000đ/m3" → "25000đ/m3"
+ * 2. Chỉ lấy chữ số đầu tiên: /^\d+/ → "25000"
+ * 3. Trả về số: 25000
  */
 function parseCost(value) {
   if (!value) return 0;
-  // Xoá dấu chấm (phân cách hàng nghìn), giữ lại số
-  const cleaned = String(value).replace(/\./g, "").replace(/[^0-9]/g, "");
-  return Number(cleaned) || 0;
+  // Xoá dấu chấm trước, sau đó lấy phần số ở đầu chuỗi
+  const noDots = String(value).replace(/\./g, "");
+  const match = noDots.match(/^\d+/);
+  return match ? Number(match[0]) : 0;
 }
 
 /**
