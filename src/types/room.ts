@@ -1,4 +1,4 @@
-/** Kiểu tiện ích phòng */
+/** Kiểu tiện ích phòng (đồng bộ với API response) */
 export type RoomAmenities = {
   mayLanh: boolean;
   keBep: boolean;
@@ -6,10 +6,12 @@ export type RoomAmenities = {
   tuLanh: boolean;
   nhaVS: boolean;
   cuaSo: boolean;
+  banCong: boolean;
   deXe: boolean;
   thuCung: boolean;
   xeDien: boolean;
   mayGiat: boolean;
+  thangMay: boolean;
 };
 
 /** Kiểu chi phí phòng */

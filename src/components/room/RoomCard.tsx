@@ -24,6 +24,7 @@ export default function RoomCard({ room }: RoomCardProps) {
       {/* Image */}
       <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
         {room.image ? (
+          // eslint-disable-next-line @next/next/no-img-element
           <img
             src={room.image}
             alt={room.address.duong}
