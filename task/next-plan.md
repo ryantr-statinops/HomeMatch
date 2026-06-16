@@ -25,6 +25,7 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 | Phase 2B — Frontend API Client | ✅ DONE | — |
 | Phase 3 — Room Listing | ✅ DONE | — |
 | Phase 2.5 — Docs Sync with Sheet | ✅ DONE | — |
+| **Phase 2A.5 — Apps Script Deploy** | ✅ **DONE (v3 Production)** | — |
 | Phase 4 — Room Detail | ⏳ PENDING | — |
 | Phase 5 — Roommate Listing | ⏳ PENDING | — |
 | Phase 6 — Roommate Detail | ⏳ PENDING | — |
@@ -106,11 +107,19 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 - Fix `apps-script/Code.js` (SHEET_NAME: ROOMMATE_POST → ROOMMATE)
 
 ## Phase 2B — Frontend API Client ✅
-- `src/lib/api-client.ts` — Fetch wrapper với mock fallback
+- `src/lib/api-client.ts` — Fetch wrapper với proxy server-side
 - `src/types/room.ts`, `src/types/roommate-post.ts` — TypeScript types
 - `src/constants/routes.ts` — Route constants
 - `src/services/room.service.ts` — 6 mock rooms + filter
 - `src/services/roommate.service.ts` — 3 mock posts
+- `src/app/api/proxy/route.ts` — API proxy server-side (tránh CORS)
+
+## Phase 2A.5 — Apps Script Deploy ✅
+- **Deploy URL (Production v3):** `https://script.google.com/macros/s/AKfycbyMgfC3ncl0XXyxzx50-bm34_VLkyerpxTXLnOwOdJ2iV3mOvTY9sjo74f4ZZrvgYvg/exec`
+- Clasp push thành công (7 files)
+- Fix timezone: `America/New_York` → `Asia/Ho_Chi_Minh`
+- `.env.local` cập nhật với URL deploy mới
+- Cần set `SHEET_ID` trong Script Properties của Apps Script trên Google Cloud
 
 ## Phase 3 — Room Listing ✅
 - `src/components/room/RoomCard.tsx` — Card (ảnh, giá, địa chỉ, diện tích)
@@ -127,12 +136,13 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 2. ✅ Phase 2B — Frontend API Client
 3. ✅ Phase 2.5 — Docs & Code Sync with Google Sheet
 4. ✅ Phase 3 — Room Listing
-5. **Phase 4 — Room Detail page** `/rooms/[slug]`
-5. Phase 5 — Roommate Listing page
-6. Phase 6 — Roommate Detail page
-7. Phase 8 — Zalo Contact integration
-8. Phase 9 — Deployment to Cloudflare Pages
-9. Phase 10 — Final Review
+5. ✅ **Phase 2A.5 — Apps Script Deploy (v3 Production)**
+6. **Phase 4 — Room Detail page** `/rooms/[slug]`
+7. Phase 5 — Roommate Listing page
+8. Phase 6 — Roommate Detail page
+9. Phase 8 — Zalo Contact integration
+10. Phase 9 — Deployment to Cloudflare Pages
+11. Phase 10 — Final Review
 
 ---
 
@@ -158,8 +168,33 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 
 ---
 
+# Deploy Info
+
+## Apps Script
+
+| Item | Value |
+|------|-------|
+| Script Name | MatchHome API |
+| Latest Version | @3 |
+| Production Deploy ID | `AKfycbyMgfC3ncl0XXyxzx50-bm34_VLkyerpxTXLnOwOdJ2iV3mOvTY9sjo74f4ZZrvgYvg` |
+| Production URL | `https://script.google.com/macros/s/AKfycbyMgfC3ncl0XXyxzx50-bm34_VLkyerpxTXLnOwOdJ2iV3mOvTY9sjo74f4ZZrvgYvg/exec` |
+| Thư mục | `apps-script/` |
+
+## Yêu cầu sau deploy
+
+Sau khi deploy, cần set `SHEET_ID` trong Script Properties của Apps Script:
+1. Mở [script](https://script.google.com/d/1-ohEkoebv5XqZE1O6pfehTqRpUOmw48zGvcLX1Q5RCDWzLm9Ub_pWe32/edit)
+2. File → Project properties → Script properties
+3. Thêm key `SHEET_ID` với value là ID của Google Sheet `DATABASE_HomeMatch`
+
+---
+
 # Files Created (This Session)
 
+## Phase 2A.5 — Apps Script Deploy
+- `task/current-session/session-007.md` — Session docs
+- `.env.local` — Updated deploy URL
+  
 ## Phase 2B
 - `src/lib/api-client.ts`
 - `src/types/room.ts`
