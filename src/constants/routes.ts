@@ -1,7 +1,7 @@
 export const routes = {
   home: "/",
   rooms: "/rooms",
-  roomDetail: (slug: string) => `/rooms/${slug}`,
+  roomDetail: (id: string) => `/rooms/${id}`,
   roommates: "/roommates",
   roommateDetail: (id: string) => `/roommates/${id}`,
 } as const;

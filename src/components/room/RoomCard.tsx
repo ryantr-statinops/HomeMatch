@@ -18,7 +18,7 @@ function formatPrice(price: number): string {
 export default function RoomCard({ room }: RoomCardProps) {
   return (
     <Link
-      href={routes.roomDetail(room.slug)}
+      href={routes.roomDetail(room.id)}
       className="group overflow-hidden rounded-2xl border border-gray-100 bg-white transition-all hover:shadow-lg hover:shadow-blue-100"
     >
       {/* Image */}

@@ -23,19 +23,13 @@ export async function getRooms(params?: RoomFilterParams): Promise<Room[]> {
 }
 
 /**
- * Lấy chi tiết phòng theo slug.
- * Tra slug → IDPhong, rồi gọi API getRoomDetail.
+ * Lấy chi tiết phòng theo ID (IDPhong từ Google Sheet).
+ * Gọi trực tiếp API getRoomDetail với id=IDPhong.
  */
-export async function getRoomBySlug(slug: string): Promise<Room | null> {
+export async function getRoomById(id: string): Promise<Room | null> {
   try {
-    // Lấy tất cả phòng để tìm ID từ slug
-    const rooms = await getRooms();
-    const room = rooms.find((r) => r.slug === slug);
-    if (!room) return null;
-
-    // Gọi API chi tiết với ID thật
     const result = await apiRequest<Room>("getRoomDetail", {
-      params: { id: room.id },
+      params: { id },
     });
     return result;
   } catch {
