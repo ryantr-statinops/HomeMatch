@@ -24,6 +24,7 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 | Phase 2A — Apps Script API Code | ✅ DONE | — |
 | Phase 2B — Frontend API Client | ✅ DONE | — |
 | Phase 3 — Room Listing | ✅ DONE | — |
+| Phase 2.5 — Docs Sync with Sheet | ✅ DONE | — |
 | Phase 4 — Room Detail | ⏳ PENDING | — |
 | Phase 5 — Roommate Listing | ⏳ PENDING | — |
 | Phase 6 — Roommate Detail | ⏳ PENDING | — |
@@ -37,9 +38,10 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 * Sitemap: DONE
 * User Journeys: DONE
 * Assumptions: DONE
-* Database Structure: DONE
-* ERD V1: DONE
-* Sheet Design: DONE
+* Database Structure: ✅ DONE (V3 — synced with real sheet)
+* ERD: ✅ DONE (V2 — synced with real sheet)
+* Sheet Design: ✅ DONE (V3 — synced with real sheet)
+* API Contracts: ✅ DONE (V3 — synced with real sheet)
 * Tech Stack: DONE
 * Folder Structure: DONE
 * System Architecture: DONE
@@ -93,6 +95,16 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 - `apps-script/` folder: Code.js, sheets.js, rooms.js, roommates.js, leads.js, utils.js
 - Cập nhật docs (api-contracts V2, folder-structure)
 
+## Phase 2.5 — Docs & Code Sync with Google Sheet ✅
+- Đọc cấu trúc Google Sheet thật (DATABASE_HomeMatch) qua CSV + API
+- Cập nhật `docs/database_structure.md` → V3
+- Cập nhật `docs/sheet-design.md` → V3
+- Cập nhật `docs/diagrams/erd-v1.md` → V2
+- Cập nhật `docs/api-contracts.md` → V3
+- Đồng bộ `apps-script/rooms.js` (parseBool, parseCost, mapStatus)
+- Đồng bộ `apps-script/roommates.js` (mapPostType, parseBudget)
+- Fix `apps-script/Code.js` (SHEET_NAME: ROOMMATE_POST → ROOMMATE)
+
 ## Phase 2B — Frontend API Client ✅
 - `src/lib/api-client.ts` — Fetch wrapper với mock fallback
 - `src/types/room.ts`, `src/types/roommate-post.ts` — TypeScript types
@@ -111,10 +123,11 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 
 # Current Priority
 
-1. ✅ Phase 2A — Apps Script API Code (cần user clasp push + deploy)
+1. ✅ Phase 2A — Apps Script API Code
 2. ✅ Phase 2B — Frontend API Client
-3. ✅ Phase 3 — Room Listing
-4. **Phase 4 — Room Detail page** `/rooms/[slug]`
+3. ✅ Phase 2.5 — Docs & Code Sync with Google Sheet
+4. ✅ Phase 3 — Room Listing
+5. **Phase 4 — Room Detail page** `/rooms/[slug]`
 5. Phase 5 — Roommate Listing page
 6. Phase 6 — Roommate Detail page
 7. Phase 8 — Zalo Contact integration

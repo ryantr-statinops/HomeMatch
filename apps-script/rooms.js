@@ -4,6 +4,8 @@
  * Endpoints:
  *   getRooms      → Danh sách phòng (có filter)
  *   getRoomDetail → Chi tiết 1 phòng + hình ảnh
+ *
+ * Cập nhật theo cấu trúc Google Sheet thật (DATABASE_HomeMatch).
  */
 
 /**
@@ -13,7 +15,6 @@
  * @param {string} [params.khuVuc] - Lọc theo khu vực
  * @param {string} [params.giaMin] - Giá tối thiểu
  * @param {string} [params.giaMax] - Giá tối đa
- * @param {string} [params.dienTichMin] - Diện tích tối thiểu
  * @param {string} [params.keyword] - Từ khoá tìm kiếm
  * @returns {Array}
  */
@@ -21,8 +22,8 @@ function handleGetRooms(params) {
   const rooms = readSheet("PHONGTRO");
   if (!rooms.length) return [];
 
-  // Chỉ lấy phòng ACTIVE
-  let filtered = rooms.filter((r) => r.trangthai === "ACTIVE");
+  // Chỉ lấy phòng "Trống" (ACTIVE)
+  let filtered = rooms.filter((r) => r.trangthai === "Trống");
 
   // Lọc theo khu vực
   if (params?.khuVuc) {
@@ -40,12 +41,6 @@ function handleGetRooms(params) {
   if (params?.giaMax) {
     const max = Number(params.giaMax);
     filtered = filtered.filter((r) => Number(r.gia) <= max);
-  }
-
-  // Lọc theo diện tích
-  if (params?.dienTichMin) {
-    const minDt = Number(params.dienTichMin);
-    filtered = filtered.filter((r) => Number(r.dientich) >= minDt);
   }
 
   // Tìm kiếm theo từ khoá (địa chỉ, mô tả)
@@ -107,32 +102,69 @@ function mapRoom(row) {
       khuVuc: row.khuvuc || "",
     },
     price: Number(row.gia) || 0,
-    area: Number(row.dientich) || 0,
+    area: 0, // Sheet không có cột DienTich
     contractType: row.hopdong || "",
     amenities: {
-      mayLanh: !!row.maylanh,
-      keBep: !!row.kebep,
-      gac: !!row.gac,
-      tuLanh: !!row.tulanh,
-      nhaVS: !!row.nhavs,
-      cuaSo: !!row.cuaso,
-      deXe: !!row.dexe,
-      thuCung: !!row.thucung,
-      xeDien: !!row.xedien,
-      mayGiat: !!row.maygiat,
+      mayLanh: parseBool(row.maylanh),
+      keBep: parseBool(row.kebep),
+      gac: parseBool(row.gac),
+      tuLanh: parseBool(row.tulanh),
+      nhaVS: parseBool(row.nhavs),
+      cuaSo: parseBool(row.cuaso),
+      banCong: parseBool(row.bancong),
+      deXe: parseBool(row.dexe),
+      thuCung: parseBool(row.thucung),
+      xeDien: parseBool(row.xedien),
+      mayGiat: parseBool(row.maygiat),
+      thangMay: parseBool(row.thangmay),
     },
     rules: {
       gioGiac: row.giogiac || "",
-      thuCung: !!row.thucung,
+      thuCung: parseBool(row.thucung),
     },
+    floor: row.lau || "",
     costs: {
-      dien: Number(row.dien) || 0,
-      nuoc: Number(row.nuoc) || 0,
-      phiQuanLy: Number(row.phiquanly) || 0,
-      phiGiuXe: Number(row.phigiuxe) || 0,
+      dien: parseCost(row.dien),
+      nuoc: parseCost(row.nuoc),
+      phiQuanLy: parseCost(row.phiquanly),
+      phiGiuXe: parseCost(row.phigiuxe),
     },
     description: row.tienich || "",
-    status: row.trangthai || "",
+    status: mapStatus(row.trangthai),
     slug: row.slug || "",
   };
+}
+
+/**
+ * Parse tiếng Việt "Có"/"Không" → boolean.
+ * "Có", "Riêng", "Bãi để xe" → true
+ * "Không", "" → false
+ */
+function parseBool(value) {
+  if (!value) return false;
+  const v = String(value).trim().toLowerCase();
+  return v === "có" || v === "riêng" || v === "bãi để xe";
+}
+
+/**
+ * Parse chi phí dạng "3.800đ/kWh" → number (3800).
+ * Bỏ dấu chấm, ký tự không phải số, giữ lại số nguyên.
+ */
+function parseCost(value) {
+  if (!value) return 0;
+  // Xoá dấu chấm (phân cách hàng nghìn), giữ lại số
+  const cleaned = String(value).replace(/\./g, "").replace(/[^0-9]/g, "");
+  return Number(cleaned) || 0;
+}
+
+/**
+ * Map TrangThai tiếng Việt → English.
+ */
+function mapStatus(status) {
+  const map = {
+    "trống": "ACTIVE",
+    "đã thuê": "RENTED",
+    "ẩn": "HIDDEN",
+  };
+  return map[String(status).toLowerCase().trim()] || String(status);
 }

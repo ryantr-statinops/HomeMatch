@@ -1,4 +1,4 @@
-# Sheet Design V1
+# Sheet Design V3
 
 ## Purpose
 
@@ -6,7 +6,9 @@
 
 Google Sheet là Source of Truth của hệ thống.
 
-Mọi API và AppSheet phải tuân thủ cấu trúc này.
+**File:** DATABASE_HomeMatch
+
+**URL:** `https://docs.google.com/spreadsheets/d/1UjDU0PIRIAoNx8f56WQ6v67yP7hJf5J5MdfS7y95rCw/edit`
 
 ---
 
@@ -16,47 +18,46 @@ Mọi API và AppSheet phải tuân thủ cấu trúc này.
 
 Lưu thông tin phòng trọ.
 
+Quản lý bởi: AppSheet + Website (đọc)
+
 ## Columns
 
-| Column | Type | Required |
-|----------|----------|----------|
-| IDPhong | string | Yes |
-| HinhAnhChinh | string | Yes |
-| SoNha | string | Yes |
-| Duong | string | Yes |
-| Phuong | string | Yes |
-| KhuVuc | string | Yes |
-| Gia | number | Yes |
-| DienTich | number | No |
-| HopDong | string | No |
-| MayLanh | boolean | No |
-| KeBep | boolean | No |
-| Gac | boolean | No |
-| TuLanh | boolean | No |
-| NhaVS | boolean | No |
-| CuaSo | boolean | No |
-| DeXe | boolean | No |
-| ThuCung | boolean | No |
-| XeDien | boolean | No |
-| GioGiac | string | No |
-| MayGiat | boolean | No |
-| Dien | number | No |
-| Nuoc | number | No |
-| PhiQuanLy | number | No |
-| PhiGiuXe | number | No |
-| TienIch | string | No |
-| TrangThai | string | Yes |
-| Slug | string | Yes |
-
----
-
-## TrangThai
-
-ACTIVE
-
-RENTED
-
-HIDDEN
+| Column | Type | Required | Ghi chú |
+|--------|:----:|:--------:|---------|
+| IDPhong | string | Yes | PK, do AppSheet sinh |
+| HinhAnhChinh | string | Yes | URL ảnh đại diện |
+| SoNha | string | Yes | |
+| Duong | string | Yes | |
+| Phuong | string | Yes | |
+| KhuVuc | string | Yes | VD: "Quận 7", "Thủ Đức" |
+| HopDong | string | No | "6-12 tháng" |
+| Gia | number | Yes | Giá thuê (VD: 7000000) |
+| MayLanh | string | No | "Có" / "Không" |
+| KeBep | string | No | "Có" / "Không" |
+| Gac | string | No | "Có" / "Không" |
+| TuLanh | string | No | "Có" / "Không" |
+| NhaVS | string | No | "Riêng" / "Chung" / "Không" |
+| CuaSo | string | No | "Có" / "Không" |
+| BanCong | string | No | "Có" / "Không" |
+| DeXe | string | No | "Bãi để xe" |
+| ThuCung | string | No | "Có" / "Không" |
+| XeDien | string | No | "Có" / "Không" |
+| GioGiac | string | No | "Tự do" |
+| MayGiat | string | No | "Có" / "Không" / "Riêng" |
+| ThangMay | string | No | "Có" / "Không" |
+| Lau | string | No | VD: "Lầu 6" |
+| Dien | string | No | VD: "3.800đ/kWh" |
+| Nuoc | string | No | VD: "25.000đ/m3" |
+| PhiQuanLy | string | No | VD: "130.000đ/phòng" |
+| PhiGiuXe | string | No | VD: "100.000đ/xe" |
+| TienIch | string | No | Mô tả tiện ích |
+| TrangThai | string | Yes | "Trống" / "Đã thuê" / "Ẩn" |
+| HoaHong | string | No | VD: "40-70%" |
+| GhiChu | string | No | Ghi chú nội bộ |
+| IDChuNha | string | No | Link Zalo/Nhóm chủ nhà |
+| Slug | string | No | URL SEO (có thể trống) |
+| NgayTao | datetime | No | AppSheet tự ghi |
+| NgayCapNhat | datetime | No | AppSheet tự ghi |
 
 ---
 
@@ -68,57 +69,42 @@ Lưu danh sách ảnh của phòng.
 
 ## Columns
 
-| Column | Type |
-|----------|----------|
-| IDAnh | string |
-| IDPhong | string |
-| HinhAnh | string |
-| SortOrder | number |
+| Column | Type | Required |
+|--------|:----:|:--------:|
+| IDAnh | string | Yes |
+| IDPhong | string | Yes |
+| HinhAnh | string | Yes |
+| SortOrder | number | No |
+| CreatedAt | datetime | No |
 
 ---
 
-# Sheet: ROOMMATE_POST
+# Sheet: ROOMMATE
 
 ## Description
 
 Nhu cầu ở ghép.
 
-Admin tạo thủ công.
+Admin tạo thủ công qua AppSheet.
 
 ## Columns
 
-| Column | Type |
-|----------|----------|
-| PostID | string |
-| RoomID | string |
-| PostType | string |
-| CustomerName | string |
-| CustomerPhone | string |
-| Gender | string |
-| School | string |
-| Budget | number |
-| Description | string |
-| Status | string |
-| ExpireAt | date |
-| CreatedAt | datetime |
-
----
-
-## PostType
-
-LOOKING_FOR_ROOMMATE
-
-NEED_ROOMMATE_FOR_ROOM
-
----
-
-## Status
-
-ACTIVE
-
-MATCHED
-
-EXPIRED
+| Column | Type | Required | Ghi chú |
+|--------|:----:|:--------:|---------|
+| IDBai | string | Yes | PK |
+| KieuBaiDang | string | Yes | LOOKING_FOR_ROOMMATE / NEED_ROOMMATE_FOR_ROOM |
+| IDPhong | string | Yes | FK -> PHONGTRO.IDPhong |
+| TenKhachHang | string | Yes | |
+| SDTKhach | string | Yes | |
+| SoNguoiCanTuyen | string | No | |
+| KhuVucMongMuon | string | No | |
+| GioiTinh | string | No | |
+| SchoolOrWork | string | No | |
+| TaiChinh | string | No | Ngân sách |
+| MoTaNhuCau | string | No | |
+| TrangThai | string | Yes | "Đang hiển thị" |
+| NgayTao | datetime | No | |
+| Thoihan | date | No | |
 
 ---
 
@@ -130,20 +116,11 @@ Tracking lead từ website.
 
 ## Columns
 
-| Column | Type |
-|----------|----------|
-| LeadID | string |
-| SourceType | string |
-| SourceID | string |
-| CreatedAt | datetime |
+| Column | Type | Required |
+|--------|:----:|:--------:|
+| LeadID | string | Yes |
 
----
-
-## SourceType
-
-ROOM
-
-ROOMMATE
+> Tab này do AppSheet quản lý. Cấu trúc chi tiết cần đối chiếu từ AppSheet.
 
 ---
 
@@ -155,12 +132,16 @@ Danh sách sale.
 
 ## Columns
 
-| Column | Type |
-|----------|----------|
-| IDSale | string |
-| HoTen | string |
-| SDT | string |
-| Email | string |
+| Column | Type | Required |
+|--------|:----:|:--------:|
+| IDSale | string | Yes |
+| HoTen | string | Yes |
+| ChucVu | string | No |
+| QLCTV | string | No |
+| STK | string | No |
+| NganHang | string | No |
+| SDT | string | Yes |
+| Email | string | No |
 
 ---
 
@@ -172,20 +153,18 @@ Quản lý lịch hẹn.
 
 ## Columns
 
-| Column | Type |
-|----------|----------|
-| ID | string |
-| IDPhong | string |
-| Khach | string |
-| SDTKhach | string |
-| SaleNhapKhach | string |
-| SaleDanKhach | string |
-| NgayHen | date |
-| KetQua | string |
-| LyDoHuy | string |
-| TienCocDaNhan | number |
-| NgayBoSungCoc | date |
-| NgayDonVao | date |
-| HopDong | string |
-| HoaHong | number |
-| Thuong | number |
+| Column | Type | Required |
+|--------|:----:|:--------:|
+| ID | string | Yes |
+
+> Tab này do AppSheet quản lý. Cấu trúc chi tiết cần đối chiếu từ AppSheet.
+
+---
+
+# Lịch sử thay đổi
+
+| Version | Ngày | Thay đổi |
+|---------|------|----------|
+| V1 | 2026-06-13 | Thiết kế ban đầu |
+| V2 | 2026-06-14 | Cập nhật sau code review |
+| V3 | 2026-06-16 | Đồng bộ với Google Sheet thật (DATABASE_HomeMatch) |

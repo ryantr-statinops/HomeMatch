@@ -7,7 +7,7 @@
  * Cách dùng:
  *   GET  ?action=getRooms&khuVuc=Q1&giaMax=3000000
  *   GET  ?action=getRoomDetail&id=ROOM001
- *   GET  ?action=getRoommatePosts&postType=HAVE_ROOM
+ *   GET  ?action=getRoommatePosts
  *   GET  ?action=getRoommatePostDetail&id=POST001
  *   POST ?action=createLead  (body: { sourceType, sourceId })
  */
@@ -15,7 +15,7 @@
 const SHEET_NAME = {
   PHONGTRO: "PHONGTRO",
   HINHANH: "HINHANH",
-  ROOMMATE_POST: "ROOMMATE_POST",
+  ROOMMATE: "ROOMMATE",
   LEAD: "LEAD",
 };
 
