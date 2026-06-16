@@ -23,9 +23,10 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 | Phase 1.10 — Project Cleanup | ✅ DONE | `624a64d` |
 | Phase 2A — Apps Script API Code | ✅ DONE | — |
 | Phase 2B — Frontend API Client | ✅ DONE | — |
-| Phase 3 — Room Listing | ✅ DONE | — |
 | Phase 2.5 — Docs Sync with Sheet | ✅ DONE | — |
-| **Phase 2A.5 — Apps Script Deploy** | ✅ **DONE (v3 Production)** | — |
+| Phase 2A.5 — Apps Script Deploy | ✅ DONE (v4) | — |
+| Phase 3 — Room Listing | ✅ DONE | — |
+| **Phase 3.5 — RoomCard Rebuild** | ✅ **DONE** | — |
 | Phase 4 — Room Detail | ⏳ PENDING | — |
 | Phase 5 — Roommate Listing | ⏳ PENDING | — |
 | Phase 6 — Roommate Detail | ⏳ PENDING | — |
@@ -47,6 +48,7 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 * Folder Structure: DONE
 * System Architecture: DONE
 * Project Rules: DONE
+* Setup Guide: ✅ **DONE** (docs/setup-guide.md)
 
 ---
 
@@ -66,67 +68,36 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 - Hero Section + About + How It Works + CTA
 - Brand colors: Blue-600 (#2563EB) + White
 
-## Phase 1.6 — Rebrand Royal Blue ✅
-- Brand colors: Royal Blue `#1E40AF` cho primary, accent
-- Fix `@theme inline` override bug (shadcn CSS vars đè lên `@theme`)
-- Fix Turbopack error: downgrade tailwindcss `v4.3.1` → `v4.0.7`
-
-## Phase 1.7 — Layout Architecture ✅
-- Chuyển Navbar + Footer từ `page.tsx` vào `layout.tsx`
-- Flex layout: `min-h-screen flex-col` + main `flex-1` (sticky footer)
-
-## Phase 1.8 — Navbar Redesign ✅
-- Nền: trắng → Royal Blue (`bg-primary`)
-- Nav links: trắng, tăng cỡ chữ (`text-sm` → `text-base`)
-- Nút Zalo: filled (`bg-white text-primary`)
-- Logo `.webp`, bo tròn, 35px
-
-## Phase 1.9 — UI Polish ✅
-- Xoá gradient Hero, decorative circles CTA, badge "Nền tảng..."
-- Màu: `--color-primary-light: #3b82f6`, `--color-accent: #1e40af`
-
-## Phase 1.10 — Project Cleanup ✅
-- Xoá 12 `.gitkeep`, xoá `public/icons/`, `public/images/`
-- Tạo `.env.example`, move `shadcn` → devDependencies
-- Fix docs (Next.js 15→16, ui-spec sections)
-- Fix code quality (Navbar <a> wrapping, Footer year, loading/not-found min-h-screen)
-- Extract steps → constants, create SectionTitle + ValueCard components
-
 ## Phase 2A — Apps Script API ✅
 - `apps-script/` folder: Code.js, sheets.js, rooms.js, roommates.js, leads.js, utils.js
-- Cập nhật docs (api-contracts V2, folder-structure)
-
-## Phase 2.5 — Docs & Code Sync with Google Sheet ✅
-- Đọc cấu trúc Google Sheet thật (DATABASE_HomeMatch) qua CSV + API
-- Cập nhật `docs/database_structure.md` → V3
-- Cập nhật `docs/sheet-design.md` → V3
-- Cập nhật `docs/diagrams/erd-v1.md` → V2
-- Cập nhật `docs/api-contracts.md` → V3
-- Đồng bộ `apps-script/rooms.js` (parseBool, parseCost, mapStatus)
-- Đồng bộ `apps-script/roommates.js` (mapPostType, parseBudget)
-- Fix `apps-script/Code.js` (SHEET_NAME: ROOMMATE_POST → ROOMMATE)
 
 ## Phase 2B — Frontend API Client ✅
 - `src/lib/api-client.ts` — Fetch wrapper với proxy server-side
 - `src/types/room.ts`, `src/types/roommate-post.ts` — TypeScript types
-- `src/constants/routes.ts` — Route constants
-- `src/services/room.service.ts` — 6 mock rooms + filter
-- `src/services/roommate.service.ts` — 3 mock posts
+- `src/services/room.service.ts`, `src/services/roommate.service.ts`
 - `src/app/api/proxy/route.ts` — API proxy server-side (tránh CORS)
 
 ## Phase 2A.5 — Apps Script Deploy ✅
-- **Deploy URL (Production v3):** `https://script.google.com/macros/s/AKfycbyMgfC3ncl0XXyxzx50-bm34_VLkyerpxTXLnOwOdJ2iV3mOvTY9sjo74f4ZZrvgYvg/exec`
-- Clasp push thành công (7 files)
-- Fix timezone: `America/New_York` → `Asia/Ho_Chi_Minh`
-- `.env.local` cập nhật với URL deploy mới
-- Cần set `SHEET_ID` trong Script Properties của Apps Script trên Google Cloud
+- Clasp deploy thành công (7 files)
+- Timezone: `Asia/Ho_Chi_Minh`
+- **Version 4** (Hotfix parseCost) — `AKfycbzYnZYiTCIaYYAjVEZsiG6tNAgbFhEfFyzvfAzhjHpHhrvrTrV9HJ8nUGZuMKBqZWJ3`
 
 ## Phase 3 — Room Listing ✅
-- `src/components/room/RoomCard.tsx` — Card (ảnh, giá, địa chỉ, diện tích)
-- `src/components/room/RoomFilter.tsx` — Blue card collapsed, filter panel expanded
-- `src/components/room/RoomList.tsx` — Client component (loading/filter/empty states)
-- `src/app/rooms/page.tsx` — Room listing page
-- UI Polish: bỏ search text, bỏ description header, icon lọc
+- `src/components/room/RoomCard.tsx`, `RoomFilter.tsx`, `RoomList.tsx`
+- `src/app/rooms/page.tsx`
+
+## Phase 3.5 — RoomCard Rebuild ✅
+- Badge: giá → địa chỉ (soNha + duong + phuong + khuVuc)
+- Bỏ diện tích (luôn = 0)
+- Thêm lầu, hợp đồng, giá điện, giá nước, trạng thái
+- 6 tiện ích: Máy lạnh, Tủ lạnh, Kệ bếp, Cửa sổ, Thang máy, Để xe
+
+## Phase 3.6 — Codebase Cleanup ✅
+- Xoá thư mục rỗng: `src/features/`, `src/hooks/`, `src/components/roommate/`
+- Types đồng bộ API: `banCong`, `thangMay`, `floor`, `needCount`, `desiredArea`
+- Xoá `autoprefixer` (ko cần Tailwind v4)
+- Fix `parseCost`: dùng `match(/^\d+/)` thay `replace(/[^0-9]/g, "")`
+- Tạo `docs/setup-guide.md`
 
 ---
 
@@ -136,13 +107,15 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 2. ✅ Phase 2B — Frontend API Client
 3. ✅ Phase 2.5 — Docs & Code Sync with Google Sheet
 4. ✅ Phase 3 — Room Listing
-5. ✅ **Phase 2A.5 — Apps Script Deploy (v3 Production)**
-6. **Phase 4 — Room Detail page** `/rooms/[slug]`
-7. Phase 5 — Roommate Listing page
-8. Phase 6 — Roommate Detail page
-9. Phase 8 — Zalo Contact integration
-10. Phase 9 — Deployment to Cloudflare Pages
-11. Phase 10 — Final Review
+5. ✅ Phase 2A.5 — Apps Script Deploy (v4)
+6. ✅ **Phase 3.5 — RoomCard Rebuild**
+7. ✅ **Phase 3.6 — Codebase Cleanup**
+8. **Phase 4 — Room Detail page** `/rooms/[slug]`
+9. Phase 5 — Roommate Listing page
+10. Phase 6 — Roommate Detail page
+11. Phase 8 — Zalo Contact integration
+12. Phase 9 — Deployment to Cloudflare Pages
+13. Phase 10 — Final Review
 
 ---
 
@@ -175,40 +148,27 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 | Item | Value |
 |------|-------|
 | Script Name | MatchHome API |
-| Latest Version | @3 |
-| Production Deploy ID | `AKfycbyMgfC3ncl0XXyxzx50-bm34_VLkyerpxTXLnOwOdJ2iV3mOvTY9sjo74f4ZZrvgYvg` |
-| Production URL | `https://script.google.com/macros/s/AKfycbyMgfC3ncl0XXyxzx50-bm34_VLkyerpxTXLnOwOdJ2iV3mOvTY9sjo74f4ZZrvgYvg/exec` |
-| Thư mục | `apps-script/` |
+| Latest Version | @4 (Hotfix parseCost) |
+| Web App URL | `https://script.google.com/macros/s/AKfycbzYnZYiTCIaYYAjVEZsiG6tNAgbFhEfFyzvfAzhjHpHhrvrTrV9HJ8nUGZuMKBqZWJ3/exec` |
 
-## Yêu cầu sau deploy
+## Yêu cầu
 
-Sau khi deploy, cần set `SHEET_ID` trong Script Properties của Apps Script:
-1. Mở [script](https://script.google.com/d/1-ohEkoebv5XqZE1O6pfehTqRpUOmw48zGvcLX1Q5RCDWzLm9Ub_pWe32/edit)
-2. File → Project properties → Script properties
-3. Thêm key `SHEET_ID` với value là ID của Google Sheet `DATABASE_HomeMatch`
+- SHEET_ID đã set trong Script Properties
+- Web App deploy từ editor với "Execute as: Me" và "Who has access: Anyone"
 
 ---
 
-# Files Created (This Session)
+# Files Created / Modified (Recent Sessions)
 
-## Phase 2A.5 — Apps Script Deploy
-- `task/current-session/session-007.md` — Session docs
-- `.env.local` — Updated deploy URL
-  
-## Phase 2B
-- `src/lib/api-client.ts`
-- `src/types/room.ts`
-- `src/types/roommate-post.ts`
-- `src/constants/routes.ts`
-- `src/services/room.service.ts`
-- `src/services/roommate.service.ts`
+## Session 007 — Apps Script Deploy
+- `task/current-session/session-007.md`
+- `apps-script/appsscript.json` — timezone fix
 
-## Phase 3
-- `src/components/room/RoomCard.tsx`
-- `src/components/room/RoomFilter.tsx`
-- `src/components/room/RoomList.tsx`
-- `src/app/rooms/page.tsx`
-
-## Shared
-- `src/components/shared/ValueCard.tsx`
-- `src/components/shared/EmptyState.tsx`
+## Session 008 — Cleanup + RoomCard + parseCost Fix
+- `task/current-session/session-008.md`
+- `apps-script/rooms.js` — parseCost fix
+- `src/components/room/RoomCard.tsx` — rebuild
+- `src/types/room.ts`, `src/types/roommate-post.ts` — update types
+- `package.json`, `postcss.config.mjs` — cleanup
+- `docs/setup-guide.md` — new setup guide
+- `.env.local` — update URL v4
