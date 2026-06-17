@@ -78,7 +78,7 @@ function handleGetRoomDetail(params) {
     .sort((a, b) => (Number(a.sortorder) || 0) - (Number(b.sortorder) || 0))
     .map((img) => ({
       id: img.idanh,
-      url: img.hinhanh,
+      url: resolveImageUrl(img.hinhanh),
       sortOrder: img.sortorder,
     }));
 
@@ -94,7 +94,7 @@ function handleGetRoomDetail(params) {
 function mapRoom(row) {
   return {
     id: row.idphong,
-    image: row.hinhanhchinh || "",
+    image: resolveImageUrl(row.hinhanhchinh),
     address: {
       soNha: row.sonha || "",
       duong: row.duong || "",
@@ -172,4 +172,76 @@ function mapStatus(status) {
     "ẩn": "HIDDEN",
   };
   return map[String(status).toLowerCase().trim()] || String(status);
+}
+
+/**
+ * Cache cho image URL mapping (chỉ đọc Sheet 1 lần).
+ */
+var _imageMap = null;
+var _imageUrlCache = {};
+
+/**
+ * Đọc tab IMAGE_MAP từ Sheet, build map filename → URL.
+ * Tab có 2 cột: FileName | ImageURL
+ * ImageURL là link dạng: https://drive.usercontent.google.com/download?id=...&export=view
+ *
+ * Chỉ đọc Sheet 1 lần, cache trong _imageMap.
+ *
+ * @returns {Object} map { filename: imageUrl }
+ */
+function buildImageMap() {
+  if (_imageMap !== null) return _imageMap;
+  _imageMap = {};
+  try {
+    var rows = readSheet("IMAGE_MAP");
+    for (var i = 0; i < rows.length; i++) {
+      var row = rows[i];
+      var fileName = row.filename || "";
+      var imageUrl = row.imageurl || "";
+      if (fileName && imageUrl) {
+        _imageMap[fileName.trim()] = imageUrl.trim();
+      }
+    }
+  } catch (e) {
+    console.warn("buildImageMap: Cannot read IMAGE_MAP sheet", e.message);
+  }
+  return _imageMap;
+}
+
+/**
+ * Resolve giá trị ảnh từ Sheet thành URL công khai.
+ *
+ * 1. Nếu đã là URL đầy đủ (http/https) → giữ nguyên.
+ * 2. Nếu là path AppSheet (VD: "PHONGTRO_Images/xxx.jpg") →
+ *    lấy tên file, tra trong IMAGE_MAP.
+ * 3. Nếu không tìm thấy → trả về giá trị gốc.
+ *
+ * @param {string} value - Giá trị từ Sheet (URL hoặc đường dẫn)
+ * @returns {string} URL ảnh
+ */
+function resolveImageUrl(value) {
+  if (!value) return "";
+  var str = String(value).trim();
+  if (!str) return "";
+
+  // Đã là URL đầy đủ → giữ nguyên
+  if (str.indexOf("http://") === 0 || str.indexOf("https://") === 0) return str;
+
+  // Cache hit
+  if (_imageUrlCache[str] !== undefined) return _imageUrlCache[str];
+
+  // Lấy tên file từ path (VD: "PHONGTRO_Images/xxx.jpg" → "xxx.jpg")
+  var fileName = str.indexOf("/") >= 0 ? str.split("/").pop() : str;
+
+  // Tra trong IMAGE_MAP (chỉ đọc Sheet 1 lần)
+  var map = buildImageMap();
+  var imageUrl = map[fileName];
+  if (imageUrl) {
+    _imageUrlCache[str] = imageUrl;
+    return imageUrl;
+  }
+
+  console.warn("resolveImageUrl: No mapping found for", fileName);
+  _imageUrlCache[str] = str;
+  return str;
 }

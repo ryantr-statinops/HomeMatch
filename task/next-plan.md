@@ -99,6 +99,21 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 - Fix `parseCost`: dùng `match(/^\d+/)` thay `replace(/[^0-9]/g, "")`
 - Tạo `docs/setup-guide.md`
 
+## Phase 3.7 — Image Resolution (Drive Image → Public URL) 🟡
+- **Vấn đề:** API trả về path AppSheet (`PHONGTRO_Images/xxx.jpg`) thay vì URL ảnh
+- **Thử DriveApp 3 lần:** getFilesByName, searchByFolder, folderId scan — đều fail do Drive OAuth scope
+- **Nguyên nhân:** Folder Drive không phải của user; DriveApp.getFolderById() không được authorize
+- **Giải pháp hiện tại:** `resolveImageUrl()` đọc từ tab `IMAGE_MAP` trong Sheet (filename → Drive URL)
+- **Chưa hoàn thành:** Cần tạo tab IMAGE_MAP + deploy version 14
+- **Hoặc:** Revoke OAuth → deploy lại → thử DriveApp lần cuối
+
+## Apps Script Versions (after cleanup)
+| Version | Description |
+|---------|-------------|
+| @14 | resolveImageUrl via IMAGE_MAP + cache (current) |
+
+> Tất cả deployments cũ đã xoá sạch bằng `clasp undeploy`
+
 ---
 
 # Current Priority
@@ -110,8 +125,9 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 5. ✅ Phase 2A.5 — Apps Script Deploy (v4)
 6. ✅ **Phase 3.5 — RoomCard Rebuild**
 7. ✅ **Phase 3.6 — Codebase Cleanup**
-8. **Phase 4 — Room Detail page** `/rooms/[slug]`
-9. Phase 5 — Roommate Listing page
+8. 🟡 **Phase 3.7 — Image Resolution** (fix Drive images)
+9. **Phase 4 — Room Detail page** `/rooms/[slug]`
+10. Phase 5 — Roommate Listing page
 10. Phase 6 — Roommate Detail page
 11. Phase 8 — Zalo Contact integration
 12. Phase 9 — Deployment to Cloudflare Pages
@@ -148,8 +164,8 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 | Item | Value |
 |------|-------|
 | Script Name | MatchHome API |
-| Latest Version | @4 (Hotfix parseCost) |
-| Web App URL | `https://script.google.com/macros/s/AKfycbzYnZYiTCIaYYAjVEZsiG6tNAgbFhEfFyzvfAzhjHpHhrvrTrV9HJ8nUGZuMKBqZWJ3/exec` |
+| Latest Version | @14 (resolveImageUrl via IMAGE_MAP) |
+| Web App URL | (pending deployment from editor) |
 
 ## Yêu cầu
 
@@ -172,3 +188,9 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 - `package.json`, `postcss.config.mjs` — cleanup
 - `docs/setup-guide.md` — new setup guide
 - `.env.local` — update URL v4
+
+## Session 009 — Image Resolution via IMAGE_MAP Sheet
+- `task/current-session/session-009.md`
+- `apps-script/rooms.js` — rewrite resolveImageUrl: IMAGE_MAP + cache
+- `apps-script/Code.js` — thêm IMAGE_MAP constant, xoá testDrive
+- `apps-script/appsscript.json` — xoá drive.readonly scope
