@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 import Container from "@/components/layout/Container";
 import RoomDetail from "@/components/room/RoomDetail";
-import { getRoomById } from "@/services/room.service";
+import { env } from "@/configs/env";
+import type { Room } from "@/types/room";
 import { routes } from "@/constants/routes";
 import Link from "next/link";
 import { Home, ChevronRight } from "lucide-react";
@@ -10,9 +11,25 @@ type RoomDetailPageProps = {
   params: Promise<{ id: string }>;
 };
 
+async function fetchRoomDetail(id: string): Promise<Room | null> {
+  if (!env.apiUrl) return null;
+  try {
+    const url = `${env.apiUrl}?action=getRoomDetail&id=${encodeURIComponent(id)}`;
+    const res = await fetch(url, {
+      next: { revalidate: 60 },
+      headers: { "Content-Type": "application/json" },
+    });
+    if (!res.ok) return null;
+    return res.json();
+  } catch (e) {
+    console.error("fetchRoomDetail error:", e);
+    return null;
+  }
+}
+
 export default async function RoomDetailPage({ params }: RoomDetailPageProps) {
   const { id } = await params;
-  const room = await getRoomById(id);
+  const room = await fetchRoomDetail(id);
 
   if (!room) {
     notFound();
