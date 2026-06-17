@@ -73,6 +73,7 @@ export default function RoomCard({ room }: RoomCardProps) {
           <img
             src={room.image}
             alt={`${room.address.duong}, ${room.address.khuVuc}`}
+            referrerPolicy="no-referrer"
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
         ) : (
