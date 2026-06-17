@@ -99,16 +99,16 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 - Fix `parseCost`: dùng `match(/^\d+/)` thay `replace(/[^0-9]/g, "")`
 - Tạo `docs/setup-guide.md`
 
-## Phase 3.7 — Image Resolution 🟡
+## Phase 3.7 — Image Resolution ✅
 - **Vấn đề:** API trả về path AppSheet (`PHONGTRO_Images/xxx.jpg`) thay vì URL ảnh
-- **Giải pháp (Session 010):** `resolveImageUrl()` dùng `DriveApp.getFolderById().getFilesByName()` để tìm file trong Drive folder public, trả về URL `drive.usercontent.google.com`
-- **Yêu cầu:** Revoke OAuth cũ → deploy lại → popup sẽ hỏi Drive scope
-- **Chưa deploy:** Code đã push lên Apps Script, cần deploy version 15
+- **Giải pháp (Session 010):** `resolveImageUrl()` dùng `DriveApp.getFolderById().getFilesByName()` để tìm file trong Drive folder public, trả về URL `drive.google.com/thumbnail`
+- **Frontend:** Thêm `referrerPolicy="no-referrer"` vào `<img>` để Drive cho phép hiển thị
+- **Kết quả:** Revoke OAuth → deploy lại với Drive scope → ảnh hiển thị thành công
 
 ## Apps Script Versions (after cleanup)
 | Version | Description |
 |---------|-------------|
-| @15 | resolveImageUrl via DriveApp + cache (current) |
+| @15 | resolveImageUrl via DriveApp + thumbnail URL + cache (current) |
 | @14 | resolveImageUrl via IMAGE_MAP (deprecated) |
 
 > Tất cả deployments cũ đã xoá sạch bằng `clasp undeploy`
@@ -124,7 +124,7 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 5. ✅ Phase 2A.5 — Apps Script Deploy (v4)
 6. ✅ **Phase 3.5 — RoomCard Rebuild**
 7. ✅ **Phase 3.6 — Codebase Cleanup**
-8. 🟡 **Phase 3.7 — Image Resolution** (fix Drive images)
+ 8. ✅ **Phase 3.7 — Image Resolution** (fix Drive images)
 9. **Phase 4 — Room Detail page** `/rooms/[slug]`
 10. Phase 5 — Roommate Listing page
 10. Phase 6 — Roommate Detail page
@@ -143,6 +143,8 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 - [ ] `src/components/room/RoomDetail.tsx` — Detail content component
 - [ ] `src/components/room/RoomGallery.tsx` — Image gallery (carousel/thumbnails)
 - [ ] `src/components/shared/ContactButton.tsx` — Zalo contact button
+
+**Lưu ý về ảnh cho Phase 4:** Giống Phase 3.7 — dùng DriveApp + thumbnail URL cho Gallery ảnh trong Room Detail. Hình ảnh phòng ở tab `HINHANH`, file ảnh trong cùng folder Drive `PHONGTRO_Images`. Code `resolveImageUrl()` đã dùng chung cho cả `hinhanhchinh` và gallery ảnh.
 
 **Trang Room Detail gồm:**
 - Breadcrumb: Trang chủ / Danh sách phòng / [Tên phòng]
@@ -163,8 +165,8 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 | Item | Value |
 |------|-------|
 | Script Name | MatchHome API |
-| Latest Version | @15 (resolveImageUrl via DriveApp) |
-| Web App URL | (pending deployment from editor) |
+| Latest Version | @15 (resolveImageUrl via DriveApp + thumbnail) |
+| Web App URL | (updated after deployment) |
 
 ## Yêu cầu
 
@@ -196,6 +198,7 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 
 ## Session 010 — DriveApp Image Resolution (Revoke OAuth + DriveApp)
 - `task/current-session/session-010.md`
-- `apps-script/rooms.js` — rewrite resolveImageUrl: DriveApp thay IMAGE_MAP + xoá buildImageMap
+- `apps-script/rooms.js` — rewrite resolveImageUrl: DriveApp thay IMAGE_MAP + thumbnail URL
 - `apps-script/Code.js` — xoá IMAGE_MAP khỏi SHEET_NAME
 - `apps-script/appsscript.json` — thêm drive.readonly scope
+- `src/components/room/RoomCard.tsx` — +referrerPolicy="no-referrer"

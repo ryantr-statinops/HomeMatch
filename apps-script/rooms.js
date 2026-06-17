@@ -214,7 +214,7 @@ function resolveImageUrl(value) {
     var files = folder.getFilesByName(fileName);
     if (files.hasNext()) {
       var fileId = files.next().getId();
-      var url = "https://drive.usercontent.google.com/download?id=" + fileId + "&export=view";
+      var url = "https://drive.google.com/thumbnail?id=" + fileId + "&sz=w1000";
       _imageUrlCache[str] = url;
       return url;
     }
