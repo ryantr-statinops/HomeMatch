@@ -105,6 +105,14 @@ Xây trang chi tiết phòng (`/rooms/[id]`) với carousel gallery, thông tin 
 - [x] Component RoomGallery (Embla)
 - [x] Component RoomDetail
 - [x] Page `/rooms/[id]`
-- [ ] Build + lint pass
-- [ ] Commit + push
-- [ ] Session documented
+- [x] Build + lint pass
+- [x] Commit + push
+- [x] Session documented
+
+---
+
+## Bugs Fixed During Session
+
+1. **404 page not found:** Server component fetch qua proxy bị timeout → chuyển sang gọi thẳng Apps Script API từ server
+2. **Gallery images empty (`images: []`):** `img.idphong === params.id` fail vì kiểu dữ liệu khác nhau (number vs string) → fix bằng `String(img.idphong) === String(params.id)`
+3. **Missing HINHANH_Images folder mapping:** `resolveImageUrl()` chỉ có folder mặc định PHONGTRO_Images → thêm mapping cho HINHANH_Images

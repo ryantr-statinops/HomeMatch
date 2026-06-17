@@ -74,7 +74,7 @@ function handleGetRoomDetail(params) {
   // Lấy danh sách hình ảnh của phòng
   const allImages = readSheet("HINHANH");
   const images = allImages
-    .filter((img) => img.idphong === params.id)
+    .filter((img) => String(img.idphong) === String(params?.id ?? ""))
     .sort((a, b) => (Number(a.sortorder) || 0) - (Number(b.sortorder) || 0))
     .map((img) => ({
       id: img.idanh,
@@ -193,7 +193,10 @@ var _imageUrlCache = {};
  * @param {string} value - Giá trị từ Sheet (URL hoặc đường dẫn)
  * @returns {string} URL ảnh
  */
-var IMAGE_FOLDER_ID = "1VIzgVkAuViOCMNdqVI1_7k8pjSHkVm2e";
+var IMAGE_FOLDERS = {
+  PHONGTRO_Images: "1VIzgVkAuViOCMNdqVI1_7k8pjSHkVm2e",
+  HINHANH_Images: "1KxwLP1D-8M71bIj1g-qtvyoOGXX49SIh",
+};
 
 function resolveImageUrl(value) {
   if (!value) return "";
@@ -206,11 +209,27 @@ function resolveImageUrl(value) {
   // Cache hit
   if (_imageUrlCache[str] !== undefined) return _imageUrlCache[str];
 
-  // Lấy tên file từ path (VD: "PHONGTRO_Images/xxx.jpg" → "xxx.jpg")
-  var fileName = str.indexOf("/") >= 0 ? str.split("/").pop() : str;
+  // Xác định folder ID dựa vào prefix path
+  // VD: "PHONGTRO_Images/xxx.jpg" → folder PHONGTRO_Images
+  //     "HINHANH_Images/yyy.jpg" → folder HINHANH_Images
+  var folderId = null;
+  for (var prefix in IMAGE_FOLDERS) {
+    if (str.indexOf(prefix + "/") === 0) {
+      folderId = IMAGE_FOLDERS[prefix];
+      break;
+    }
+  }
+
+  if (!folderId) {
+    _imageUrlCache[str] = str;
+    return str;
+  }
+
+  // Lấy tên file từ path
+  var fileName = str.split("/").pop();
 
   try {
-    var folder = DriveApp.getFolderById(IMAGE_FOLDER_ID);
+    var folder = DriveApp.getFolderById(folderId);
     var files = folder.getFilesByName(fileName);
     if (files.hasNext()) {
       var fileId = files.next().getId();

@@ -27,7 +27,7 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 | Phase 2A.5 — Apps Script Deploy | ✅ DONE (v4) | — |
 | Phase 3 — Room Listing | ✅ DONE | — |
 | **Phase 3.5 — RoomCard Rebuild** | ✅ **DONE** | — |
-| Phase 4 — Room Detail | ⏳ PENDING | — |
+| Phase 4 — Room Detail | ✅ DONE | `60431d3` |
 | Phase 5 — Roommate Listing | ⏳ PENDING | — |
 | Phase 6 — Roommate Detail | ⏳ PENDING | — |
 | Phase 8 — Zalo Contact | ⏳ PENDING | — |
@@ -125,43 +125,25 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 6. ✅ **Phase 3.5 — RoomCard Rebuild**
 7. ✅ **Phase 3.6 — Codebase Cleanup**
  8. ✅ **Phase 3.7 — Image Resolution** (fix Drive images)
- 9. **Phase 4 — Room Detail page** `/rooms/[id]`
-10. Phase 5 — Roommate Listing page
-10. Phase 6 — Roommate Detail page
-11. Phase 8 — Zalo Contact integration
-12. Phase 9 — Deployment to Cloudflare Pages
-13. Phase 10 — Final Review
+ 9. ✅ **Phase 4 — Room Detail page** `/rooms/[id]`
+10. **Phase 5 — Roommate Listing page**
+11. Phase 6 — Roommate Detail page
+12. Phase 8 — Zalo Contact integration
+13. Phase 9 — Deployment to Cloudflare Pages
+14. Phase 10 — Final Review
 
 ---
 
-# Next Session Plan — Phase 4: Room Detail
+# Next Session Plan — Phase 5: Roommate Listing
 
-**Mục tiêu:** Xây trang chi tiết phòng `/rooms/[id]`
+**Mục tiêu:** Xây trang danh sách bài ở ghép `/roommates` (filter + list)
 
 **Cần làm:**
-- [ ] `src/app/rooms/[id]/page.tsx` — Room detail page (server component)
-- [ ] `src/components/room/RoomDetail.tsx` — Detail content component
-- [ ] `src/components/room/RoomGallery.tsx` — Image gallery (carousel/thumbnails)
-- [ ] `src/components/shared/ContactButton.tsx` — Zalo contact button
-
-**Lưu ý về ảnh cho Phase 4:** Giống Phase 3.7 — dùng DriveApp + thumbnail URL cho Gallery ảnh trong Room Detail. Hình ảnh phòng ở tab `HINHANH`, file ảnh trong cùng folder Drive `PHONGTRO_Images`. Code `resolveImageUrl()` đã dùng chung cho cả `hinhanhchinh` và gallery ảnh.
-
-**Carousel:** Dùng thư viện `embla-carousel-react` (3KB, từng là core của shadcn/ui carousel). Cài: `npm install embla-carousel-react`
-
-**Bố cục trang:**
-- Breadcrumb: Trang chủ / Danh sách phòng / [Tên phòng]
-- Grid 2 cột: Carousel gallery (trái) + Thông tin chính (phải)
-  - Giá, địa chỉ, hợp đồng, lầu
-  - Điện, nước, trạng thái
-- Tiện ích (grid badges)
-- Chi phí khác (điện, nước, phí quản lý, giữ xe)
-- Mô tả phòng
-- Quy định (giờ giấc, thú cưng)
-- Nút "Liên hệ Zalo" (gọi API createLead)
-
-**Files cần tạo:**
-- `src/app/rooms/[id]/page.tsx` — Room detail page (server component, fetch data)
-- `src/components/room/RoomDetail.tsx` — Layout chính
+- [ ] Update `src/types/roommate-post.ts` — đồng bộ với API thực tế
+- [ ] `src/components/roommate/RoommateCard.tsx` — Card hiển thị bài ở ghép
+- [ ] `src/components/roommate/RoommateFilter.tsx` — Filter theo giới tính, khu vực
+- [ ] `src/components/roommate/RoommateList.tsx` — Client component list + filter
+- [ ] Update `src/app/roommates/page.tsx` — Tích hợp RoommateList
 - `src/components/room/RoomGallery.tsx` — Embla carousel gallery
 - `src/components/room/RoomInfo.tsx` — Thông tin chính (giá, địa chỉ, chi phí...)
 - `src/components/room/RoomAmenities.tsx` — Grid tiện ích
@@ -216,3 +198,13 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 - `apps-script/Code.js` — xoá IMAGE_MAP khỏi SHEET_NAME
 - `apps-script/appsscript.json` — thêm drive.readonly scope
 - `src/components/room/RoomCard.tsx` — +referrerPolicy="no-referrer"
+
+## Session 011 — Phase 4: Room Detail Page
+- `task/current-session/session-011.md`
+- `src/app/rooms/[id]/page.tsx` — server component + zalo button
+- `src/components/room/RoomDetail.tsx` — layout chính + ảnh chính fallback
+- `src/components/room/RoomGallery.tsx` — Embla carousel + thumbnail dots
+- `src/components/room/RoomInfo.tsx` — giá, địa chỉ, chi phí, quy định
+- `src/components/room/RoomAmenities.tsx` — grid 12 tiện ích
+- `src/components/shared/ContactButton.tsx` — shared Zalo button
+- `apps-script/rooms.js` — fix filter type (number vs string), thêm HINHANH_Images folder
