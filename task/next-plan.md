@@ -125,7 +125,7 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 6. ✅ **Phase 3.5 — RoomCard Rebuild**
 7. ✅ **Phase 3.6 — Codebase Cleanup**
  8. ✅ **Phase 3.7 — Image Resolution** (fix Drive images)
-9. **Phase 4 — Room Detail page** `/rooms/[slug]`
+ 9. **Phase 4 — Room Detail page** `/rooms/[id]`
 10. Phase 5 — Roommate Listing page
 10. Phase 6 — Roommate Detail page
 11. Phase 8 — Zalo Contact integration
@@ -136,10 +136,10 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 
 # Next Session Plan — Phase 4: Room Detail
 
-**Mục tiêu:** Xây trang chi tiết phòng `/rooms/[slug]`
+**Mục tiêu:** Xây trang chi tiết phòng `/rooms/[id]`
 
 **Cần làm:**
-- [ ] `src/app/rooms/[slug]/page.tsx` — Room detail page (server component)
+- [ ] `src/app/rooms/[id]/page.tsx` — Room detail page (server component)
 - [ ] `src/components/room/RoomDetail.tsx` — Detail content component
 - [ ] `src/components/room/RoomGallery.tsx` — Image gallery (carousel/thumbnails)
 - [ ] `src/components/shared/ContactButton.tsx` — Zalo contact button

@@ -132,7 +132,7 @@ Ví dụ:
 
 rooms
 
-rooms/[slug]
+rooms/[id]
 
 roommates
 

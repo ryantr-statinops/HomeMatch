@@ -109,7 +109,7 @@ src/app/
 
 ├── rooms/
 │   ├── page.tsx
-│   └── [slug]/
+│   └── [id]/
 │       └── page.tsx
 
 ├── roommates/
@@ -164,7 +164,7 @@ Nội dung:
 ## Room Detail
 
 ```text
-/rooms/[slug]
+/rooms/[id]
 ```
 
 Nội dung:
