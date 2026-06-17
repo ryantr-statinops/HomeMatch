@@ -27,3 +27,6 @@ npm-debug.log*
 
 #AI tool
 .cline
+
+# Windows reserved device names
+nul
