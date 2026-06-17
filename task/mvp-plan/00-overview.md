@@ -382,7 +382,7 @@ File:
 
 ---
 
-## Phase 5
+## Phase 5 (⏸️ ON HOLD)
 
 Roommate Listing
 
@@ -391,6 +391,9 @@ File:
 ```text
 05-roommate-list-page.md
 ```
+
+**Status:** Code ready (RoommateCard, Filter, List) — page giữ Coming Soon do chưa có data từ Sale.
+**Kích hoạt:** Khi sheet ROOMMATE có dữ liệu, đổi `/roommates/page.tsx` sang listing.
 
 ---
 

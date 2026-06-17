@@ -28,7 +28,7 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 | Phase 3 — Room Listing | ✅ DONE | — |
 | **Phase 3.5 — RoomCard Rebuild** | ✅ **DONE** | — |
 | Phase 4 — Room Detail | ✅ DONE | `60431d3` |
-| Phase 5 — Roommate Listing | ⏳ PENDING | — |
+| Phase 5 — Roommate Listing | ⏸️ ON HOLD (components ready, chưa có data, page giữ Coming Soon) | — |
 | Phase 6 — Roommate Detail | ⏳ PENDING | — |
 | Phase 8 — Zalo Contact | ⏳ PENDING | — |
 | Phase 9 — Deployment | ⏳ PENDING | — |
@@ -126,31 +126,25 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 7. ✅ **Phase 3.6 — Codebase Cleanup**
  8. ✅ **Phase 3.7 — Image Resolution** (fix Drive images)
  9. ✅ **Phase 4 — Room Detail page** `/rooms/[id]`
-10. **Phase 5 — Roommate Listing page**
-11. Phase 6 — Roommate Detail page
+10. ⏸️ **Phase 5 — Roommate Listing page** (code ready, hidden — chờ data)
+11. **Phase 6 — Roommate Detail page**
 12. Phase 8 — Zalo Contact integration
 13. Phase 9 — Deployment to Cloudflare Pages
 14. Phase 10 — Final Review
 
 ---
 
-# Next Session Plan — Phase 5: Roommate Listing
+# Next Session Plan — ⏸️ Tạm dừng Roommate Feature
 
-**Mục tiêu:** Xây trang danh sách bài ở ghép `/roommates` (filter + list)
+**Tình trạng:** Phase 5 code đã sẵn sàng (RoommateCard, RoommateFilter, RoommateList) nhưng `/roommates` vẫn hiển thị Coming Soon vì chưa có data từ Sale.
 
-**Cần làm:**
-- [ ] Update `src/types/roommate-post.ts` — đồng bộ với API thực tế
-- [ ] `src/components/roommate/RoommateCard.tsx` — Card hiển thị bài ở ghép
-- [ ] `src/components/roommate/RoommateFilter.tsx` — Filter theo giới tính, khu vực
-- [ ] `src/components/roommate/RoommateList.tsx` — Client component list + filter
-- [ ] Update `src/app/roommates/page.tsx` — Tích hợp RoommateList
-- `src/components/room/RoomGallery.tsx` — Embla carousel gallery
-- `src/components/room/RoomInfo.tsx` — Thông tin chính (giá, địa chỉ, chi phí...)
-- `src/components/room/RoomAmenities.tsx` — Grid tiện ích
-- `src/components/shared/ContactButton.tsx` — Nút Zalo
+**Chờ:**
+- [ ] Sale có bài đăng ở ghép → import vào sheet ROOMMATE
+- [ ] Kiểm tra API response thực tế
+- [ ] Kích hoạt: đổi `src/app/roommates/page.tsx` từ Coming Soon → RoommateList
 
-**Not in MVP (future):**
-- Related rooms (3 phòng cùng khu vực)
+**Trong lúc chờ:**
+- Chuyển sang các phase khác (Phase 9 — Deployment, Phase 1.5 — Homepage)
 
 ---
 
@@ -198,6 +192,13 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 - `apps-script/Code.js` — xoá IMAGE_MAP khỏi SHEET_NAME
 - `apps-script/appsscript.json` — thêm drive.readonly scope
 - `src/components/room/RoomCard.tsx` — +referrerPolicy="no-referrer"
+
+## Session 012 — Phase 5: Roommate Listing
+- `task/current-session/session-012.md`
+- `src/components/roommate/RoommateCard.tsx` — card với post type badge, customer info, budget, Zalo CTA
+- `src/components/roommate/RoommateFilter.tsx` — filter postType + gender + khuVuc
+- `src/components/roommate/RoommateList.tsx` — client component fetch + filter + grid
+- `src/app/roommates/page.tsx` — thay Coming Soon bằng listing thật
 
 ## Session 011 — Phase 4: Room Detail Page
 - `task/current-session/session-011.md`
