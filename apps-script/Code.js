@@ -17,7 +17,6 @@ const SHEET_NAME = {
   HINHANH: "HINHANH",
   ROOMMATE: "ROOMMATE",
   LEAD: "LEAD",
-  IMAGE_MAP: "IMAGE_MAP",
 };
 
 /**

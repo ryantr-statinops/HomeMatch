@@ -99,18 +99,17 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 - Fix `parseCost`: dùng `match(/^\d+/)` thay `replace(/[^0-9]/g, "")`
 - Tạo `docs/setup-guide.md`
 
-## Phase 3.7 — Image Resolution (Drive Image → Public URL) 🟡
+## Phase 3.7 — Image Resolution 🟡
 - **Vấn đề:** API trả về path AppSheet (`PHONGTRO_Images/xxx.jpg`) thay vì URL ảnh
-- **Thử DriveApp 3 lần:** getFilesByName, searchByFolder, folderId scan — đều fail do Drive OAuth scope
-- **Nguyên nhân:** Folder Drive không phải của user; DriveApp.getFolderById() không được authorize
-- **Giải pháp hiện tại:** `resolveImageUrl()` đọc từ tab `IMAGE_MAP` trong Sheet (filename → Drive URL)
-- **Chưa hoàn thành:** Cần tạo tab IMAGE_MAP + deploy version 14
-- **Hoặc:** Revoke OAuth → deploy lại → thử DriveApp lần cuối
+- **Giải pháp (Session 010):** `resolveImageUrl()` dùng `DriveApp.getFolderById().getFilesByName()` để tìm file trong Drive folder public, trả về URL `drive.usercontent.google.com`
+- **Yêu cầu:** Revoke OAuth cũ → deploy lại → popup sẽ hỏi Drive scope
+- **Chưa deploy:** Code đã push lên Apps Script, cần deploy version 15
 
 ## Apps Script Versions (after cleanup)
 | Version | Description |
 |---------|-------------|
-| @14 | resolveImageUrl via IMAGE_MAP + cache (current) |
+| @15 | resolveImageUrl via DriveApp + cache (current) |
+| @14 | resolveImageUrl via IMAGE_MAP (deprecated) |
 
 > Tất cả deployments cũ đã xoá sạch bằng `clasp undeploy`
 
@@ -164,7 +163,7 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 | Item | Value |
 |------|-------|
 | Script Name | MatchHome API |
-| Latest Version | @14 (resolveImageUrl via IMAGE_MAP) |
+| Latest Version | @15 (resolveImageUrl via DriveApp) |
 | Web App URL | (pending deployment from editor) |
 
 ## Yêu cầu
@@ -194,3 +193,9 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 - `apps-script/rooms.js` — rewrite resolveImageUrl: IMAGE_MAP + cache
 - `apps-script/Code.js` — thêm IMAGE_MAP constant, xoá testDrive
 - `apps-script/appsscript.json` — xoá drive.readonly scope
+
+## Session 010 — DriveApp Image Resolution (Revoke OAuth + DriveApp)
+- `task/current-session/session-010.md`
+- `apps-script/rooms.js` — rewrite resolveImageUrl: DriveApp thay IMAGE_MAP + xoá buildImageMap
+- `apps-script/Code.js` — xoá IMAGE_MAP khỏi SHEET_NAME
+- `apps-script/appsscript.json` — thêm drive.readonly scope

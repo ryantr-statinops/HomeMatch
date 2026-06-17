@@ -175,50 +175,26 @@ function mapStatus(status) {
 }
 
 /**
- * Cache cho image URL mapping (chỉ đọc Sheet 1 lần).
+ * Cache cho image URL (per-request).
+ * key: original path, value: resolved URL
  */
-var _imageMap = null;
 var _imageUrlCache = {};
 
 /**
- * Đọc tab IMAGE_MAP từ Sheet, build map filename → URL.
- * Tab có 2 cột: FileName | ImageURL
- * ImageURL là link dạng: https://drive.usercontent.google.com/download?id=...&export=view
- *
- * Chỉ đọc Sheet 1 lần, cache trong _imageMap.
- *
- * @returns {Object} map { filename: imageUrl }
- */
-function buildImageMap() {
-  if (_imageMap !== null) return _imageMap;
-  _imageMap = {};
-  try {
-    var rows = readSheet("IMAGE_MAP");
-    for (var i = 0; i < rows.length; i++) {
-      var row = rows[i];
-      var fileName = row.filename || "";
-      var imageUrl = row.imageurl || "";
-      if (fileName && imageUrl) {
-        _imageMap[fileName.trim()] = imageUrl.trim();
-      }
-    }
-  } catch (e) {
-    console.warn("buildImageMap: Cannot read IMAGE_MAP sheet", e.message);
-  }
-  return _imageMap;
-}
-
-/**
- * Resolve giá trị ảnh từ Sheet thành URL công khai.
+ * Resolve giá trị ảnh từ Sheet thành URL công khai qua DriveApp.
  *
  * 1. Nếu đã là URL đầy đủ (http/https) → giữ nguyên.
  * 2. Nếu là path AppSheet (VD: "PHONGTRO_Images/xxx.jpg") →
- *    lấy tên file, tra trong IMAGE_MAP.
+ *    lấy tên file, tìm trong Drive folder bằng DriveApp.
  * 3. Nếu không tìm thấy → trả về giá trị gốc.
+ *
+ * Cần OAuth scope: https://www.googleapis.com/auth/drive.readonly
  *
  * @param {string} value - Giá trị từ Sheet (URL hoặc đường dẫn)
  * @returns {string} URL ảnh
  */
+var IMAGE_FOLDER_ID = "1VIzgVkAuViOCMNdqVI1_7k8pjSHkVm2e";
+
 function resolveImageUrl(value) {
   if (!value) return "";
   var str = String(value).trim();
@@ -233,15 +209,20 @@ function resolveImageUrl(value) {
   // Lấy tên file từ path (VD: "PHONGTRO_Images/xxx.jpg" → "xxx.jpg")
   var fileName = str.indexOf("/") >= 0 ? str.split("/").pop() : str;
 
-  // Tra trong IMAGE_MAP (chỉ đọc Sheet 1 lần)
-  var map = buildImageMap();
-  var imageUrl = map[fileName];
-  if (imageUrl) {
-    _imageUrlCache[str] = imageUrl;
-    return imageUrl;
+  try {
+    var folder = DriveApp.getFolderById(IMAGE_FOLDER_ID);
+    var files = folder.getFilesByName(fileName);
+    if (files.hasNext()) {
+      var fileId = files.next().getId();
+      var url = "https://drive.usercontent.google.com/download?id=" + fileId + "&export=view";
+      _imageUrlCache[str] = url;
+      return url;
+    }
+  } catch (e) {
+    console.warn("resolveImageUrl: DriveApp error for", fileName, e.message);
   }
 
-  console.warn("resolveImageUrl: No mapping found for", fileName);
+  console.warn("resolveImageUrl: No file found for", fileName);
   _imageUrlCache[str] = str;
   return str;
 }
