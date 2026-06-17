@@ -1,4 +1,4 @@
-import type { Room } from "@/types/room";
+import type { Room, RoomImage } from "@/types/room";
 import RoomGallery from "@/components/room/RoomGallery";
 import RoomInfo from "@/components/room/RoomInfo";
 import RoomAmenities from "@/components/room/RoomAmenities";
@@ -9,12 +9,20 @@ type RoomDetailProps = {
 };
 
 export default function RoomDetail({ room }: RoomDetailProps) {
+  // Dùng ảnh chính làm ảnh đầu tiên nếu gallery rỗng
+  const galleryImages: RoomImage[] =
+    room.images && room.images.length > 0
+      ? room.images
+      : room.image
+        ? [{ id: "main", url: room.image, sortOrder: 0 }]
+        : [];
+
   return (
     <div className="space-y-8">
       {/* Gallery + Main Info */}
       <div className="grid gap-8 lg:grid-cols-5">
         <div className="lg:col-span-3">
-          <RoomGallery images={room.images || []} />
+          <RoomGallery images={galleryImages} />
         </div>
         <div className="lg:col-span-2">
           <RoomInfo room={room} />
