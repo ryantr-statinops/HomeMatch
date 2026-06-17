@@ -146,14 +146,28 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 
 **Lưu ý về ảnh cho Phase 4:** Giống Phase 3.7 — dùng DriveApp + thumbnail URL cho Gallery ảnh trong Room Detail. Hình ảnh phòng ở tab `HINHANH`, file ảnh trong cùng folder Drive `PHONGTRO_Images`. Code `resolveImageUrl()` đã dùng chung cho cả `hinhanhchinh` và gallery ảnh.
 
-**Trang Room Detail gồm:**
+**Carousel:** Dùng thư viện `embla-carousel-react` (3KB, từng là core của shadcn/ui carousel). Cài: `npm install embla-carousel-react`
+
+**Bố cục trang:**
 - Breadcrumb: Trang chủ / Danh sách phòng / [Tên phòng]
-- Image gallery (nhiều ảnh)
-- Thông tin: giá, địa chỉ, diện tích, hợp đồng
-- Tiện ích (grid checkboxes)
+- Grid 2 cột: Carousel gallery (trái) + Thông tin chính (phải)
+  - Giá, địa chỉ, hợp đồng, lầu
+  - Điện, nước, trạng thái
+- Tiện ích (grid badges)
 - Chi phí khác (điện, nước, phí quản lý, giữ xe)
 - Mô tả phòng
+- Quy định (giờ giấc, thú cưng)
 - Nút "Liên hệ Zalo" (gọi API createLead)
+
+**Files cần tạo:**
+- `src/app/rooms/[id]/page.tsx` — Room detail page (server component, fetch data)
+- `src/components/room/RoomDetail.tsx` — Layout chính
+- `src/components/room/RoomGallery.tsx` — Embla carousel gallery
+- `src/components/room/RoomInfo.tsx` — Thông tin chính (giá, địa chỉ, chi phí...)
+- `src/components/room/RoomAmenities.tsx` — Grid tiện ích
+- `src/components/shared/ContactButton.tsx` — Nút Zalo
+
+**Not in MVP (future):**
 - Related rooms (3 phòng cùng khu vực)
 
 ---

@@ -169,11 +169,16 @@ Nội dung:
 
 Nội dung:
 
-* Hình ảnh
+* Hình ảnh (carousel gallery)
 * Giá
-* Tiện ích
-* Địa chỉ
+* Địa chỉ, hợp đồng, lầu
+* Tiện ích (grid badges)
+* Chi phí khác (điện, nước, phí quản lý, giữ xe)
+* Mô tả phòng
+* Quy định (giờ giấc, thú cưng)
 * Nút Zalo
+
+> **Note:** Related rooms (cùng khu vực) sẽ phát triển sau MVP.
 
 ---
 
