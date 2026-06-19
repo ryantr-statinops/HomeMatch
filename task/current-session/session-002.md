@@ -14,7 +14,7 @@ SESSION-002
 
 ## Goal
 
-Xây dựng About Us Landing Page — giới thiệu startup Homematch, sứ mệnh, quy trình hoạt động và CTA liên hệ.
+Xây dựng About Us Landing Page — giới thiệu startup HomeMatch, sứ mệnh, quy trình hoạt động và CTA liên hệ.
 
 ---
 

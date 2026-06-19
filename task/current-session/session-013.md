@@ -90,7 +90,7 @@ Client Component -> /api/proxy -> Google Apps Script -> Google Sheets
 
 ### Apps Script Deploy
 - **v22** — CacheService: sheet reads + image URLs
-- **v23** — Rename MatchHome → Homematch trong Code.js
+- **v23** — Rename MatchHome → HomeMatch trong Code.js
 
 ### Kết quả so với mục tiêu
 

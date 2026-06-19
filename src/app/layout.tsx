@@ -9,7 +9,7 @@ import QueryProvider from "@/components/providers/QueryProvider";
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = {
-  title: "Homematch - Tìm phòng trọ & Tìm người ở ghép",
+  title: "HomeMatch - Tìm phòng trọ & Tìm người ở ghép",
   description:
     "Nền tảng tìm phòng trọ và tìm người ở ghép dành cho sinh viên. Liên hệ qua Zalo để được tư vấn miễn phí.",
 };

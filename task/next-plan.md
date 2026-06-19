@@ -167,7 +167,7 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 
 | Item | Value |
 |------|-------|
-| Script Name | Homematch API |
+| Script Name | HomeMatch API |
 | Latest Version | @22 (CacheService: sheet reads + image URLs) |
 | Web App URL | (updated after deployment) |
 

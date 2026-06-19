@@ -95,7 +95,7 @@ Các tài liệu liên quan:
 * **Next.js:** 16.2.9 | **React:** 19.2.7
 * **Tailwind CSS:** v4.3.1 | **TypeScript:** 6.0.3
 * **ESLint:** v9.39.4 (flat config)
-* Project gốc: D:\01_Workspace\04_Personal_Showcase\Homematch
+* Project gốc: D:\01_Workspace\04_Personal_Showcase\HomeMatch
 * Deploy target: Cloudflare Pages
 * Cần điền các env vars thực tế trước khi deploy
 

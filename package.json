@@ -1,7 +1,7 @@
 {
   "name": "homematch",
   "version": "1.0.0",
-  "description": "Nền tảng tìm phòng trọ và tìm người ở ghép - Homematch",
+  "description": "Nền tảng tìm phòng trọ và tìm người ở ghép - HomeMatch",
   "private": true,
   "scripts": {
     "dev": "next dev",

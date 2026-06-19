@@ -1,6 +1,6 @@
 # Hướng dẫn Setup & Cấu hình API
 
-> **Dự án:** Homematch — Nền tảng tìm phòng trọ và tìm người ở ghép
+> **Dự án:** HomeMatch — Nền tảng tìm phòng trọ và tìm người ở ghép
 
 ---
 
@@ -181,7 +181,7 @@ clasp list
 Kết quả mong đợi:
 ```
 Found 1 script.
-Homematch API - https://script.google.com/d/{SCRIPT_ID}/edit
+HomeMatch API - https://script.google.com/d/{SCRIPT_ID}/edit
 ```
 
 ### 5.4. Push code
@@ -205,7 +205,7 @@ clasp deploy -V {VERSION_NUMBER} -d "Mô tả deployment"
 
 Sau khi push code bằng clasp, vào **Google Script Editor** để deploy Web App:
 
-1. Mở script: [Homematch API](https://script.google.com/d/1-ohEkoebv5XqZE1O6pfehTqRpUOmw48zGvcLX1Q5RCDWzLm9Ub_pWe32/edit)
+1. Mở script: [HomeMatch API](https://script.google.com/d/1-ohEkoebv5XqZE1O6pfehTqRpUOmw48zGvcLX1Q5RCDWzLm9Ub_pWe32/edit)
 2. **Deploy → New deployment**
 3. Chọn **Web app**
 4. Cấu hình:
@@ -279,7 +279,7 @@ Khởi động dev server và truy cập:
 ## 7. Cấu trúc dự án
 
 ```
-Homematch/
+HomeMatch/
 ├── apps-script/          # Google Apps Script API
 │   ├── Code.js           #   Entry point (doGet/doPost)
 │   ├── appsscript.json   #   Manifest
