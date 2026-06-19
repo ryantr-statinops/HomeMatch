@@ -1,5 +1,3 @@
-export const runtime = "edge";
-
 import { notFound } from "next/navigation";
 import Container from "@/components/layout/Container";
 import RoomDetail from "@/components/room/RoomDetail";
