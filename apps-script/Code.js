@@ -1,5 +1,5 @@
 /**
- * MatchHome API — Google Apps Script
+ * Homematch API — Google Apps Script
  *
  * Entry point cho tất cả API endpoints.
  * Website gọi đến URL deploy + query parameters.

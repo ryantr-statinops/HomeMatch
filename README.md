@@ -1,4 +1,4 @@
-# MatchHome 🏠
+# Homematch 🏠
 
 Nền tảng tìm phòng trọ và tìm người ở ghép dành cho sinh viên.
 

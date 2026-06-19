@@ -53,7 +53,7 @@ Clasp version: 3.3.0 (đã login)
 
 | Item | Value |
 |------|-------|
-| Script Name | MatchHome API |
+| Script Name | Homematch API |
 | Latest Version | @3 |
 | Production Deploy ID | `AKfycbyMgfC3ncl0XXyxzx50-bm34_VLkyerpxTXLnOwOdJ2iV3mOvTY9sjo74f4ZZrvgYvg` |
 | Production Deploy URL | `https://script.google.com/macros/s/AKfycbyMgfC3ncl0XXyxzx50-bm34_VLkyerpxTXLnOwOdJ2iV3mOvTY9sjo74f4ZZrvgYvg/exec` |

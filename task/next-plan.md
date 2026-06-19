@@ -126,18 +126,24 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 7. ✅ **Phase 3.6 — Codebase Cleanup**
  8. ✅ **Phase 3.7 — Image Resolution** (fix Drive images)
  9. ✅ **Phase 4 — Room Detail page** `/rooms/[id]`
-10. ⏸️ **Phase 5 — Roommate Listing page** (code ready, hidden — chờ data)
-11. **Phase 6 — Roommate Detail page**
-12. Phase 8 — Zalo Contact integration
-13. Phase 9 — Deployment to Cloudflare Pages
-14. Phase 10 — Final Review
+10. ✅ **Performance Optimization** — React Query, proxy cache, client filter, Apps Script CacheService
+11. ⏸️ **Phase 5 — Roommate Listing page** (code ready, hidden — chờ data)
+12. **Phase 6 — Roommate Detail page**
+13. Phase 8 — Zalo Contact integration
+14. Phase 9 — Deployment to Cloudflare Pages
+15. Phase 10 — Final Review
 
-## Performance Optimization — ⏳ PENDING (Session 013)
-- [ ] **React Query (TanStack Query)** — cache + deduplicate cho RoomList
-- [ ] **Cache trên API proxy** — giảm thời gian response
-- [ ] **Tối ưu Apps Script** — CacheService, Drive cache
-- [ ] **Filter client-side** — giảm round-trip
-- [ ] **Xem chi tiết:** `task/current-session/session-013.md`
+## Performance Optimization — ✅ DONE (Session 013-014)
+#### Frontend
+- [x] **React Query (TanStack Query)** — cache + deduplicate cho RoomList
+- [x] **Cache trên API proxy** — in-memory cache TTL 60s
+- [x] **Filter client-side** — zero round-trip, filter instant
+- [x] **Fix duplicate fetch** — getDistinctAreas là pure function
+#### Apps Script
+- [x] **CacheService cho sheet reads** — cache 30s trong sheets.js
+- [x] **CacheService cho image URLs** — cache 1h trong rooms.js
+- [x] **Deploy v22** — `AKfycbx71Jk_tsW2q5TLY1PEGl__y2fFheaV0WLD4N0OKgKHqicwfj-Ef6q99gBSJ9lxCSM`
+- **Xem chi tiết:** `task/current-session/session-013.md`, `session-014.md`
 
 ---
 
@@ -161,8 +167,8 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 
 | Item | Value |
 |------|-------|
-| Script Name | MatchHome API |
-| Latest Version | @15 (resolveImageUrl via DriveApp + thumbnail) |
+| Script Name | Homematch API |
+| Latest Version | @22 (CacheService: sheet reads + image URLs) |
 | Web App URL | (updated after deployment) |
 
 ## Yêu cầu
@@ -216,3 +222,14 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 - `src/components/room/RoomAmenities.tsx` — grid 12 tiện ích
 - `src/components/shared/ContactButton.tsx` — shared Zalo button
 - `apps-script/rooms.js` — fix filter type (number vs string), thêm HINHANH_Images folder
+
+## Session 013-014 — Performance Optimization
+- `task/current-session/session-013.md`, `session-014.md`
+- `package.json` — +@tanstack/react-query
+- `src/components/providers/QueryProvider.tsx` — mới
+- `src/app/layout.tsx` — wrap QueryProvider
+- `src/app/api/proxy/route.ts` — in-memory cache TTL 60s
+- `src/components/room/RoomList.tsx` — React Query + client filter
+- `src/services/room.service.ts` — filterRooms(), getDistinctAreas pure
+- `apps-script/sheets.js` — CacheService 30s
+- `apps-script/rooms.js` — CacheService 1h cho image URLs
