@@ -175,10 +175,20 @@ function mapStatus(status) {
 }
 
 /**
- * Cache cho image URL (per-request).
+ * Cache cho image URL.
+ *
+ * Hai lớp:
+ * 1. _imageUrlCache — per-request (trong cùng 1 request)
+ * 2. CacheService — cross-request (giữa các request, TTL 1 giờ)
+ *
  * key: original path, value: resolved URL
  */
 var _imageUrlCache = {};
+var IMAGE_CACHE_TTL = 3600; // 1 giờ
+
+function getImageCacheService() {
+  return CacheService.getScriptCache();
+}
 
 /**
  * Resolve giá trị ảnh từ Sheet thành URL công khai qua DriveApp.
@@ -187,6 +197,8 @@ var _imageUrlCache = {};
  * 2. Nếu là path AppSheet (VD: "PHONGTRO_Images/xxx.jpg") →
  *    lấy tên file, tìm trong Drive folder bằng DriveApp.
  * 3. Nếu không tìm thấy → trả về giá trị gốc.
+ *
+ * Kết quả được cache qua CacheService (1 giờ) + _imageUrlCache (per-request).
  *
  * Cần OAuth scope: https://www.googleapis.com/auth/drive.readonly
  *
@@ -206,8 +218,17 @@ function resolveImageUrl(value) {
   // Đã là URL đầy đủ → giữ nguyên
   if (str.indexOf("http://") === 0 || str.indexOf("https://") === 0) return str;
 
-  // Cache hit
+  // Cache hit — per-request (nhanh nhất)
   if (_imageUrlCache[str] !== undefined) return _imageUrlCache[str];
+
+  // Cache hit — CacheService (cross-request)
+  var cache = getImageCacheService();
+  var cacheKey = "img_" + str;
+  var cachedUrl = cache.get(cacheKey);
+  if (cachedUrl) {
+    _imageUrlCache[str] = cachedUrl;
+    return cachedUrl;
+  }
 
   // Xác định folder ID dựa vào prefix path
   // VD: "PHONGTRO_Images/xxx.jpg" → folder PHONGTRO_Images
@@ -235,6 +256,7 @@ function resolveImageUrl(value) {
       var fileId = files.next().getId();
       var url = "https://drive.google.com/thumbnail?id=" + fileId + "&sz=w1000";
       _imageUrlCache[str] = url;
+      cache.put(cacheKey, url, IMAGE_CACHE_TTL);
       return url;
     }
   } catch (e) {

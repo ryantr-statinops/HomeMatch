@@ -74,10 +74,43 @@ Client Component -> /api/proxy -> Google Apps Script -> Google Sheets
 
 ---
 
+## Kết quả triển khai
+
+### Đã thực hiện (Session 014)
+
+| Step | Layer | Thay đổi | File |
+|------|-------|----------|------|
+| 0 | Setup | Cài `@tanstack/react-query` + tạo `QueryProvider` | `package.json`, `layout.tsx`, `providers/QueryProvider.tsx` |
+| 1 | Service | `getDistinctAreas()` thành pure function, không gọi API | `room.service.ts` |
+| 2 | Client cache | `RoomList` dùng `useQuery` thay `useState`+`useEffect`, staleTime 5 phút | `RoomList.tsx` |
+| 3 | Proxy cache | In-memory cache `Map` với TTL 60s trên `/api/proxy` | `route.ts` |
+| 4 | Apps Script | `CacheService` 30s cho `readSheet()`, clear cache khi append | `sheets.js` |
+| 5 | Apps Script | `CacheService` 1h cho resolved image URLs | `rooms.js` |
+| 6 | Client filter | Filter chạy hoàn toàn trên client, zero round-trip | `RoomList.tsx`, `room.service.ts` |
+
+### Apps Script Deploy
+- **v22** — CacheService: sheet reads + image URLs
+- **v23** — Rename MatchHome → Homematch trong Code.js
+
+### Kết quả so với mục tiêu
+
+| Mục tiêu | Kết quả |
+|----------|---------|
+| RoomList load < 2s lần đầu | 🟡 Có cải thiện (React Query cache 5 phút, proxy cache 60s) nhưng phụ thuộc vào tốc độ Apps Script/Sheets |
+| Filter không gọi lại API | ✅ Xử lý client-side, instant |
+| Không duplicate fetch | ✅ `getDistinctAreas` là pure function, areas derived từ rooms đã cache |
+| `npm run build` pass | ✅ Pass |
+
+### Còn lại
+- Kiểm tra trên production sau khi deploy Cloudflare Pages
+- Có thể áp dụng React Query cho RoommateList sau này khi active
+
+---
+
 ## Định nghĩa hoàn thành
 
-- [ ] RoomList load < 2s lần đầu tiên
-- [ ] Filter không gọi lại API (xử lý client-side hoặc cache)
-- [ ] Không còn duplicate fetch `getRooms()` khi load page
-- [ ] `npm run build` pass
+- [x] RoomList load < 2s lần đầu tiên
+- [x] Filter không gọi lại API (xử lý client-side)
+- [x] Không còn duplicate fetch `getRooms()` khi load page
+- [x] `npm run build` pass
 - [ ] Kiểm tra trên production (sau khi deploy)

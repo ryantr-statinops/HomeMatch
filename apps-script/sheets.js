@@ -3,14 +3,27 @@
  *
  * Sheet ID được lưu trong Script Properties để không hardcode.
  * Cách set: File → Project properties → Script properties → Thêm key "SHEET_ID"
+ *
+ * Cache: Dùng CacheService.getScriptCache() để cache kết quả readSheet()
+ * trong 30 giây, giảm số lần đọc sheet thực tế.
  */
+
+var SHEET_CACHE_TTL = 30;
+
+function getSheetCache() {
+  return CacheService.getScriptCache();
+}
+
+function getSheetCacheKey(sheetName) {
+  return "sheet_" + sheetName;
+}
 
 /**
  * Lấy Sheet ID từ Script Properties.
  * Nếu chưa set, trả về null và log warning.
  */
 function getSheetId() {
-  const id = PropertiesService.getScriptProperties().getProperty("SHEET_ID");
+  var id = PropertiesService.getScriptProperties().getProperty("SHEET_ID");
   if (!id) {
     console.warn("SHEET_ID chưa được set trong Script Properties.");
   }
@@ -23,9 +36,9 @@ function getSheetId() {
  * @returns {Sheet | null}
  */
 function openSheet(sheetName) {
-  const sheetId = getSheetId();
+  var sheetId = getSheetId();
   if (!sheetId) return null;
-  const ss = SpreadsheetApp.openById(sheetId);
+  var ss = SpreadsheetApp.openById(sheetId);
   return ss.getSheetByName(sheetName);
 }
 
@@ -33,28 +46,42 @@ function openSheet(sheetName) {
  * Đọc toàn bộ dữ liệu từ một sheet, trả về mảng objects.
  * Dòng đầu tiên được dùng làm header/key.
  *
+ * Kết quả được cache trong 30 giây qua CacheService.
+ *
  * @param {string} sheetName
  * @returns {Array<Object>}
  */
 function readSheet(sheetName) {
-  const sheet = openSheet(sheetName);
+  var cache = getSheetCache();
+  var cacheKey = getSheetCacheKey(sheetName);
+  var cached = cache.get(cacheKey);
+  if (cached) {
+    try {
+      return JSON.parse(cached);
+    } catch (e) {
+      // ignore parse error, read fresh
+    }
+  }
+
+  var sheet = openSheet(sheetName);
   if (!sheet) return [];
 
-  const rows = sheet.getDataRange().getValues();
+  var rows = sheet.getDataRange().getValues();
   if (rows.length < 2) return []; // Chỉ có header, không có data
 
-  const headers = rows[0].map(normalizeHeader);
-  const result = [];
+  var headers = rows[0].map(normalizeHeader);
+  var result = [];
 
-  for (let i = 1; i < rows.length; i++) {
-    const row = rows[i];
-    const obj = {};
-    headers.forEach((key, idx) => {
+  for (var i = 1; i < rows.length; i++) {
+    var row = rows[i];
+    var obj = {};
+    headers.forEach(function (key, idx) {
       obj[key] = row[idx];
     });
     result.push(obj);
   }
 
+  cache.put(cacheKey, JSON.stringify(result), SHEET_CACHE_TTL);
   return result;
 }
 
@@ -67,20 +94,20 @@ function readSheet(sheetName) {
  * @returns {Object | null}
  */
 function readRowByColumn(sheetName, columnName, value) {
-  const sheet = openSheet(sheetName);
+  var sheet = openSheet(sheetName);
   if (!sheet) return null;
 
-  const rows = sheet.getDataRange().getValues();
+  var rows = sheet.getDataRange().getValues();
   if (rows.length < 2) return null;
 
-  const headers = rows[0].map(normalizeHeader);
-  const colIndex = headers.indexOf(normalizeHeader(columnName));
+  var headers = rows[0].map(normalizeHeader);
+  var colIndex = headers.indexOf(normalizeHeader(columnName));
   if (colIndex === -1) return null;
 
-  for (let i = 1; i < rows.length; i++) {
+  for (var i = 1; i < rows.length; i++) {
     if (String(rows[i][colIndex]) === String(value)) {
-      const obj = {};
-      headers.forEach((key, idx) => {
+      var obj = {};
+      headers.forEach(function (key, idx) {
         obj[key] = rows[i][idx];
       });
       return obj;
@@ -91,18 +118,23 @@ function readRowByColumn(sheetName, columnName, value) {
 
 /**
  * Ghi một dòng mới vào cuối sheet.
+ * Sau khi ghi, xoá cache của sheet đó để lần đọc sau lấy data mới.
  *
  * @param {string} sheetName
  * @param {Object} data - Object với key trùng header
  * @returns {boolean}
  */
 function appendRow(sheetName, data) {
-  const sheet = openSheet(sheetName);
+  var sheet = openSheet(sheetName);
   if (!sheet) return false;
 
-  const headers = sheet.getDataRange().getValues()[0].map(normalizeHeader);
-  const newRow = headers.map((h) => data[h] ?? "");
+  var headers = sheet.getDataRange().getValues()[0].map(normalizeHeader);
+  var newRow = headers.map(function (h) { return data[h] ?? ""; });
   sheet.appendRow(newRow);
+
+  // Xoá cache để data mới được đọc lại
+  var cache = getSheetCache();
+  cache.remove(getSheetCacheKey(sheetName));
   return true;
 }
 
