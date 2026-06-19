@@ -4,6 +4,7 @@ import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import QueryProvider from "@/components/providers/QueryProvider";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -21,9 +22,11 @@ export default function RootLayout({
   return (
     <html lang="vi" className={cn("font-sans", geist.variable)}>
       <body className="flex min-h-screen flex-col">
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <QueryProvider>
+          <Navbar />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </QueryProvider>
       </body>
     </html>
   );

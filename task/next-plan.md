@@ -132,6 +132,13 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 13. Phase 9 — Deployment to Cloudflare Pages
 14. Phase 10 — Final Review
 
+## Performance Optimization — ⏳ PENDING (Session 013)
+- [ ] **React Query (TanStack Query)** — cache + deduplicate cho RoomList
+- [ ] **Cache trên API proxy** — giảm thời gian response
+- [ ] **Tối ưu Apps Script** — CacheService, Drive cache
+- [ ] **Filter client-side** — giảm round-trip
+- [ ] **Xem chi tiết:** `task/current-session/session-013.md`
+
 ---
 
 # Next Session Plan — ⏸️ Tạm dừng Roommate Feature

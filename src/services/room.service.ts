@@ -38,14 +38,48 @@ export async function getRoomById(id: string): Promise<Room | null> {
 }
 
 /**
- * Lấy danh sách khu vực có phòng (cho filter).
+ * Lấy danh sách khu vực từ dữ liệu rooms (cho filter).
+ * Pure function, không gọi API.
  */
-export async function getDistinctAreas(): Promise<string[]> {
+export function getDistinctAreas(rooms: Room[]): string[] {
   try {
-    const rooms = await getRooms();
     const areas = [...new Set(rooms.map((r) => r.address.khuVuc))];
     return areas.sort();
   } catch {
     return [];
   }
+}
+
+/**
+ * Lọc danh sách phòng trên client dựa vào filter params.
+ * Pure function, không gọi API.
+ */
+export function filterRooms(rooms: Room[], params?: RoomFilterParams): Room[] {
+  if (!params) return rooms;
+
+  return rooms.filter((room) => {
+    if (params.khuVuc) {
+      const kv = params.khuVuc.toLowerCase().trim();
+      if (!room.address.khuVuc.toLowerCase().includes(kv)) return false;
+    }
+
+    if (params.giaMin !== undefined && room.price < params.giaMin) return false;
+
+    if (params.giaMax !== undefined && room.price > params.giaMax) return false;
+
+    if (params.keyword) {
+      const kw = params.keyword.toLowerCase().trim();
+      const searchTarget = [
+        room.address.duong,
+        room.address.phuong,
+        room.address.khuVuc,
+        room.description,
+      ]
+        .join(" ")
+        .toLowerCase();
+      if (!searchTarget.includes(kw)) return false;
+    }
+
+    return true;
+  });
 }
