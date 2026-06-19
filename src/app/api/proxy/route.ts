@@ -6,7 +6,11 @@
  * không bị giới hạn CORS.
  *
  * Cache: In-memory cache với TTL 60s để giảm tải lên Apps Script.
+ *
+ * Runtime: edge (bắt buộc cho Cloudflare Pages)
  */
+
+export const runtime = "edge";
 
 import { NextRequest, NextResponse } from "next/server";
 
