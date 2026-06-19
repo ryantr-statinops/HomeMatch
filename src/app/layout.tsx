@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   title: "HomeMatch - Tìm phòng trọ & Tìm người ở ghép",
   description:
     "Nền tảng tìm phòng trọ và tìm người ở ghép dành cho sinh viên. Liên hệ qua Zalo để được tư vấn miễn phí.",
+  icons: {
+    icon: "/logo/logo.webp",
+  },
 };
 
 export default function RootLayout({
