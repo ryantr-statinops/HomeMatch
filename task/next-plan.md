@@ -255,8 +255,11 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 - `src/components/shared/CommitmentCard.tsx` — **mới**: card component
 - `src/app/page.tsx` — thêm section giữa How It Works và CTA
 
-## Session 018 — Bỏ số nhà khỏi địa chỉ phòng
-- `task/current-session/session-018.md` — bỏ soNha khỏi địa chỉ
-- `src/components/room/RoomCard.tsx` — xoá soNha khỏi address badge
-- `src/components/room/RoomInfo.tsx` — xoá soNha khỏi addressParts
-- `src/app/rooms/[id]/page.tsx` — xoá soNha khỏi breadcrumb title
+## Session 018 — Cập nhật Room Detail & Price Format
+- `task/current-session/session-018.md` — layout, price, gallery, địa chỉ
+- `src/app/rooms/[id]/page.tsx` — xoá soNha khỏi breadcrumb
+- `src/components/room/RoomCard.tsx` — bỏ soNha, bỏ font-bold giá, +object-left-top
+- `src/components/room/RoomDetail.tsx` — gom Amenities + Zalo CTA vào cột phải
+- `src/components/room/RoomGallery.tsx` — aspect 1/1, +object-left-top
+- `src/components/room/RoomInfo.tsx` — bỏ soNha, bỏ font-bold, format 7.000.000đ
+- `src/components/roommate/RoommateCard.tsx` — format budget 7.000.000đ
