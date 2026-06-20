@@ -4,4 +4,6 @@ export const site = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "",
   language: "vi",
   zaloUrl: process.env.NEXT_PUBLIC_ZALO_URL ?? "",
+  phone: "0344997897",
+  facebookUrl: "https://facebook.com/185ect",
 } as const;

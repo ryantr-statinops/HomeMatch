@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { MapPin, MessageCircle } from "lucide-react";
+import { MapPin, MessageCircle, Phone, ExternalLink } from "lucide-react";
 import Container from "@/components/layout/Container";
 import { site } from "@/configs/site";
 
@@ -63,6 +63,34 @@ export default function Footer() {
               <li className="flex items-center gap-2 text-sm text-accent-light">
                 <MapPin size={16} className="shrink-0 text-primary" />
                 <span>Khu vực TP. Hồ Chí Minh</span>
+              </li>
+              <li className="flex items-center gap-2 text-sm text-accent-light">
+                <Phone size={16} className="shrink-0 text-primary" />
+                {site.phone ? (
+                  <a href={`tel:${site.phone}`} className="transition-colors hover:text-primary">
+                    {site.phone}
+                  </a>
+                ) : (
+                  <span>Đang cập nhật</span>
+                )}
+              </li>
+              <li>
+                {site.facebookUrl ? (
+                  <a
+                    href={site.facebookUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-dark"
+                  >
+                    <ExternalLink size={16} />
+                    Fanpage Facebook
+                  </a>
+                ) : (
+                  <span className="inline-flex items-center gap-2 rounded-lg bg-gray-300 px-4 py-2 text-sm font-medium text-white">
+                    <ExternalLink size={16} />
+                    Đang cập nhật
+                  </span>
+                )}
               </li>
               <li>
                 <a
