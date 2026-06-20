@@ -79,8 +79,18 @@ Hiển thị:
 5 bước quy trình
 
 ---
+## Section 5 - Cam Kết
+CHÚNG TÔI CAM KẾT VÌ TRẢI NGHIỆM CỦA BẠN
+Sự hài lòng của khách hàng là tài sản lớn nhất của HomeMatch.
+Chúng tôi bảo vệ quyền lợi của bạn bằng những cam kết bằng văn bản:
+- Bình ổn giá thuê: Không tự ý tăng giá phòng trong suốt thời hạn hợp đồng.
+- Thông tin chính xác: Nói không với tin ảo, hình ảnh minh họa sai sự thật.
+- Thuận mua vừa bán: Hỗ trợ xem phòng miễn phí, không ép buộc, không thu phí ngầm khi xem phòng.
 
-## Section 5 - CTA
+
+---
+
+## Section 6 - CTA
 
 Liên hệ ngay qua Zalo
 

@@ -248,3 +248,9 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 - `next.config.ts` — xoá images.unoptimized
 - `src/app/api/proxy/route.ts` — xoá runtime = "edge"
 - `src/app/rooms/[id]/page.tsx` — xoá runtime = "edge"
+
+## Session 017 — Thêm section Cam Kết vào Homepage
+- `task/current-session/session-017.md` — thêm Section 5 "Cam Kết" vào trang chủ
+- `src/constants/commitments.ts` — **mới**: data 3 cam kết
+- `src/components/shared/CommitmentCard.tsx` — **mới**: card component
+- `src/app/page.tsx` — thêm section giữa How It Works và CTA
