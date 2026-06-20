@@ -71,7 +71,7 @@ export default function RoomCard({ room }: RoomCardProps) {
             src={room.image}
             alt={`${room.address.duong}, ${room.address.khuVuc}`}
             referrerPolicy="no-referrer"
-            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            className="h-full w-full object-cover object-left-top transition-transform duration-300 group-hover:scale-105"
           />
         ) : (
           <div className="flex h-full items-center justify-center text-accent-light">
@@ -95,7 +95,7 @@ export default function RoomCard({ room }: RoomCardProps) {
       <div className="space-y-3 p-4">
         {/* Price */}
         <div className="flex items-baseline gap-1">
-          <span className="text-xl font-bold text-primary">
+          <span className="text-xl text-primary">
             {formatPrice(room.price)}
           </span>
           <span className="text-xs text-accent-light">/tháng</span>

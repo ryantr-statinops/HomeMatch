@@ -18,24 +18,20 @@ export default function RoomDetail({ room }: RoomDetailProps) {
         : [];
 
   return (
-    <div className="space-y-8">
-      {/* Gallery + Main Info */}
-      <div className="grid gap-8 lg:grid-cols-5">
-        <div className="lg:col-span-3">
-          <RoomGallery images={galleryImages} />
-        </div>
-        <div className="lg:col-span-2">
-          <RoomInfo room={room} />
-        </div>
+    <div className="grid gap-8 lg:grid-cols-5">
+      {/* Gallery */}
+      <div className="lg:col-span-3">
+        <RoomGallery images={galleryImages} />
       </div>
 
-      {/* Amenities */}
-      <div className="border-t border-gray-100 pt-8">
-        <RoomAmenities amenities={room.amenities} />
-      </div>
+      {/* Info + Amenities + CTA */}
+      <div className="space-y-8 lg:col-span-2">
+        <RoomInfo room={room} />
 
-      {/* Zalo CTA */}
-      <div className="border-t border-gray-100 pt-8">
+        <div className="border-t border-gray-100 pt-8">
+          <RoomAmenities amenities={room.amenities} />
+        </div>
+
         <div className="rounded-xl bg-gradient-to-r from-blue-50 to-blue-100/50 p-6">
           <div className="mx-auto max-w-md text-center">
             <h3 className="text-lg font-bold text-primary">

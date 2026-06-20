@@ -34,7 +34,7 @@ export default function RoomInfo({ room }: RoomInfoProps) {
     <div className="space-y-6">
       {/* Price */}
       <div>
-        <span className="text-3xl font-bold text-primary">
+        <span className="text-3xl text-primary">
           {formatPrice(room.price)}
         </span>
         <span className="ml-1 text-base text-accent-light">/tháng</span>

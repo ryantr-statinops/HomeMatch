@@ -43,7 +43,7 @@ export default function RoomGallery({ images }: RoomGalleryProps) {
 
   if (!images || images.length === 0) {
     return (
-      <div className="flex aspect-[4/3] items-center justify-center rounded-xl bg-gray-100">
+      <div className="flex aspect-[1/1] items-center justify-center rounded-xl bg-gray-100">
         <ImageOff size={48} className="text-accent-light/50" />
       </div>
     );
@@ -60,12 +60,12 @@ export default function RoomGallery({ images }: RoomGalleryProps) {
                 key={img.id}
                 className="relative min-w-0 shrink-0 grow-0 basis-full"
               >
-                <div className="aspect-[4/3] bg-gray-100">
+                <div className="aspect-[1/1] bg-gray-100">
                   <img
                     src={img.url}
                     alt=""
                     referrerPolicy="no-referrer"
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-cover object-left-top"
                     onError={(e) => {
                       const target = e.currentTarget;
                       target.style.display = "none";
