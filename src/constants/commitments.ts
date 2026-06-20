@@ -18,7 +18,7 @@ export const commitments: Commitment[] = [
     icon: CheckCircle,
     title: "Thông tin chính xác",
     description:
-      "Nói không với tin ảo, hình ảnh minh họa sai sự thật.",
+      "Nói không với tin ảo, hình ảnh minh họa sai sự thật, cung cấp giá thuê chính xác.",
   },
   {
     icon: Handshake,
