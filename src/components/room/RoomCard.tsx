@@ -87,7 +87,6 @@ export default function RoomCard({ room }: RoomCardProps) {
           <div className="inline-flex items-center gap-1.5 rounded-lg bg-black/60 px-3 py-1.5 text-xs text-white shadow-lg backdrop-blur-sm">
             <MapPin size={12} className="shrink-0" />
             <span className="line-clamp-1 font-medium">
-              {room.address.soNha && `${room.address.soNha} `}
               {room.address.duong}, {room.address.phuong ? `${room.address.phuong}, ` : ""}
               {room.address.khuVuc}
             </span>

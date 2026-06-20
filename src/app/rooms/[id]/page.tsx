@@ -36,7 +36,6 @@ export default async function RoomDetailPage({ params }: RoomDetailPageProps) {
   }
 
   const addressParts = [
-    room.address.soNha,
     room.address.duong,
     room.address.phuong,
   ]

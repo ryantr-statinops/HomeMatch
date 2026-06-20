@@ -28,7 +28,6 @@ function formatCost(cost: number, unit: string): string {
 
 export default function RoomInfo({ room }: RoomInfoProps) {
   const addressParts = [
-    room.address.soNha,
     room.address.duong,
     room.address.phuong,
     room.address.khuVuc,
