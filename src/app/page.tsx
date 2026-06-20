@@ -5,6 +5,8 @@ import SectionTitle from "@/components/shared/SectionTitle";
 import ValueCard from "@/components/shared/ValueCard";
 import { site } from "@/configs/site";
 import { howItWorksSteps } from "@/constants/how-it-works";
+import { commitments } from "@/constants/commitments";
+import CommitmentCard from "@/components/shared/CommitmentCard";
 
 export default function Home() {
   return (
@@ -98,6 +100,32 @@ export default function Home() {
                   {step.description}
                 </p>
               </div>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* ===== Commitments Section ===== */}
+      <section className="bg-gradient-to-b from-white to-blue-50 py-16 md:py-24">
+        <Container>
+          <SectionTitle
+            title={
+              <>
+                CHÚNG TÔI CAM KẾT VÌ{" "}
+                <span className="text-primary">TRẢI NGHIỆM CỦA BẠN</span>
+              </>
+            }
+            description="Sự hài lòng của khách hàng là tài sản lớn nhất của HomeMatch. Chúng tôi bảo vệ quyền lợi của bạn bằng những cam kết bằng văn bản:"
+          />
+
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+            {commitments.map((item) => (
+              <CommitmentCard
+                key={item.title}
+                icon={item.icon}
+                title={item.title}
+                description={item.description}
+              />
             ))}
           </div>
         </Container>
