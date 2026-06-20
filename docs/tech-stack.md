@@ -40,15 +40,15 @@ Lucide Icons
 
 ## Frontend Hosting
 
-Cloudflare Pages
+Vercel
 
 ## CDN
 
-Cloudflare CDN
+Vercel Edge Network
 
 ## DNS
 
-Cloudflare DNS
+Vercel DNS (hoặc Cloudflare DNS nếu dùng custom domain)
 
 ---
 
@@ -127,7 +127,7 @@ Theo dõi:
 
 Frontend
 
-Cloudflare Pages
+Vercel
 
 API
 

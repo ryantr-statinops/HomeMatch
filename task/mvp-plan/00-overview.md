@@ -195,7 +195,7 @@ MVP được xem là thành công khi:
 
 ## Technical
 
-* Deploy thành công lên Cloudflare Pages
+* Deploy thành công lên Vercel
 * Kết nối được Google Sheet
 * Không cần database riêng
 
@@ -310,7 +310,7 @@ Frontend
 
 Hosting
 
-* Cloudflare Pages
+* Vercel
 
 API
 
@@ -433,15 +433,17 @@ File:
 
 ---
 
-## Phase 9
+## Phase 9 (🔧 CODE READY)
 
-Deployment
+Deployment lên Vercel
 
 File:
 
 ```text
 09-deployment.md
 ```
+
+**Status:** Code đã switch từ Cloudflare → Vercel (commit `a54ae9d`). Chờ deploy thực tế lên Vercel dashboard.
 
 ---
 

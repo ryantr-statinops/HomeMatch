@@ -26,12 +26,15 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 | Phase 2.5 — Docs Sync with Sheet | ✅ DONE | — |
 | Phase 2A.5 — Apps Script Deploy | ✅ DONE (v4) | — |
 | Phase 3 — Room Listing | ✅ DONE | — |
-| **Phase 3.5 — RoomCard Rebuild** | ✅ **DONE** | — |
+| Phase 3.5 — RoomCard Rebuild | ✅ **DONE** | — |
+| Phase 3.6 — Codebase Cleanup | ✅ DONE | `624a64d` |
+| Phase 3.7 — Image Resolution | ✅ DONE | — |
 | Phase 4 — Room Detail | ✅ DONE | `60431d3` |
 | Phase 5 — Roommate Listing | ⏸️ ON HOLD (components ready, chưa có data, page giữ Coming Soon) | — |
 | Phase 6 — Roommate Detail | ⏳ PENDING | — |
 | Phase 8 — Zalo Contact | ⏳ PENDING | — |
-| Phase 9 — Deployment | ⏳ PENDING | — |
+| Phase 9 — Deployment (Vercel) | 🔧 CODE READY (switched Cloudflare → Vercel, chờ deploy thực tế) | `a54ae9d` |
+| Phase 9.5 — Favicon & Rename | ✅ DONE | `24a47d2`, `a944898` |
 | Phase 10 — Final Review | ⏳ PENDING | — |
 
 ## Planning Docs
@@ -128,10 +131,11 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
  9. ✅ **Phase 4 — Room Detail page** `/rooms/[id]`
 10. ✅ **Performance Optimization** — React Query, proxy cache, client filter, Apps Script CacheService
 11. ⏸️ **Phase 5 — Roommate Listing page** (code ready, hidden — chờ data)
-12. **Phase 6 — Roommate Detail page**
-13. Phase 8 — Zalo Contact integration
-14. Phase 9 — Deployment to Cloudflare Pages
-15. Phase 10 — Final Review
+12. ⏳ **Phase 6 — Roommate Detail page**
+13. ⏳ Phase 8 — Zalo Contact integration
+14. 🔧 **Phase 9 — Deployment (Vercel)** — code switched from Cloudflare → Vercel (commit `a54ae9d`), chờ deploy thực tế lên Vercel
+15. ✅ **Phase 9.5 — Favicon & Rename** — favicon + rename Homematch → HomeMatch
+16. ⏳ Phase 10 — Final Review
 
 ## Performance Optimization — ✅ DONE (Session 013-014)
 #### Frontend
@@ -233,3 +237,14 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 - `src/services/room.service.ts` — filterRooms(), getDistinctAreas pure
 - `apps-script/sheets.js` — CacheService 30s
 - `apps-script/rooms.js` — CacheService 1h cho image URLs
+
+## Session 015 — Kế hoạch Deployment Cloudflare Pages
+- `task/current-session/session-015.md` — kế hoạch deploy lên Cloudflare Pages (không triển khai)
+
+## Session 016 — Switch sang Vercel Deployment
+- `task/current-session/session-016.md` — chuyển từ Cloudflare → Vercel deploy
+- `package.json` — xoá @cloudflare/next-on-pages, wrangler; upgrade Next.js 16
+- `wrangler.toml` — deleted
+- `next.config.ts` — xoá images.unoptimized
+- `src/app/api/proxy/route.ts` — xoá runtime = "edge"
+- `src/app/rooms/[id]/page.tsx` — xoá runtime = "edge"
