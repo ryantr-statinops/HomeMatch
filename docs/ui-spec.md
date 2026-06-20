@@ -84,7 +84,7 @@ CHÚNG TÔI CAM KẾT VÌ TRẢI NGHIỆM CỦA BẠN
 Sự hài lòng của khách hàng là tài sản lớn nhất của HomeMatch.
 Chúng tôi bảo vệ quyền lợi của bạn bằng những cam kết bằng văn bản:
 - Bình ổn giá thuê: Không tự ý tăng giá phòng trong suốt thời hạn hợp đồng.
-- Thông tin chính xác: Nói không với tin ảo, hình ảnh minh họa sai sự thật.
+- Thông tin chính xác: nói không với tin ảo, hình ảnh minh họa sai sự thật, cung cấp giá thuê chính xác.
 - Thuận mua vừa bán: Hỗ trợ xem phòng miễn phí, không ép buộc, không thu phí ngầm khi xem phòng.
 
 

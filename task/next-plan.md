@@ -254,3 +254,9 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 - `src/constants/commitments.ts` — **mới**: data 3 cam kết
 - `src/components/shared/CommitmentCard.tsx` — **mới**: card component
 - `src/app/page.tsx` — thêm section giữa How It Works và CTA
+
+## Session 018 — Bỏ số nhà khỏi địa chỉ phòng
+- `task/current-session/session-018.md` — bỏ soNha khỏi địa chỉ
+- `src/components/room/RoomCard.tsx` — xoá soNha khỏi address badge
+- `src/components/room/RoomInfo.tsx` — xoá soNha khỏi addressParts
+- `src/app/rooms/[id]/page.tsx` — xoá soNha khỏi breadcrumb title
