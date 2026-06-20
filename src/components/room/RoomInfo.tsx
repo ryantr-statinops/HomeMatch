@@ -15,9 +15,6 @@ type RoomInfoProps = {
 };
 
 function formatPrice(price: number): string {
-  if (price >= 1_000_000) {
-    return `${(price / 1_000_000).toFixed(price % 1_000_000 === 0 ? 0 : 1)} triệu`;
-  }
   return price.toLocaleString("vi-VN") + "đ";
 }
 

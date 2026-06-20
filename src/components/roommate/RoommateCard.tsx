@@ -49,9 +49,6 @@ function getPostTypeConfig(postType: string): PostTypeConfig {
 }
 
 function formatBudget(budget: number): string {
-  if (budget >= 1_000_000) {
-    return `${(budget / 1_000_000).toFixed(budget % 1_000_000 === 0 ? 0 : 1)} triệu`;
-  }
   return budget.toLocaleString("vi-VN") + "đ";
 }
 
