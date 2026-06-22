@@ -71,7 +71,7 @@ export default function RoomCard({ room }: RoomCardProps) {
             src={room.image}
             alt={`${room.address.duong}, ${room.address.khuVuc}`}
             referrerPolicy="no-referrer"
-            className="h-full w-full object-cover object-left-top transition-transform duration-300 group-hover:scale-105"
+            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
         ) : (
           <div className="flex h-full items-center justify-center text-accent-light">

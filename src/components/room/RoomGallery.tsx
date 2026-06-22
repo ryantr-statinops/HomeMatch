@@ -3,7 +3,8 @@
 import { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import type { RoomImage } from "@/types/room";
-import { ChevronLeft, ChevronRight, ImageOff } from "lucide-react";
+import { ChevronLeft, ChevronRight, ImageOff, Maximize2 } from "lucide-react";
+import ImageViewer from "@/components/room/ImageViewer";
 
 type RoomGalleryProps = {
   images: RoomImage[];
@@ -13,6 +14,8 @@ export default function RoomGallery({ images }: RoomGalleryProps) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
+  const [viewerOpen, setViewerOpen] = useState(false);
+  const [viewerIndex, setViewerIndex] = useState(0);
 
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
@@ -58,7 +61,11 @@ export default function RoomGallery({ images }: RoomGalleryProps) {
             {images.map((img) => (
               <div
                 key={img.id}
-                className="relative min-w-0 shrink-0 grow-0 basis-full"
+                className="relative min-w-0 shrink-0 grow-0 basis-full cursor-pointer"
+                onClick={() => {
+                  setViewerIndex(images.indexOf(img));
+                  setViewerOpen(true);
+                }}
               >
                 <div className="aspect-[1/1] bg-gray-100">
                   <img
@@ -107,6 +114,18 @@ export default function RoomGallery({ images }: RoomGalleryProps) {
             </button>
           </>
         )}
+
+        {/* Expand button */}
+        <button
+          onClick={() => {
+            setViewerIndex(selectedIndex);
+            setViewerOpen(true);
+          }}
+          className="absolute bottom-3 right-3 rounded-full bg-black/50 p-1.5 text-white shadow-lg backdrop-blur-sm transition-all hover:bg-black/70"
+          aria-label="View fullscreen"
+        >
+          <Maximize2 size={16} />
+        </button>
       </div>
 
       {/* Dots */}
@@ -154,6 +173,13 @@ export default function RoomGallery({ images }: RoomGalleryProps) {
           ))}
         </div>
       )}
+
+      <ImageViewer
+        images={images}
+        initialIndex={viewerIndex}
+        open={viewerOpen}
+        onClose={() => setViewerOpen(false)}
+      />
     </div>
   );
 }
