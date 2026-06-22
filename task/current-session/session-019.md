@@ -37,6 +37,8 @@ Các tài liệu liên quan:
 5. Xoá lọc diện tích (không có data)
 6. Thay select giá bằng range slider 2 đầu (`@base-ui/react/slider`)
 7. Thu nhỏ kích thước bộ lọc
+8. Thêm bộ lọc tiện ích (amenities) với shadcn-style dialog
+9. Fix chiều ngang amenities dialog bằng với select khu vực
 
 ---
 
@@ -62,7 +64,13 @@ Các tài liệu liên quan:
    - Thay select giá bằng range slider (0đ → 10tr, bước 500k) dùng `@base-ui/react/slider`
    - Thu nhỏ padding, font size, icon
    - Thay native select arrow bằng custom ChevronDown icon
-   - Fix hiệu ứng arrow select: chuyển `onClick` → `onMouseDown` + swap icon ChevronDown/ChevronUp thay vì rotate-180
+   - Fix hiệu ứng arrow select: `onClick` → `onMouseDown` + swap icon thay vì rotate-180
+   - Thêm amenities filter: button trigger "Tiện ích (X)" mở Dialog grid 2/3 cột
+   - Amenities dialog nằm cùng hàng grid với select khu vực
+   - Nút "Xoá tất cả" trong dialog amenities
+5. **src/components/ui/dialog.tsx** (mới) — shadcn-style Dialog wrapper dùng `@base-ui/react/dialog`
+6. **src/types/room.ts** — Thêm `amenities` vào `RoomFilterParams`
+7. **src/services/room.service.ts** — Thêm logic lọc amenities (`every`)
 
 ---
 
@@ -73,6 +81,7 @@ Các tài liệu liên quan:
 - `aspect-[1/1]` trên Gallery phù hợp với `object-left-top` nên giữ nguyên
 - `@base-ui/react/dialog` import dạng `import { Dialog }` (namespace export, không dùng `* as`)
 - `@base-ui/react` Slider dùng `Slider.Root` với 2 `Slider.Thumb` cho range slider
+- Amenities dùng `Set<keyof RoomAmenities>` để toggle, filter dùng `every` để đảm bảo phòng có tất cả
 
 ---
 

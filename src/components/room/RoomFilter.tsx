@@ -195,6 +195,60 @@ export default function RoomFilter({ areas, onFilter }: RoomFilterProps) {
                   <ChevronDown size={14} className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-white/60 transition-all" />
                 )}
               </div>
+
+              {/* Amenities */}
+              <Dialog>
+                <DialogTrigger className="w-full">
+                  <div className="flex w-full items-center justify-between rounded-lg border border-white/20 bg-white/10 px-2.5 py-2 text-xs text-white backdrop-blur-sm transition-all hover:border-white/40">
+                    <span>
+                      Tiện ích{hasAmenityFilter ? ` (${selectedAmenities.size})` : ""}
+                    </span>
+                    <ChevronDown size={14} className="text-white/60" />
+                  </div>
+                </DialogTrigger>
+                <DialogPortal>
+                  <DialogBackdrop />
+                  <DialogContent className="max-h-[80vh] overflow-y-auto">
+                    <div className="flex items-center justify-between">
+                      <DialogTitle>
+                        Chọn tiện ích
+                      </DialogTitle>
+                      <DialogClose className="rounded-full p-1 text-accent-light transition-colors hover:bg-gray-100 hover:text-accent">
+                        <X size={16} />
+                      </DialogClose>
+                    </div>
+                    <div className="mt-4 grid grid-cols-2 gap-2 md:grid-cols-3">
+                      {AMENITIES.map((item) => {
+                        const active = selectedAmenities.has(item.key);
+                        return (
+                          <button
+                            key={item.key}
+                            onClick={() => toggleAmenity(item.key)}
+                            className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2.5 text-xs font-medium transition-all ${
+                              active
+                                ? "border-blue-600 bg-blue-600 text-white"
+                                : "border-gray-200 bg-white text-accent hover:border-gray-300 hover:bg-gray-50"
+                            }`}
+                          >
+                            <span className={active ? "" : "text-accent-light"}>{item.icon}</span>
+                            {item.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                    {hasAmenityFilter && (
+                      <div className="mt-3 flex justify-end">
+                        <button
+                          onClick={() => setSelectedAmenities(new Set())}
+                          className="text-xs font-semibold text-accent-light transition-colors hover:text-red-500"
+                        >
+                          Xoá tất cả
+                        </button>
+                      </div>
+                    )}
+                  </DialogContent>
+                </DialogPortal>
+              </Dialog>
             </div>
 
             {/* Price Range Slider */}
@@ -229,48 +283,6 @@ export default function RoomFilter({ areas, onFilter }: RoomFilterProps) {
                 <span>{formatPrice(PRICE_MAX)}</span>
               </div>
             </div>
-
-            {/* Amenities */}
-            <Dialog>
-              <DialogTrigger className="w-full">
-                <div className="flex w-full items-center justify-between rounded-lg border border-white/20 bg-white/10 px-2.5 py-2 text-xs text-white backdrop-blur-sm transition-all hover:border-white/40">
-                  <span>
-                    Tiện ích{hasAmenityFilter ? ` (${selectedAmenities.size})` : ""}
-                  </span>
-                  <ChevronDown size={14} className="text-white/60" />
-                </div>
-              </DialogTrigger>
-              <DialogPortal>
-                <DialogBackdrop />
-                <DialogContent className="max-h-[80vh] overflow-y-auto">
-                  <DialogClose className="absolute right-3 top-3 rounded-full p-1 text-accent-light transition-colors hover:bg-gray-100 hover:text-accent">
-                    <X size={16} />
-                  </DialogClose>
-                  <DialogTitle>
-                    Chọn tiện ích
-                  </DialogTitle>
-                  <div className="mt-4 grid grid-cols-2 gap-2 md:grid-cols-3">
-                    {AMENITIES.map((item) => {
-                      const active = selectedAmenities.has(item.key);
-                      return (
-                        <button
-                          key={item.key}
-                          onClick={() => toggleAmenity(item.key)}
-                          className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2.5 text-xs font-medium transition-all ${
-                            active
-                              ? "border-blue-600 bg-blue-600 text-white"
-                              : "border-gray-200 bg-white text-accent hover:border-gray-300 hover:bg-gray-50"
-                          }`}
-                        >
-                          <span className={active ? "" : "text-accent-light"}>{item.icon}</span>
-                          {item.label}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </DialogContent>
-              </DialogPortal>
-            </Dialog>
 
             {/* Apply + Clear buttons */}
             <div className="flex items-center justify-end gap-2">
