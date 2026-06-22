@@ -1,8 +1,19 @@
 "use client";
 
 import { useState } from "react";
+import { Slider } from "@base-ui/react";
 import { SlidersHorizontal, ChevronDown, ChevronUp } from "lucide-react";
 import type { RoomFilterParams } from "@/types/room";
+
+const PRICE_MIN = 0;
+const PRICE_MAX = 10_000_000;
+const PRICE_STEP = 500_000;
+
+function formatPrice(price: number): string {
+  if (price >= 1_000_000) return (price / 1_000_000).toFixed(0) + "tr";
+  if (price >= 1_000) return (price / 1_000).toFixed(0) + "k";
+  return price.toString();
+}
 
 type RoomFilterProps = {
   areas: string[];
@@ -12,26 +23,24 @@ type RoomFilterProps = {
 export default function RoomFilter({ areas, onFilter }: RoomFilterProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [khuVuc, setKhuVuc] = useState("");
-  const [giaMax, setGiaMax] = useState("");
-  const [dienTichMin, setDienTichMin] = useState("");
-  const hasFilters = khuVuc || giaMax || dienTichMin;
+  const [priceRange, setPriceRange] = useState<[number, number]>([PRICE_MIN, PRICE_MAX]);
+  const hasFilters = khuVuc || priceRange[0] > PRICE_MIN || priceRange[1] < PRICE_MAX;
 
   function applyFilters() {
     onFilter({
       khuVuc: khuVuc || undefined,
-      giaMax: giaMax ? Number(giaMax) : undefined,
-      dienTichMin: dienTichMin ? Number(dienTichMin) : undefined,
+      giaMin: priceRange[0] > PRICE_MIN ? priceRange[0] : undefined,
+      giaMax: priceRange[1] < PRICE_MAX ? priceRange[1] : undefined,
     });
   }
 
   function handleClear() {
     setKhuVuc("");
-    setGiaMax("");
-    setDienTichMin("");
+    setPriceRange([PRICE_MIN, PRICE_MAX]);
     onFilter({});
   }
 
-  const filterCount = [khuVuc, giaMax, dienTichMin].filter(Boolean).length;
+  const filterCount = [khuVuc, priceRange[0] > PRICE_MIN || priceRange[1] < PRICE_MAX].filter(Boolean).length;
 
   return (
     <div
@@ -42,52 +51,52 @@ export default function RoomFilter({ areas, onFilter }: RoomFilterProps) {
     >
       {/* Collapsed state — Blue card */}
       {!isOpen && (
-        <div className="flex items-center justify-between px-6 py-6 md:py-8">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/20 text-white">
-              <SlidersHorizontal size={20} />
+        <div className="flex items-center justify-between px-4 py-3">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/20 text-white">
+              <SlidersHorizontal size={15} />
             </div>
             <div>
-              <p className="text-base font-semibold text-white md:text-lg">
+              <p className="text-sm font-semibold text-white">
                 Tìm phòng trọ phù hợp
               </p>
               {hasFilters ? (
-                <p className="mt-0.5 text-sm text-blue-200">
+                <p className="mt-0.5 text-xs text-blue-200">
                   Đang lọc {filterCount} tiêu chí
                 </p>
               ) : (
-                <p className="mt-0.5 text-sm text-blue-200">
+                <p className="mt-0.5 text-xs text-blue-200">
                   Bấm để mở bộ lọc
                 </p>
               )}
             </div>
           </div>
-          <ChevronDown size={20} className="text-white/70" />
+          <ChevronDown size={16} className="text-white/70" />
         </div>
       )}
 
       {/* Expanded state — Filter panel */}
       {isOpen && (
-        <div className="px-6 py-6 md:py-8">
+        <div className="px-4 py-3">
           {/* Header */}
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <SlidersHorizontal size={18} className="text-white" />
-              <span className="text-base font-semibold text-white">Bộ lọc</span>
+            <div className="flex items-center gap-1.5">
+              <SlidersHorizontal size={15} className="text-white" />
+              <span className="text-sm font-semibold text-white">Bộ lọc</span>
               {filterCount > 0 && (
-                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white text-xs font-bold text-primary">
+                <span className="flex h-4 w-4 items-center justify-center rounded-full bg-white text-[10px] font-bold text-primary">
                   {filterCount}
                 </span>
               )}
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               {hasFilters && (
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     handleClear();
                   }}
-                  className="text-sm text-blue-200 transition-colors hover:text-white"
+                  className="text-xs text-blue-200 transition-colors hover:text-white"
                 >
                   Xoá tất cả
                 </button>
@@ -99,19 +108,19 @@ export default function RoomFilter({ areas, onFilter }: RoomFilterProps) {
                 }}
                 className="text-white/70 transition-colors hover:text-white"
               >
-                <ChevronUp size={20} />
+                <ChevronUp size={16} />
               </button>
             </div>
           </div>
 
           {/* Filter options */}
-          <div className="mt-5 space-y-4">
+          <div className="mt-3 space-y-4">
             {/* Filter selects */}
-            <div className="grid gap-3 sm:grid-cols-3">
+            <div className="grid gap-2 sm:grid-cols-2">
               <select
                 value={khuVuc}
                 onChange={(e) => setKhuVuc(e.target.value)}
-                className="w-full rounded-xl border border-white/20 bg-white/10 px-3 py-2.5 text-sm text-white backdrop-blur-sm focus:border-white/40 focus:outline-none [&>option]:bg-primary [&>option]:text-white"
+                className="w-full rounded-lg border border-white/20 bg-white/10 px-2.5 py-2 text-xs text-white backdrop-blur-sm focus:border-white/40 focus:outline-none [&>option]:bg-primary [&>option]:text-white"
               >
                 <option value="">Tất cả khu vực</option>
                 {areas.map((area) => (
@@ -120,31 +129,39 @@ export default function RoomFilter({ areas, onFilter }: RoomFilterProps) {
                   </option>
                 ))}
               </select>
+            </div>
 
-              <select
-                value={giaMax}
-                onChange={(e) => setGiaMax(e.target.value)}
-                className="w-full rounded-xl border border-white/20 bg-white/10 px-3 py-2.5 text-sm text-white backdrop-blur-sm focus:border-white/40 focus:outline-none [&>option]:bg-primary [&>option]:text-white"
+            {/* Price Range Slider */}
+            <div>
+              <label className="mb-1.5 block text-sm font-semibold text-white">
+                Khoảng giá: {formatPrice(priceRange[0])} – {formatPrice(priceRange[1])}
+              </label>
+              <Slider.Root
+                value={priceRange}
+                onValueChange={(v) => setPriceRange([v[0], v[1]])}
+                min={PRICE_MIN}
+                max={PRICE_MAX}
+                step={PRICE_STEP}
+                className="relative flex w-full touch-none select-none items-center"
               >
-                <option value="">Mọi mức giá</option>
-                <option value="2000000">Dưới 2 triệu</option>
-                <option value="3000000">Dưới 3 triệu</option>
-                <option value="4000000">Dưới 4 triệu</option>
-                <option value="5000000">Dưới 5 triệu</option>
-                <option value="7000000">Dưới 7 triệu</option>
-              </select>
-
-              <select
-                value={dienTichMin}
-                onChange={(e) => setDienTichMin(e.target.value)}
-                className="w-full rounded-xl border border-white/20 bg-white/10 px-3 py-2.5 text-sm text-white backdrop-blur-sm focus:border-white/40 focus:outline-none [&>option]:bg-primary [&>option]:text-white"
-              >
-                <option value="">Mọi diện tích</option>
-                <option value="15">Từ 15m²</option>
-                <option value="20">Từ 20m²</option>
-                <option value="25">Từ 25m²</option>
-                <option value="30">Từ 30m²</option>
-              </select>
+                <Slider.Control className="relative flex w-full">
+                  <Slider.Track className="relative h-1 w-full rounded-full bg-white/20">
+                    <Slider.Indicator className="absolute h-full rounded-full bg-white" />
+                    <Slider.Thumb
+                      index={0}
+                      className="block h-4 w-4 cursor-pointer rounded-full bg-white shadow transition hover:scale-110 active:scale-95"
+                    />
+                    <Slider.Thumb
+                      index={1}
+                      className="block h-4 w-4 cursor-pointer rounded-full bg-white shadow transition hover:scale-110 active:scale-95"
+                    />
+                  </Slider.Track>
+                </Slider.Control>
+              </Slider.Root>
+              <div className="mt-1 flex justify-between text-[10px] text-blue-200">
+                <span>0đ</span>
+                <span>{formatPrice(PRICE_MAX)}</span>
+              </div>
             </div>
 
             {/* Apply button */}
@@ -155,7 +172,7 @@ export default function RoomFilter({ areas, onFilter }: RoomFilterProps) {
                   applyFilters();
                   setIsOpen(false);
                 }}
-                className="rounded-xl bg-white px-6 py-2.5 text-sm font-semibold text-primary shadow-lg transition-all hover:bg-blue-50 hover:shadow-xl"
+                className="rounded-lg bg-white px-4 py-1.5 text-xs font-semibold text-primary shadow transition-all hover:bg-blue-50 hover:shadow-md"
               >
                 Áp dụng
               </button>
