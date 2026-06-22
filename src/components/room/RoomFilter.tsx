@@ -2,8 +2,44 @@
 
 import { useState } from "react";
 import { Slider } from "@base-ui/react";
-import { SlidersHorizontal, ChevronDown, ChevronUp } from "lucide-react";
-import type { RoomFilterParams } from "@/types/room";
+import {
+  SlidersHorizontal,
+  ChevronDown,
+  ChevronUp,
+  Snowflake,
+  Refrigerator,
+  ChefHat,
+  Sun,
+  ArrowUpFromLine,
+  Car,
+  DoorOpen,
+  Wind,
+  Sparkles,
+  PawPrint,
+  Bike,
+} from "lucide-react";
+import type { RoomFilterParams, RoomAmenities } from "@/types/room";
+
+type AmenityOption = {
+  key: keyof RoomAmenities;
+  label: string;
+  icon: React.ReactNode;
+};
+
+const AMENITIES: AmenityOption[] = [
+  { key: "mayLanh", label: "Máy lạnh", icon: <Snowflake size={14} /> },
+  { key: "tuLanh", label: "Tủ lạnh", icon: <Refrigerator size={14} /> },
+  { key: "keBep", label: "Kệ bếp", icon: <ChefHat size={14} /> },
+  { key: "cuaSo", label: "Cửa sổ", icon: <Sun size={14} /> },
+  { key: "thangMay", label: "Thang máy", icon: <ArrowUpFromLine size={14} /> },
+  { key: "deXe", label: "Để xe", icon: <Car size={14} /> },
+  { key: "nhaVS", label: "Nhà vệ sinh", icon: <DoorOpen size={14} /> },
+  { key: "banCong", label: "Ban công", icon: <Wind size={14} /> },
+  { key: "gac", label: "Gác", icon: <Sparkles size={14} /> },
+  { key: "mayGiat", label: "Máy giặt", icon: <Sparkles size={14} /> },
+  { key: "thuCung", label: "Thú cưng", icon: <PawPrint size={14} /> },
+  { key: "xeDien", label: "Xe điện", icon: <Bike size={14} /> },
+];
 
 const PRICE_MIN = 0;
 const PRICE_MAX = 10_000_000;
@@ -25,23 +61,41 @@ export default function RoomFilter({ areas, onFilter }: RoomFilterProps) {
   const [khuVuc, setKhuVuc] = useState("");
   const [priceRange, setPriceRange] = useState<[number, number]>([PRICE_MIN, PRICE_MAX]);
   const [areaOpen, setAreaOpen] = useState(false);
-  const hasFilters = khuVuc || priceRange[0] > PRICE_MIN || priceRange[1] < PRICE_MAX;
+  const [selectedAmenities, setSelectedAmenities] = useState<Set<keyof RoomAmenities>>(new Set());
+
+  function toggleAmenity(key: keyof RoomAmenities) {
+    setSelectedAmenities((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  }
+
+  const hasAmenityFilter = selectedAmenities.size > 0;
+  const hasFilters = khuVuc || priceRange[0] > PRICE_MIN || priceRange[1] < PRICE_MAX || hasAmenityFilter;
 
   function applyFilters() {
     onFilter({
       khuVuc: khuVuc || undefined,
       giaMin: priceRange[0] > PRICE_MIN ? priceRange[0] : undefined,
       giaMax: priceRange[1] < PRICE_MAX ? priceRange[1] : undefined,
+      amenities: hasAmenityFilter ? [...selectedAmenities] : undefined,
     });
   }
 
   function handleClear() {
     setKhuVuc("");
     setPriceRange([PRICE_MIN, PRICE_MAX]);
+    setSelectedAmenities(new Set());
     onFilter({});
   }
 
-  const filterCount = [khuVuc, priceRange[0] > PRICE_MIN || priceRange[1] < PRICE_MAX].filter(Boolean).length;
+  const filterCount = [
+    khuVuc,
+    priceRange[0] > PRICE_MIN || priceRange[1] < PRICE_MAX,
+    hasAmenityFilter,
+  ].filter(Boolean).length;
 
   return (
     <div
@@ -91,17 +145,6 @@ export default function RoomFilter({ areas, onFilter }: RoomFilterProps) {
               )}
             </div>
             <div className="flex items-center gap-2">
-              {hasFilters && (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleClear();
-                  }}
-                  className="text-xs text-blue-200 transition-colors hover:text-white"
-                >
-                  Xoá tất cả
-                </button>
-              )}
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -177,8 +220,48 @@ export default function RoomFilter({ areas, onFilter }: RoomFilterProps) {
               </div>
             </div>
 
-            {/* Apply button */}
-            <div className="flex justify-end">
+            {/* Amenities */}
+            <div>
+              <label className="mb-1.5 block text-sm font-semibold text-white">
+                Tiện ích
+              </label>
+              <div className="flex flex-wrap gap-1.5">
+                {AMENITIES.map((item) => {
+                  const active = selectedAmenities.has(item.key);
+                  return (
+                    <button
+                      key={item.key}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleAmenity(item.key);
+                      }}
+                      className={`inline-flex items-center gap-1 rounded-lg border px-2.5 py-1.5 text-[11px] font-medium transition-all ${
+                        active
+                          ? "border-white bg-white text-primary"
+                          : "border-white/20 bg-white/10 text-white hover:border-white/40 hover:bg-white/20"
+                      }`}
+                    >
+                      {item.icon}
+                      {item.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Apply + Clear buttons */}
+            <div className="flex items-center justify-end gap-2">
+              {hasFilters && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleClear();
+                  }}
+                  className="rounded-lg border border-white/30 px-4 py-1.5 text-xs font-semibold text-white transition-all hover:border-white/50 hover:bg-white/10"
+                >
+                  Xoá tất cả
+                </button>
+              )}
               <button
                 onClick={(e) => {
                   e.stopPropagation();

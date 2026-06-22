@@ -65,4 +65,5 @@ export type RoomFilterParams = {
   giaMin?: number;
   giaMax?: number;
   dienTichMin?: number;
+  amenities?: (keyof RoomAmenities)[];
 };

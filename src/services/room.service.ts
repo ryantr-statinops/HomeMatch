@@ -80,6 +80,11 @@ export function filterRooms(rooms: Room[], params?: RoomFilterParams): Room[] {
       if (!searchTarget.includes(kw)) return false;
     }
 
+    if (params.amenities && params.amenities.length > 0) {
+      const hasAll = params.amenities.every((key) => room.amenities[key]);
+      if (!hasAll) return false;
+    }
+
     return true;
   });
 }
