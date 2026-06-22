@@ -17,8 +17,18 @@ import {
   Sparkles,
   PawPrint,
   Bike,
+  X,
 } from "lucide-react";
 import type { RoomFilterParams, RoomAmenities } from "@/types/room";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogPortal,
+  DialogBackdrop,
+  DialogContent,
+  DialogClose,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 type AmenityOption = {
   key: keyof RoomAmenities;
@@ -221,33 +231,46 @@ export default function RoomFilter({ areas, onFilter }: RoomFilterProps) {
             </div>
 
             {/* Amenities */}
-            <div>
-              <label className="mb-1.5 block text-sm font-semibold text-white">
-                Tiện ích
-              </label>
-              <div className="flex flex-wrap gap-1.5">
-                {AMENITIES.map((item) => {
-                  const active = selectedAmenities.has(item.key);
-                  return (
-                    <button
-                      key={item.key}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleAmenity(item.key);
-                      }}
-                      className={`inline-flex items-center gap-1 rounded-lg border px-2.5 py-1.5 text-[11px] font-medium transition-all ${
-                        active
-                          ? "border-white bg-white text-primary"
-                          : "border-white/20 bg-white/10 text-white hover:border-white/40 hover:bg-white/20"
-                      }`}
-                    >
-                      {item.icon}
-                      {item.label}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
+            <Dialog>
+              <DialogTrigger className="w-full">
+                <div className="flex w-full items-center justify-between rounded-lg border border-white/20 bg-white/10 px-2.5 py-2 text-xs text-white backdrop-blur-sm transition-all hover:border-white/40">
+                  <span>
+                    Tiện ích{hasAmenityFilter ? ` (${selectedAmenities.size})` : ""}
+                  </span>
+                  <ChevronDown size={14} className="text-white/60" />
+                </div>
+              </DialogTrigger>
+              <DialogPortal>
+                <DialogBackdrop />
+                <DialogContent className="max-h-[80vh] overflow-y-auto">
+                  <DialogClose className="absolute right-3 top-3 rounded-full p-1 text-accent-light transition-colors hover:bg-gray-100 hover:text-accent">
+                    <X size={16} />
+                  </DialogClose>
+                  <DialogTitle>
+                    Chọn tiện ích
+                  </DialogTitle>
+                  <div className="mt-4 grid grid-cols-2 gap-2 md:grid-cols-3">
+                    {AMENITIES.map((item) => {
+                      const active = selectedAmenities.has(item.key);
+                      return (
+                        <button
+                          key={item.key}
+                          onClick={() => toggleAmenity(item.key)}
+                          className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2.5 text-xs font-medium transition-all ${
+                            active
+                              ? "border-blue-600 bg-blue-600 text-white"
+                              : "border-gray-200 bg-white text-accent hover:border-gray-300 hover:bg-gray-50"
+                          }`}
+                        >
+                          <span className={active ? "" : "text-accent-light"}>{item.icon}</span>
+                          {item.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </DialogContent>
+              </DialogPortal>
+            </Dialog>
 
             {/* Apply + Clear buttons */}
             <div className="flex items-center justify-end gap-2">
