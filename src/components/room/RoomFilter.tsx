@@ -24,6 +24,7 @@ export default function RoomFilter({ areas, onFilter }: RoomFilterProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [khuVuc, setKhuVuc] = useState("");
   const [priceRange, setPriceRange] = useState<[number, number]>([PRICE_MIN, PRICE_MAX]);
+  const [areaOpen, setAreaOpen] = useState(false);
   const hasFilters = khuVuc || priceRange[0] > PRICE_MIN || priceRange[1] < PRICE_MAX;
 
   function applyFilters() {
@@ -117,18 +118,30 @@ export default function RoomFilter({ areas, onFilter }: RoomFilterProps) {
           <div className="mt-3 space-y-4">
             {/* Filter selects */}
             <div className="grid gap-2 sm:grid-cols-2">
-              <select
-                value={khuVuc}
-                onChange={(e) => setKhuVuc(e.target.value)}
-                className="w-full rounded-lg border border-white/20 bg-white/10 px-2.5 py-2 text-xs text-white backdrop-blur-sm focus:border-white/40 focus:outline-none [&>option]:bg-primary [&>option]:text-white"
-              >
-                <option value="">Tất cả khu vực</option>
-                {areas.map((area) => (
-                  <option key={area} value={area}>
-                    {area}
-                  </option>
-                ))}
-              </select>
+              <div className="relative">
+                <select
+                  value={khuVuc}
+                  onChange={(e) => {
+                    setKhuVuc(e.target.value);
+                    setAreaOpen(false);
+                  }}
+                  onBlur={() => setAreaOpen(false)}
+                  onMouseDown={() => setAreaOpen(true)}
+                  className="w-full appearance-none rounded-lg border border-white/20 bg-white/10 px-2.5 py-2 pr-7 text-xs text-white backdrop-blur-sm transition-all hover:border-white/40 focus:border-white/40 focus:outline-none [&>option]:bg-primary [&>option]:text-white"
+                >
+                  <option value="">Tất cả khu vực</option>
+                  {areas.map((area) => (
+                    <option key={area} value={area}>
+                      {area}
+                    </option>
+                  ))}
+                </select>
+                {areaOpen ? (
+                  <ChevronUp size={14} className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-white transition-all" />
+                ) : (
+                  <ChevronDown size={14} className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-white/60 transition-all" />
+                )}
+              </div>
             </div>
 
             {/* Price Range Slider */}

@@ -59,8 +59,10 @@ Các tài liệu liên quan:
    - Click ảnh mở fullscreen, tích hợp ImageViewer
 4. **RoomFilter.tsx** — Cải tiến:
    - Xoá bộ lọc diện tích
-   - Thay select giá bằng range slider (0đ → 10tr, bước 500k)
+   - Thay select giá bằng range slider (0đ → 10tr, bước 500k) dùng `@base-ui/react/slider`
    - Thu nhỏ padding, font size, icon
+   - Thay native select arrow bằng custom ChevronDown icon
+   - Fix hiệu ứng arrow select: chuyển `onClick` → `onMouseDown` + swap icon ChevronDown/ChevronUp thay vì rotate-180
 
 ---
 
