@@ -28,5 +28,9 @@ npm-debug.log*
 #AI tool
 .cline
 
+# Service account keys
+scripts/*.json
+!scripts/package.json
+
 # Windows reserved device names
 nul
