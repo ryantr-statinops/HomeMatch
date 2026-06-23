@@ -1,214 +1,138 @@
-# API Contracts V3
+# API Contracts V4
 
 ## Overview
 
-Website sử dụng Google Apps Script API.
+Website sử dụng **Supabase SDK** trực tiếp từ Next.js.
 
-Google Sheet là nguồn dữ liệu chính.
+Không còn Google Apps Script API (đã thay thế từ Phase 2).
 
-**Base URL:** `https://script.google.com/macros/s/{SCRIPT_ID}/exec`
+**Base URL:** Không có — gọi Supabase trực tiếp qua `@supabase/supabase-js`
 
-**Method:** GET (đọc) / POST (ghi)
+**Database:** Supabase (PostgreSQL) — migrated từ Google Sheet
 
-> Cập nhật theo cấu trúc Google Sheet thật (DATABASE_HomeMatch).
+---
+
+## Kiến trúc luồng dữ liệu
+
+```text
+Client Component / Server Component
+        │
+        ├── room.service.ts → supabase.from("phongtro").select(...)
+        │                      └── resolve HinhAnhChinh qua imagecache table
+        │
+        ├── roommate.service.ts → supabase.from("roommate").select(...)
+        │
+        └── lead.service.ts → supabase.from("lead").insert(...)
+```
+
+## Image Resolution Flow
+
+```text
+PHONGTRO.HinhAnhChinh = "PHONGTRO_Images/abc.jpg"
+        │
+        ▼
+room.service.ts:
+  1. Query ImageCache WHERE path = "PHONGTRO_Images/abc.jpg"
+  2. Lấy drive_url = "https://drive.google.com/thumbnail?id=...&sz=w1000"
+  3. Gán vào Room.image hoặc Room.images[].url
+```
 
 ---
 
 # Rooms
 
-## GET ?action=getRooms
+## getRooms()
 
 Mục đích:
 
-Lấy danh sách phòng.
+Lấy danh sách phòng từ Supabase.
 
-### Query
+### Parameters (RoomFilterParams)
 
-| Param | Type | Required |
-|-------|------|----------|
-| action | string | Yes | `getRooms` |
+| Param | Type | Required | Description |
+|-------|------|----------|-------------|
 | keyword | string | No | Tìm theo địa chỉ/mô tả |
 | khuVuc | string | No | Lọc khu vực (VD: "Quận 7") |
 | giaMin | number | No | Giá tối thiểu |
 | giaMax | number | No | Giá tối đa |
+| amenities | string[] | No | Mảng tiện ích (VD: ["mayLanh", "thangMay"]) |
 
 ### Response
 
-```json
-[
-  {
-    "id": "2026616144133",
-    "image": "https://...",
-    "address": {
-      "soNha": "214",
-      "duong": "Đường số 9",
-      "phuong": "Tân Mỹ",
-      "khuVuc": "Quận 7"
-    },
-    "price": 7000000,
-    "area": 0,
-    "contractType": "6-12 tháng",
-    "amenities": {
-      "mayLanh": true,
-      "keBep": true,
-      "gac": false,
-      "tuLanh": true,
-      "nhaVS": true,
-      "cuaSo": true,
-      "banCong": false,
-      "deXe": true,
-      "thuCung": false,
-      "xeDien": false,
-      "mayGiat": true,
-      "thangMay": true
-    },
-    "floor": "Lầu 6",
-    "costs": {
-      "dien": 3800,
-      "nuoc": 25000,
-      "phiQuanLy": 130000,
-      "phiGiuXe": 100000
-    },
-    "description": "Gần chợ Tân Mỹ, thuận tiện di chuyển",
-    "status": "ACTIVE",
-    "slug": ""
-  }
-]
+```typescript
+Room[]  // Giống cấu trúc cũ, image/url đã resolve từ ImageCache
 ```
 
-### Thay đổi từ V2 → V3
-
-| Field | Thay đổi |
-|-------|----------|
-| `area` | Luôn = 0 (Sheet không có DienTich) |
-| `amenities` | Thêm: banCong, thangMay |
-| `floor` | Mới: lấy từ cột Lau |
-| `costs` | Parse từ text "3.800đ/kWh" → number |
-| `status` | Map từ "Trống" → "ACTIVE" |
-| `image` | Lấy từ HinhAnhChinh |
-
----
-
-## GET ?action=getRoomDetail&id={ID}
+## getRoomById(id)
 
 Mục đích:
 
 Lấy chi tiết phòng kèm danh sách ảnh.
 
-### Query
+### Parameters
 
 | Param | Type | Required |
 |-------|------|----------|
-| action | string | Yes | `getRoomDetail` |
 | id | string | Yes | Mã phòng (IDPhong) |
 
 ### Response
 
-Giống getRooms nhưng có thêm:
-
-```json
-{
-  "images": [
-    { "id": "ANH001", "url": "https://...", "sortOrder": 1 }
-  ]
-}
+```typescript
+Room & { images: RoomImage[] }
 ```
 
 ---
 
 # Roommate Posts
 
-## GET ?action=getRoommatePosts
+## getRoommatePosts()
 
 Mục đích:
 
-Lấy danh sách bài ở ghép.
+Lấy danh sách bài ở ghép từ Supabase.
 
-### Query
+### Parameters (RoommateFilterParams)
 
-| Param | Type | Required |
-|-------|------|----------|
-| action | string | Yes | `getRoommatePosts` |
+| Param | Type | Required | Description |
+|-------|------|----------|-------------|
 | postType | string | No | `HAVE_ROOM` hoặc `NEED_ROOMMATE` |
 | gender | string | No | Tìm theo giới tính |
 | khuVuc | string | No | Lọc theo khu vực |
 
 ### Response
 
-```json
-[
-  {
-    "id": "POST001",
-    "roomId": "ROOM001",
-    "postType": "HAVE_ROOM",
-    "customer": {
-      "name": "Nguyễn Văn A",
-      "phone": "090...",
-      "gender": "nam",
-      "school": "ĐH KHTN"
-    },
-    "budget": 5000000,
-    "needCount": "1",
-    "desiredArea": "",
-    "description": "Cần tìm 1 bạn ở ghép...",
-    "status": "ACTIVE",
-    "expireAt": "2026-07-01",
-    "createdAt": "2026-06-14"
-  }
-]
+```typescript
+RoommatePost[]
 ```
 
-### Thay đổi từ V2 → V3
+## getRoommatePostById(id)
 
-| Field | Thay đổi |
-|-------|----------|
-| `postType` | Map từ KieuBaiDang |
-| `needCount` | Mới: SoNguoiCanTuyen |
-| `desiredArea` | Mới: KhuVucMongMuon |
-| `phone` | Ẩn bớt số (bảo mật) |
-
----
-
-## GET ?action=getRoommatePostDetail&id={ID}
-
-Mục đích:
-
-Lấy chi tiết bài ở ghép kèm thông tin phòng.
-
-### Query
+### Parameters
 
 | Param | Type | Required |
 |-------|------|----------|
-| action | string | Yes | `getRoommatePostDetail` |
 | id | string | Yes | Mã bài đăng (IDBai) |
 
 ### Response
 
-Giống getRoommatePosts nhưng có thêm `room` object (thông tin phòng).
+```typescript
+RoommatePost & { room: Room | null }
+```
 
 ---
 
 # Leads
 
-## POST ?action=createLead
+## createLead()
 
 Mục đích:
 
-Ghi nhận lead từ website.
+Ghi nhận lead từ website vào Supabase.
 
-### Request Body (JSON)
-
-```json
-{
-  "action": "createLead",
-  "sourceType": "ROOM",
-  "sourceId": "ROOM001"
-}
-```
+### Request
 
 | Field | Type | Description |
 |-------|------|-------------|
-| action | string | `createLead` |
 | sourceType | string | `ROOM` hoặc `ROOMMATE` |
 | sourceId | string | ID của phòng hoặc bài đăng |
 
@@ -224,15 +148,13 @@ Ghi nhận lead từ website.
 
 ---
 
-# Error Response
+# Environment Variables
 
-```json
-{
-  "error": "Error message"
-}
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://rccszqpjeikcjrfmbzpl.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_...
+SUPABASE_SERVICE_KEY=sb_secret_...   # Chỉ dùng cho migration script
 ```
-
-HTTP Status: 400 (Bad Request) / 500 (Internal Server Error)
 
 ---
 
@@ -240,6 +162,7 @@ HTTP Status: 400 (Bad Request) / 500 (Internal Server Error)
 
 | Version | Ngày | Thay đổi |
 |---------|------|----------|
-| V1 | 2026-06-13 | Thiết kế ban đầu |
+| V1 | 2026-06-13 | Thiết kế ban đầu (Apps Script) |
 | V2 | 2026-06-14 | Cập nhật API endpoints |
 | V3 | 2026-06-16 | Đồng bộ với Google Sheet thật |
+| V4 | 2026-06-23 | Thay Apps Script → Supabase SDK, thêm ImageCache resolve |

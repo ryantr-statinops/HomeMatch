@@ -1,12 +1,12 @@
-# DATABASE_STRUCTURE V3
+# DATABASE_STRUCTURE V4
 
 ## Tổng Quan
 
 **Tên File:** DATABASE_HomeMatch
 
-**Loại:** Google Sheet
+**Loại:** Supabase (PostgreSQL)
 
-**URL:** `https://docs.google.com/spreadsheets/d/1UjDU0PIRIAoNx8f56WQ6v67yP7hJf5J5MdfS7y95rCw/edit`
+**URL:** `https://rccszqpjeikcjrfmbzpl.supabase.co`
 
 **Mục đích:**
 
@@ -16,20 +16,21 @@
 * Quản lý lịch hẹn khách xem phòng (LICHHEN)
 * Quản lý nhân viên sale (SALE)
 * Theo dõi lead phát sinh từ website (LEAD)
+* Cache mapping path ảnh → URL (ImageCache)
 
 **Kiến trúc hiện tại:**
 
 ```text
-Google Sheet (Source of Truth)
+Supabase (Source of Truth)
         │
         ├── AppSheet (Sales Operations)
         │
-        └── Website (Lead Generation via Apps Script API)
+        └── Website (Lead Generation via Supabase SDK)
 ```
 
 ---
 
-# Database V1 Architecture
+# Database V4 Architecture
 
 ```mermaid
 erDiagram
@@ -37,12 +38,17 @@ erDiagram
     PHONGTRO ||--o{ HINHANH : contains
     PHONGTRO ||--o{ LICHHEN : booked_for
     PHONGTRO ||--o{ ROOMMATE : related_to
+    PHONGTRO ||--o{ ImageCache : caches
+
+    HINHANH ||--o{ ImageCache : caches
 
     SALE ||--o{ LICHHEN : manages
 
     PHONGTRO ||--o{ LEAD : generates
     ROOMMATE ||--o{ LEAD : generates
 ```
+
+> **Lưu ý:** Tất cả tên table và column trong Supabase đều được lowercase tự động (VD: `PHONGTRO` → `phongtro`, `HinhAnhChinh` → `hinhanhchinh`).
 
 ---
 
@@ -57,7 +63,7 @@ Lưu trữ thông tin phòng trọ.
 | Field | Type | Description | Ghi chú |
 |-------|------|-------------|---------|
 | IDPhong | String | Mã phòng duy nhất | PK, do AppSheet tự sinh |
-| HinhAnhChinh | String | URL ảnh đại diện | |
+| HinhAnhChinh | String | Path ảnh đại diện (VD: `PHONGTRO_Images/abc.jpg`) | Resolve qua ImageCache |
 | SoNha | String | Số nhà | |
 | Duong | String | Đường | |
 | Phuong | String | Phường/Xã | |
@@ -99,7 +105,7 @@ Lưu trữ thông tin phòng trọ.
 | Đã thuê | Phòng đã có người ở |
 | Ẩn | Không hiển thị trên website |
 
-> **Lưu ý:** TrangThai dùng tiếng Việt (khác với code cũ dùng "ACTIVE"). Code API cần map "Trống" → ACTIVE.
+> **Lưu ý:** TrangThai dùng tiếng Việt. Service map "Trống" → "ACTIVE".
 
 ---
 
@@ -115,7 +121,7 @@ Lưu danh sách hình ảnh của từng phòng.
 |-------|------|-------------|
 | IDAnh | String | Mã ảnh (PK) |
 | IDPhong | String | Liên kết phòng (FK → PHONGTRO.IDPhong) |
-| HinhAnh | String | URL ảnh |
+| HinhAnh | String | Path ảnh (VD: `HINHANH_Images/xyz.jpg`) |
 | SortOrder | Number | Thứ tự hiển thị |
 | CreatedAt | DateTime | Ngày tạo |
 
@@ -129,13 +135,47 @@ HINHANH (N)
 
 ---
 
+# Bảng ImageCache
+
+## Mục đích
+
+Cache mapping path ảnh từ Google Sheet → Google Drive URL, giúp resolve nhanh mà không cần gọi Drive API mỗi lần.
+
+## Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| path | String | Path gốc (VD: `PHONGTRO_Images/abc.jpg`) | PK |
+| drive_url | String | Google Drive thumbnail URL | |
+| updated_at | Timestamptz | Ngày cập nhật | |
+
+## Cách hoạt động
+
+1. Script `scripts/build-image-cache.ts` chạy 1 lần
+2. Đọc tất cả path ảnh từ `PHONGTRO.HinhAnhChinh` và `HINHANH.HinhAnh`
+3. Dùng Google Drive API (service account) tìm file → lấy thumbnail URL
+4. Insert/Upsert vào `ImageCache`
+5. Service `getRooms()` / `getRoomById()` query `ImageCache` để resolve path → URL
+
+## RLS Policy
+
+```sql
+ALTER TABLE imagecache ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "anon_can_read_imagecache"
+ON imagecache
+FOR SELECT
+TO anon
+USING (true);
+```
+
+---
+
 # Bảng ROOMMATE
 
 ## Mục đích
 
 Lưu nhu cầu ở ghép hiển thị trên website.
-
-> **Ghi chú:** Tên tab trong Sheet là `ROOMMATE` (khác với code cũ dùng `ROOMMATE_POST`).
 
 ## Business Rule
 
@@ -161,7 +201,7 @@ Lưu nhu cầu ở ghép hiển thị trên website.
 | MoTaNhuCau | Text | Mô tả nhu cầu |
 | TrangThai | String | Trạng thái |
 | NgayTao | DateTime | Ngày tạo |
-| Thoihan | Date | Thời hạn |
+| ThoiHan | Date | Thời hạn |
 
 ## KieuBaiDang
 
@@ -224,15 +264,14 @@ Quản lý nhân viên sale.
 
 Theo dõi lead phát sinh từ website.
 
-> **Lưu ý:** Tab này do website ghi thông qua API. Cấu trúc chi tiết cần đối chiếu với AppSheet.
-
 ## Fields (xác nhận)
 
 | Field | Type | Description |
 |-------|------|-------------|
 | LeadID | String | Mã lead (PK) |
-
-> Các field khác (SourceType, SourceID, CreatedAt) do API ghi vào.
+| SourceType | String | Loại nguồn: `ROOM` / `ROOMMATE` |
+| SourceID | String | ID nguồn (IDPhong hoặc IDBai) |
+| CreatedAt | DateTime | Ngày tạo |
 
 ---
 
@@ -241,6 +280,7 @@ Theo dõi lead phát sinh từ website.
 ```text
 PHONGTRO
 ├── HINHANH (1:N — qua IDPhong)
+├── ImageCache (1:N — qua HinhAnhChinh path)
 ├── LICHHEN (1:N — qua IDPhong)
 ├── ROOMMATE (1:N — qua IDPhong)
 └── LEAD (1:N — qua IDPhong)
@@ -250,6 +290,9 @@ SALE
 
 ROOMMATE
 └── LEAD (1:N — qua IDBai)
+
+HINHANH
+└── ImageCache (1:N — qua HinhAnh path)
 ```
 
 ---
@@ -261,6 +304,7 @@ Website sử dụng:
 * PHONGTRO — Hiển thị danh sách & chi tiết phòng
 * HINHANH — Hiển thị hình ảnh phòng
 * ROOMMATE — Hiển thị bài đăng ở ghép
+* ImageCache — Resolve path ảnh → URL (phụ trợ)
 
 AppSheet sử dụng:
 
@@ -276,24 +320,11 @@ Analytics sử dụng:
 
 ---
 
-# Future Expansion
-
-Khi quy mô vượt quá giới hạn Google Sheet:
-
-```text
-Google Sheet
-        ↓
-PostgreSQL / Supabase
-```
-
-Database schema được thiết kế để migrate mà không cần thay đổi business logic.
-
----
-
 # Lịch sử thay đổi
 
 | Version | Ngày | Thay đổi |
 |---------|------|----------|
-| V1 | 2026-06-13 | Cấu trúc thiết kế ban đầu |
+| V1 | 2026-06-13 | Cấu trúc thiết kế ban đầu (Google Sheet) |
 | V2 | 2026-06-14 | Cập nhật sau Phase 2A code |
 | V3 | 2026-06-16 | Đồng bộ với Google Sheet thật (DATABASE_HomeMatch) |
+| V4 | 2026-06-23 | Migrate từ Google Sheet → Supabase, thêm ImageCache table |

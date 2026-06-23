@@ -1,10 +1,10 @@
-# ERD V2
+# ERD V3
 
 ## Overview
 
-Entity Relationship Diagram cho MVP hệ thống tìm phòng trọ và tìm người ở ghép.
+Entity Relationship Diagram cho hệ thống tìm phòng trọ và tìm người ở ghép.
 
-Cập nhật theo Google Sheet thật (DATABASE_HomeMatch).
+Database: Supabase (PostgreSQL) — migrated từ Google Sheet.
 
 ---
 
@@ -58,6 +58,12 @@ erDiagram
         datetime CreatedAt
     }
 
+    ImageCache {
+        string path PK
+        string drive_url
+        timestamptz updated_at
+    }
+
     ROOMMATE {
         string IDBai PK
         string KieuBaiDang
@@ -92,28 +98,31 @@ erDiagram
 
     LEAD {
         string LeadID PK
+        string SourceType
+        string SourceID
+        datetime CreatedAt
     }
 
     PHONGTRO ||--o{ HINHANH : contains
     PHONGTRO ||--o{ LICHHEN : booked_for
-    SALE ||--o{ LICHHEN : handles
     PHONGTRO ||--o{ ROOMMATE : related_to
+    PHONGTRO ||--o{ ImageCache : caches_main
     PHONGTRO ||--o{ LEAD : generates
+
+    HINHANH ||--o{ ImageCache : caches_gallery
+
+    SALE ||--o{ LICHHEN : handles
     ROOMMATE ||--o{ LEAD : generates
 ```
 
 ---
 
-# Ghi chú thay đổi từ V1 -> V2
+# Ghi chú thay đổi từ V2 → V3
 
 | Thay đổi | Chi tiết |
 |----------|----------|
-| PHONGTRO | Thêm: BanCong, ThangMay, Lau, HoaHong, GhiChu, IDChuNha, NgayTao, NgayCapNhat |
-| PHONGTRO | Xoá: DienTich, CreatedAt, UpdatedAt |
-| PHONGTRO | Boolean -> String (Giá trị Việt: "Có"/"Không"/"Riêng") |
-| ROOMMATE | Đổi tên từ ROOMMATE_POST -> ROOMMATE |
-| ROOMMATE | Cấu trúc hoàn toàn mới (12 fields tiếng Việt) |
-| SALE | Thêm: ChucVu, QLCTV, STK, NganHang |
-| HINHANH | Thêm: CreatedAt |
-| LICHHEN | Đang chờ xác nhận cấu trúc từ AppSheet |
-| LEAD | Đang chờ xác nhận cấu trúc từ AppSheet |
+| Database | Google Sheet → Supabase (PostgreSQL) |
+| ImageCache | Bảng mới: mapping path ảnh → Google Drive URL |
+| API Layer | Google Apps Script → Supabase SDK |
+| Tên bảng | Tự động lowercase trong Supabase (`PHONGTRO` → `phongtro`) |
+| LEAD | Cập nhật cấu trúc: LeadID, SourceType, SourceID, CreatedAt |

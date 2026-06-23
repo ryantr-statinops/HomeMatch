@@ -1,4 +1,4 @@
-# System Architecture V1
+# System Architecture V2
 
 ## Overview
 
@@ -8,9 +8,9 @@ User
 ↓
 Website
 ↓
-API
+Supabase SDK
 ↓
-Google Sheet
+Supabase (PostgreSQL) + Google Drive
 
 Mục tiêu:
 
@@ -31,19 +31,20 @@ Mục tiêu:
        ▼
 ┌──────────────┐
 │  Next.js Web │
-│ Cloudflare   │
-│    Pages     │
+│    Vercel    │
 └──────┬───────┘
+       │
+       ├──────────────────────────────────┐
+       ▼                                  ▼
+┌──────────────┐              ┌──────────────────────┐
+│   Supabase   │              │ ImageCache (Supabase) │
+│  (PostgreSQL)│◄─────────────│  path → drive_url     │
+└──────┬───────┘              └──────────────────────┘
        │
        ▼
 ┌──────────────┐
-│ Apps Script  │
-│     API      │
-└──────┬───────┘
-       │
-       ▼
-┌──────────────┐
-│ Google Sheet │
+│ Google Drive │
+│ (Image files)│
 └──────────────┘
 ```
 
@@ -62,7 +63,8 @@ Mục tiêu:
 
 Không có quyền truy cập:
 
-* Google Sheet
+* Supabase (trực tiếp)
+* Google Drive
 * AppSheet
 
 ---
@@ -74,20 +76,20 @@ Không có quyền truy cập:
 * Next.js
 * TypeScript
 * Tailwind
-* shadcn/ui
+* shadcn/ui + @base-ui/react
 
 ## Responsibilities
 
 * Render giao diện
 * SEO
-* Hiển thị dữ liệu
+* Hiển thị dữ liệu (qua Supabase SDK)
 * Điều hướng sang Zalo
 
-## Does Not Handle
+## Data Flow
 
-* Database trực tiếp
-* Quản lý sale
-* Chỉnh sửa dữ liệu
+* Gọi Supabase SDK từ service layer (`room.service.ts`, `roommate.service.ts`)
+* Resolve image path qua `ImageCache` table
+* Không còn Apps Script proxy
 
 ---
 
@@ -95,25 +97,13 @@ Không có quyền truy cập:
 
 ## Technology
 
-Google Apps Script
+Supabase SDK (`@supabase/supabase-js`)
 
 ## Responsibilities
 
-* Đọc dữ liệu từ Google Sheet
-* Chuyển đổi thành JSON
-* Cung cấp API cho Website
-
-## Endpoints
-
-GET /rooms
-
-GET /rooms/:id
-
-GET /roommate-posts
-
-GET /roommate-posts/:id
-
-POST /leads
+* Đọc dữ liệu từ Supabase
+* Chuyển đổi dữ liệu thành kiểu TypeScript
+* Resolve image path → Drive URL qua ImageCache
 
 ---
 
@@ -121,20 +111,43 @@ POST /leads
 
 ## Technology
 
-Google Sheet
+Supabase (PostgreSQL)
 
 ## Single Source of Truth
 
-Toàn bộ dữ liệu được quản lý tại đây.
+Toàn bộ dữ liệu được quản lý tại đây (migrated từ Google Sheet).
+
+## Image Storage
+
+Google Drive (ảnh gốc) + ImageCache table (mapping path → URL)
 
 ## Tables
 
-* PHONGTRO
-* HINHANH
-* ROOMMATE_POST
-* LICHHEN
-* SALE
-* LEAD
+* phongtro
+* hinhanh
+* roommate
+* lichhen
+* sale
+* lead
+* imagecache (phụ trợ)
+
+---
+
+# Image Resolution Flow
+
+```text
+Database stores: "PHONGTRO_Images/abc.jpg"
+       │
+       ▼
+room.service.ts queries:
+  SELECT drive_url FROM imagecache WHERE path = 'PHONGTRO_Images/abc.jpg'
+       │
+       ▼
+Returns: "https://drive.google.com/thumbnail?id=FILEID&sz=w1000"
+       │
+       ▼
+Browser loads ảnh trực tiếp từ Google Drive CDN
+```
 
 ---
 
@@ -189,48 +202,34 @@ Zalo
 
 ## Rule 1
 
-Google Sheet không public.
-
----
+Database không public — chỉ gọi qua Supabase SDK với anon key.
 
 ## Rule 2
 
-Website không truy cập trực tiếp Google Sheet.
-
----
+ImageCache table có RLS policy chỉ cho phép SELECT với anon.
 
 ## Rule 3
 
-Tất cả dữ liệu đi qua API Layer.
-
----
+Service role key chỉ dùng cho migration script, không expose ra client.
 
 ## Rule 4
 
-AppSheet là công cụ nội bộ.
-
-Không public.
+AppSheet là công cụ nội bộ. Không public.
 
 ---
 
-# Future Evolution
+# Deleted Components (từ V1)
 
-## Phase 1
+* Google Apps Script API
+* Api Proxy (`/api/proxy`)
+* `api-client.ts`
+* `resolveImageUrl()` trong Apps Script
 
-Google Sheet
-+
-Apps Script
+---
 
-## Phase 2
+# Lịch sử thay đổi
 
-Supabase
-+
-Cloudflare Workers
-
-## Phase 3
-
-PostgreSQL
-+
-Cloudflare Workers
-
-Frontend giữ nguyên.
+| Version | Ngày | Thay đổi |
+|---------|------|----------|
+| V1 | 2026-06-13 | Thiết kế ban đầu (Google Sheet + Apps Script) |
+| V2 | 2026-06-23 | Migrate lên Supabase, thêm ImageCache, xoá Apps Script |

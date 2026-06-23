@@ -1,4 +1,4 @@
-# ⚙️ Tech Stack V1
+# ⚙️ Tech Stack V2
 
 ## Philosophy
 
@@ -28,7 +28,7 @@ Tailwind CSS
 
 ## UI Components
 
-shadcn/ui
+shadcn/ui + @base-ui/react
 
 ## Icons
 
@@ -56,11 +56,23 @@ Vercel DNS (hoặc Cloudflare DNS nếu dùng custom domain)
 
 ## Primary Database
 
-Google Sheet
+Supabase (PostgreSQL)
 
 Vai trò:
 
-Single Source of Truth
+Single Source of Truth (migrated từ Google Sheet)
+
+---
+
+# Image Storage
+
+## Current
+
+Google Drive (ảnh vẫn lưu trong Drive, path được resolve qua bảng ImageCache)
+
+## Future
+
+Supabase Storage (khi cần thiết có thể migrate)
 
 ---
 
@@ -81,22 +93,14 @@ Vai trò:
 
 # API Layer
 
-## MVP
+## Current
 
-Google Apps Script
+Supabase SDK (JavaScript client)
 
 Vai trò:
 
-* Đọc dữ liệu từ Google Sheet
-* Trả dữ liệu JSON cho Website
-
----
-
-## Future
-
-Cloudflare Workers
-
-Khi hệ thống cần hiệu năng cao hơn.
+* Đọc dữ liệu từ Supabase
+* Resolve image path qua ImageCache table
 
 ---
 
@@ -131,11 +135,15 @@ Vercel
 
 API
 
-Google Apps Script
+Supabase SDK (trực tiếp từ Next.js)
 
 Database
 
-Google Sheet
+Supabase (PostgreSQL)
+
+Image Cache
+
+Supabase (ImageCache table)
 
 Admin
 
@@ -145,7 +153,7 @@ AppSheet
 
 # Future Migration Path
 
-Phase 1
+Phase 1 (MVP — hiện tại)
 
 Google Sheet
 ↓
@@ -153,15 +161,15 @@ Apps Script
 ↓
 Next.js
 
-Phase 2
+Phase 2 (hiện tại)
 
 Supabase
 ↓
-Cloudflare Workers
+Supabase SDK
 ↓
 Next.js
 
-Phase 3
+Phase 3 (tương lai)
 
 PostgreSQL
 ↓
