@@ -67,7 +67,7 @@ export default function RoomGallery({ images }: RoomGalleryProps) {
                   setViewerOpen(true);
                 }}
               >
-                <div className="aspect-[1/1] bg-gray-100">
+                <div className="aspect-[4/3] bg-gray-100">
                   <img
                     src={img.url}
                     alt=""
