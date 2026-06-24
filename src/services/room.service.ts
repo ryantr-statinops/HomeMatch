@@ -64,6 +64,7 @@ function mapRoom(row: PhongTroRow): Room {
       phiGiuXe: parseCost(row.phigiuxe),
     },
     description: row.tienich || "",
+    createdAt: row.ngaytao || "",
     status: mapStatus(row.trangthai),
     slug: row.slug || "",
   };
@@ -91,6 +92,8 @@ async function resolveImageUrls(paths: string[]): Promise<Map<string, string>> {
 export async function getRooms(params?: RoomFilterParams): Promise<Room[]> {
   let query = supabase.from("phongtro").select("*");
 
+  query = query.order("ngaytao", { ascending: false });
+
   query = query.eq("trangthai", "Trống");
 
   if (params?.khuVuc) {
@@ -104,13 +107,6 @@ export async function getRooms(params?: RoomFilterParams): Promise<Room[]> {
 
   if (params?.giaMax !== undefined) {
     query = query.lte("gia", params.giaMax);
-  }
-
-  if (params?.keyword) {
-    const kw = params.keyword.toLowerCase().trim();
-    query = query.or(
-      `duong.ilike.%${kw}%,phuong.ilike.%${kw}%,khuvuc.ilike.%${kw}%,tienich.ilike.%${kw}%`,
-    );
   }
 
   const { data, error } = await query;
@@ -186,19 +182,6 @@ export function filterRooms(rooms: Room[], params?: RoomFilterParams): Room[] {
 
     if (params.giaMin !== undefined && room.price < params.giaMin) return false;
     if (params.giaMax !== undefined && room.price > params.giaMax) return false;
-
-    if (params.keyword) {
-      const kw = params.keyword.toLowerCase().trim();
-      const searchTarget = [
-        room.address.duong,
-        room.address.phuong,
-        room.address.khuVuc,
-        room.description,
-      ]
-        .join(" ")
-        .toLowerCase();
-      if (!searchTarget.includes(kw)) return false;
-    }
 
     if (params.amenities && params.amenities.length > 0) {
       const hasAll = params.amenities.every((key) => room.amenities[key]);

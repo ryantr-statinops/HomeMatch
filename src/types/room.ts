@@ -54,16 +54,15 @@ export type Room = {
   costs: RoomCosts;
   description: string;
   status: "ACTIVE" | "RESERVED" | "RENTED" | "HIDDEN";
+  createdAt: string;
   slug: string;
   images?: RoomImage[];
 };
 
 /** Kiểu params cho getRooms */
 export type RoomFilterParams = {
-  keyword?: string;
   khuVuc?: string;
   giaMin?: number;
   giaMax?: number;
-  dienTichMin?: number;
   amenities?: (keyof RoomAmenities)[];
 };
