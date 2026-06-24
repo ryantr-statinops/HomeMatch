@@ -17,7 +17,7 @@ function DialogBackdrop({ className, ...props }: DialogPrimitive.Backdrop.Props)
   return (
     <DialogPrimitive.Backdrop
       className={cn(
-        "fixed inset-0 z-50 bg-black/80 data-open:fade-in data-closed:fade-out",
+        "fixed inset-0 z-50 bg-black/80 data-open:fade-in data-closed:fade-out duration-300",
         className,
       )}
       {...props}
@@ -29,7 +29,7 @@ function DialogContent({ className, ...props }: DialogPrimitive.Popup.Props) {
   return (
     <DialogPrimitive.Popup
       className={cn(
-        "fixed left-1/2 top-1/2 z-50 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-white p-6 shadow-2xl data-open:fade-in data-open:zoom-in-95 data-closed:fade-out data-closed:zoom-out-95",
+        "fixed left-1/2 top-1/2 z-50 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-white p-6 shadow-2xl data-open:fade-in data-open:zoom-in-95 data-closed:fade-out data-closed:zoom-out-95 duration-300",
         className,
       )}
       {...props}
