@@ -2,7 +2,9 @@
 
 ## Status
 
-- **Phase 1 (Ordering):** Pending — chờ review plan, sẽ triển khai sau khi xác nhận
+- **Phase 1 (Ordering):** Done — triển khai Option B (xem mục 2)
+  - ⚠️ **Chữa cháy:** Dùng `idphong DESC` thay `ngaytao`. Chỉ đúng khi ID cùng số chữ số.
+  - Nếu ID format thay đổi trong tương lai → chuyển sang Option A (backfill `ngaytao` bằng `ctid`).
 - **Phase 2 (Pagination):** Planned — chưa có lịch triển khai
 - **Phase 3 (Performance):** Planned — chưa có lịch triển khai
 
@@ -35,7 +37,7 @@ RoomFilter (client UI params)
 
 ---
 
-## 2. Phase 1 — ORDER BY ngaytao DESC (Immediate)
+## 2. Phase 1 — ORDER BY (Đã triển khai)
 
 ### Problem
 
@@ -43,38 +45,58 @@ RoomFilter (client UI params)
 - New records: `ngaytao` sẽ có giá trị thật (qua AppSheet/Supabase)
 - Hiện tại không có ordering nào → thứ tự hiển thị ngẫu nhiên
 
-### Solution
+### Giải pháp đã chọn: Option B — ORDER BY idphong DESC
 
-#### Step 1: Backfill existing records
+**Lý do chọn Option B (thay vì A):**
+- `idphong` là string 13 chữ số, cùng độ dài → PostgreSQL string sort hoạt động giống numeric sort
+- Không cần chạy SQL backfill nào
+- Thay đổi tối thiểu: chỉ 1 dòng `.order("idphong", { ascending: false })` trong `getRooms()`
 
-Chạy SQL một lần trên Supabase Dashboard → SQL Editor:
-
-```sql
-UPDATE phongtro SET ngaytao = NOW() WHERE ngaytao IS NULL;
-```
-
-**Lý do:** Existing records không có timestamp, nhưng đây đều là dữ liệu đang hoạt động ("data mới nhất"). Set đồng loạt về NOW() để chúng có cùng baseline. Future records có `ngaytao` thật sẽ tự động lên đầu khi ORDER BY DESC.
-
-#### Step 2: Code changes
+**Code change:**
 
 | File | Change |
 |------|--------|
-| `src/types/room.ts` | Thêm `createdAt: string` vào `Room` type |
-| `src/services/room.service.ts` | Map `ngaytao` → `createdAt` trong `mapRoom()` |
-| `src/services/room.service.ts` | Thêm `.order("ngaytao", { ascending: false })` trong `getRooms()` |
+| `src/types/room.ts` | Thêm `createdAt: string` vào `Room` type (dự phòng) |
+| `src/services/room.service.ts` | Map `ngaytao` → `createdAt` trong `mapRoom()` (dự phòng) |
+| `src/services/room.service.ts` | `.order("idphong", { ascending: false })` — chữa cháy |
 
-#### Step 3: Verify
+### ⚠️ Lưu ý: Đây là giải pháp CHỮA CHÁY
 
-- **Ordering:** Rooms hiển thị newest-first (future = real timestamp, existing = backfill time)
-- **Performance:** Single column ORDER BY trên indexed column = O(log n), không ảnh hưởng tốc độ
-- **Edge case:** Records cùng `ngaytao` (toàn bộ existing) sẽ có thứ tự undefined giữa chúng — chấp nhận được vì existing data không có thông tin thời gian
+| Điều kiện | Kết quả |
+|-----------|---------|
+| `idphong` cùng số chữ số (hiện tại: 13) | ✅ ORDER BY hoạt động đúng |
+| `idphong` khác số chữ số (VD: "1" và "100") | ❌ String sort sai: "9" > "100" |
+| AppSheet thay đổi format ID | ❌ Cần kiểm tra lại |
 
-### Why Not Alternative Approaches
+**Khi nào cần chuyển sang Option A:** Nếu AppSheet thay đổi format ID hoặc ID không còn cùng độ dài.
+
+### Option A — Dự phòng (Backfill ngaytao bằng ctid)
+
+Nếu Option B không còn phù hợp, dùng SQL backfill này:
+
+```sql
+WITH numbered AS (
+  SELECT ctid, row_number() OVER (ORDER BY ctid) as rn
+  FROM phongtro WHERE ngaytao IS NULL
+)
+UPDATE phongtro p
+SET ngaytao = NOW() - (numbered.rn * INTERVAL '1 second')
+FROM numbered
+WHERE p.ctid = numbered.ctid;
+```
+
+**Cách hoạt động:**
+- `ctid` = physical location ≈ thứ tự insert (dòng cuối = ctid lớn nhất)
+- `rn` lớn = timestamp gần NOW nhất → lên đầu ORDER BY DESC
+- Sau đó đổi ORDER BY về `ngaytao`
+
+**Hạn chế:** `ctid` thay đổi sau VACUUM/UPDATE, nhưng chỉ cần chạy 1 lần để backfill.
+
+### Why Not Other Approaches
 
 | Approach | Why Not |
 |----------|---------|
-| ORDER BY `idphong` DESC | `idphong` là string không sequential (AppSheet PK) → lexicographic sort sai thứ tự |
-| ORDER BY `ngaytao DESC NULLS LAST` | Không backfill: `NULLS LAST` đẩy hết existing records xuống cuối, thứ tự giữa chúng undefined, nhưng future records sẽ lên đầu. Tuy nhiên không backfill đồng nghĩa không có thứ tự nào cho existing data — backfill 1 lần là fix gọn | 
+| ORDER BY `ngaytao DESC NULLS LAST` | Không backfill: `NULLS LAST` đẩy hết existing records xuống cuối, thứ tự giữa chúng undefined | 
 | Thêm `sort_order` column | Over-engineering cho data volume hiện tại |
 
 ---
@@ -207,10 +229,12 @@ Không cần cho data volume hiện tại.
 
 | Date | Decision | Rationale |
 |------|----------|-----------|
-| 2026-06-24 | Backfill `ngaytao` = NOW() cho existing records | Tạo baseline ordering, future records tự động lên đầu |
+| 2026-06-24 | **Option B** — `ORDER BY idphong DESC` (chữa cháy) | `idphong` 13 chữ số cùng độ dài → string sort = numeric sort; không cần backfill |
 | 2026-06-24 | Chọn offset-based pagination (Phase 2) | Data volume nhỏ, Supabase hỗ trợ sẵn `.range()`, đơn giản hơn cursor |
 | 2026-06-24 | Giữ amenities filter client-side | Chính xác hơn, data volume hiện tại không cần server-side |
 | 2026-06-24 | PAGE_SIZE = 12 | Balance giữa số lần fetch và số rows hiển thị trên mọi device |
+| 2026-06-24 | Xoá `keyword` khỏi code (type + service) | Có backend nhưng không UI, không dùng đến |
+| 2026-06-24 | Xoá `dienTichMin` khỏi type | Dead code, không UI không logic |
 
 ---
 
