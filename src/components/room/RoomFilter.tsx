@@ -109,16 +109,17 @@ export default function RoomFilter({ areas, onFilter }: RoomFilterProps) {
 
   return (
     <div
-      className="overflow-hidden rounded-2xl bg-primary shadow-lg shadow-blue-200 transition-all duration-300"
+      className="relative rounded-2xl bg-primary shadow-lg shadow-blue-200"
       onClick={() => !isOpen && setIsOpen(true)}
     >
       {/* Collapsed state — Blue card */}
       <div
-        className={`flex items-center justify-between transition-all duration-300 ${
+        className={`flex items-center justify-between transition-opacity duration-300 ${
           isOpen
-            ? "max-h-0 overflow-hidden py-0 opacity-0"
+            ? "pointer-events-none absolute inset-0 opacity-0"
             : "cursor-pointer px-4 py-3 hover:shadow-xl"
         }`}
+        aria-hidden={isOpen}
       >
         <div className="flex items-center gap-2.5">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/20 text-white">
@@ -144,8 +145,8 @@ export default function RoomFilter({ areas, onFilter }: RoomFilterProps) {
 
       {/* Expanded state — Filter panel */}
       <div
-        className={`transition-all duration-300 ${
-          isOpen ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0 overflow-hidden"
+        className={`transition-opacity duration-300 ${
+          isOpen ? "relative" : "pointer-events-none absolute inset-0 opacity-0"
         }`}
       >
         <div className="px-4 py-3">
