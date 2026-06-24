@@ -92,7 +92,7 @@ async function resolveImageUrls(paths: string[]): Promise<Map<string, string>> {
 export async function getRooms(params?: RoomFilterParams): Promise<Room[]> {
   let query = supabase.from("phongtro").select("*");
 
-  query = query.order("ngaytao", { ascending: false });
+  query = query.order("idphong", { ascending: false });
 
   query = query.eq("trangthai", "Trống");
 
