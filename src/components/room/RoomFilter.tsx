@@ -109,39 +109,45 @@ export default function RoomFilter({ areas, onFilter }: RoomFilterProps) {
 
   return (
     <div
-      className={`overflow-hidden rounded-2xl bg-primary shadow-lg shadow-blue-200 transition-all duration-300 ${
-        isOpen ? "" : "cursor-pointer hover:shadow-xl"
-      }`}
+      className="overflow-hidden rounded-2xl bg-primary shadow-lg shadow-blue-200 transition-all duration-300"
       onClick={() => !isOpen && setIsOpen(true)}
     >
       {/* Collapsed state — Blue card */}
-      {!isOpen && (
-        <div className="flex items-center justify-between px-4 py-3">
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/20 text-white">
-              <SlidersHorizontal size={15} />
-            </div>
-            <div>
-              <p className="text-sm font-semibold text-white">
-                Tìm phòng trọ phù hợp
-              </p>
-              {hasFilters ? (
-                <p className="mt-0.5 text-xs text-blue-200">
-                  Đang lọc {filterCount} tiêu chí
-                </p>
-              ) : (
-                <p className="mt-0.5 text-xs text-blue-200">
-                  Bấm để mở bộ lọc
-                </p>
-              )}
-            </div>
+      <div
+        className={`flex items-center justify-between transition-all duration-300 ${
+          isOpen
+            ? "max-h-0 overflow-hidden py-0 opacity-0"
+            : "cursor-pointer px-4 py-3 hover:shadow-xl"
+        }`}
+      >
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/20 text-white">
+            <SlidersHorizontal size={15} />
           </div>
-          <ChevronDown size={16} className="text-white/70" />
+          <div>
+            <p className="text-sm font-semibold text-white">
+              Tìm phòng trọ phù hợp
+            </p>
+            {hasFilters ? (
+              <p className="mt-0.5 text-xs text-blue-200">
+                Đang lọc {filterCount} tiêu chí
+              </p>
+            ) : (
+              <p className="mt-0.5 text-xs text-blue-200">
+                Bấm để mở bộ lọc
+              </p>
+            )}
+          </div>
         </div>
-      )}
+        <ChevronDown size={16} className="text-white/70" />
+      </div>
 
       {/* Expanded state — Filter panel */}
-      {isOpen && (
+      <div
+        className={`transition-all duration-300 ${
+          isOpen ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0 overflow-hidden"
+        }`}
+      >
         <div className="px-4 py-3">
           {/* Header */}
           <div className="flex items-center justify-between">
@@ -310,7 +316,7 @@ export default function RoomFilter({ areas, onFilter }: RoomFilterProps) {
             </div>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }
