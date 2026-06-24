@@ -127,7 +127,7 @@ export default function RoomDetail({ room }: RoomDetailProps) {
         <div className="space-y-3">
           <button
             onClick={handleCopy}
-            className={`flex w-full items-center justify-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all ${
+            className={`flex w-full items-center justify-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all active:scale-[0.98] ${
               copied
                 ? "bg-green-50 text-green-700"
                 : "border border-accent-light/20 bg-white text-accent-light hover:border-accent-light/40 hover:text-accent"

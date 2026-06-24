@@ -100,14 +100,14 @@ export default function RoomGallery({ images }: RoomGalleryProps) {
           <>
             <button
               onClick={scrollPrev}
-              className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-1.5 shadow-lg backdrop-blur-sm transition-all hover:bg-white"
+              className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-1.5 shadow-lg backdrop-blur-sm transition-all hover:bg-white active:scale-90"
               aria-label="Previous image"
             >
               <ChevronLeft size={20} className="text-accent" />
             </button>
             <button
               onClick={scrollNext}
-              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-1.5 shadow-lg backdrop-blur-sm transition-all hover:bg-white"
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-1.5 shadow-lg backdrop-blur-sm transition-all hover:bg-white active:scale-90"
               aria-label="Next image"
             >
               <ChevronRight size={20} className="text-accent" />
@@ -121,7 +121,7 @@ export default function RoomGallery({ images }: RoomGalleryProps) {
             setViewerIndex(selectedIndex);
             setViewerOpen(true);
           }}
-          className="absolute bottom-3 right-3 rounded-full bg-black/50 p-1.5 text-white shadow-lg backdrop-blur-sm transition-all hover:bg-black/70"
+          className="absolute bottom-3 right-3 rounded-full bg-black/50 p-1.5 text-white shadow-lg backdrop-blur-sm transition-all hover:bg-black/70 active:scale-90"
           aria-label="View fullscreen"
         >
           <Maximize2 size={16} />

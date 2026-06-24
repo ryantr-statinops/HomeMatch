@@ -15,7 +15,7 @@ const navLinks = [
 ];
 
 const zaloButtonClass =
-  "flex items-center justify-center gap-1.5 rounded-lg bg-white px-2.5 py-1.5 text-sm font-medium text-primary transition-all hover:bg-gray-100";
+  "flex items-center justify-center gap-1.5 rounded-lg bg-white px-2.5 py-1.5 text-sm font-medium text-primary transition-all hover:bg-gray-100 active:scale-95";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -60,7 +60,7 @@ export default function Navbar() {
           {/* Mobile menu button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="flex items-center p-2 text-white md:hidden"
+            className="flex items-center p-2 text-white transition-transform md:hidden active:scale-90"
             aria-label="Toggle menu"
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -75,7 +75,7 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setIsOpen(false)}
-                className="block rounded-lg px-3 py-2 text-base font-medium text-white transition-colors hover:bg-primary-dark hover:text-blue-200"
+                className="block rounded-lg px-3 py-2 text-base font-medium text-white transition-colors hover:bg-primary-dark hover:text-blue-200 active:scale-[0.98]"
               >
                 {link.label}
               </Link>

@@ -160,7 +160,7 @@ export default function RoomFilter({ areas, onFilter }: RoomFilterProps) {
                   e.stopPropagation();
                   setIsOpen(false);
                 }}
-                className="text-white/70 transition-colors hover:text-white"
+                className="text-white/70 transition-all hover:text-white active:scale-90"
               >
                 <ChevronUp size={16} />
               </button>
@@ -213,7 +213,7 @@ export default function RoomFilter({ areas, onFilter }: RoomFilterProps) {
                       <DialogTitle>
                         Chọn tiện ích
                       </DialogTitle>
-                      <DialogClose className="rounded-full p-1 text-accent-light transition-colors hover:bg-gray-100 hover:text-accent">
+                        <DialogClose className="rounded-full p-1 text-accent-light transition-all hover:bg-gray-100 hover:text-accent active:scale-90">
                         <X size={16} />
                       </DialogClose>
                     </div>
@@ -224,7 +224,7 @@ export default function RoomFilter({ areas, onFilter }: RoomFilterProps) {
                           <button
                             key={item.key}
                             onClick={() => toggleAmenity(item.key)}
-                            className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2.5 text-xs font-medium transition-all ${
+                            className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2.5 text-xs font-medium transition-all active:scale-95 ${
                               active
                                 ? "border-blue-600 bg-blue-600 text-white"
                                 : "border-gray-200 bg-white text-accent hover:border-gray-300 hover:bg-gray-50"
@@ -240,7 +240,7 @@ export default function RoomFilter({ areas, onFilter }: RoomFilterProps) {
                       <div className="mt-3 flex justify-end">
                         <button
                           onClick={() => setSelectedAmenities(new Set())}
-                          className="text-xs font-semibold text-accent-light transition-colors hover:text-red-500"
+                          className="text-xs font-semibold text-accent-light transition-colors hover:text-red-500 active:scale-95"
                         >
                           Xoá tất cả
                         </button>
@@ -292,7 +292,7 @@ export default function RoomFilter({ areas, onFilter }: RoomFilterProps) {
                     e.stopPropagation();
                     handleClear();
                   }}
-                  className="rounded-lg border border-white/30 px-4 py-1.5 text-xs font-semibold text-white transition-all hover:border-white/50 hover:bg-white/10"
+                  className="rounded-lg border border-white/30 px-4 py-1.5 text-xs font-semibold text-white transition-all hover:border-white/50 hover:bg-white/10 active:scale-95"
                 >
                   Xoá tất cả
                 </button>
@@ -303,7 +303,7 @@ export default function RoomFilter({ areas, onFilter }: RoomFilterProps) {
                   applyFilters();
                   setIsOpen(false);
                 }}
-                className="rounded-lg bg-white px-4 py-1.5 text-xs font-semibold text-primary shadow transition-all hover:bg-blue-50 hover:shadow-md"
+                className="rounded-lg bg-white px-4 py-1.5 text-xs font-semibold text-primary shadow transition-all hover:bg-blue-50 hover:shadow-md active:scale-95"
               >
                 Áp dụng
               </button>

@@ -49,7 +49,7 @@ export default function ImageViewer({
         <Dialog.Backdrop className="fixed inset-0 z-50 bg-black/80 data-open:fade-in data-closed:fade-out" />
         <Dialog.Popup className="fixed inset-0 z-50 flex items-center justify-center data-open:fade-in data-closed:fade-out">
           {/* Close button */}
-          <Dialog.Close className="absolute right-4 top-4 z-10 rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70">
+          <Dialog.Close className="absolute right-4 top-4 z-10 rounded-full bg-black/50 p-2 text-white transition-all hover:bg-black/70 active:scale-90">
             <X size={24} />
           </Dialog.Close>
 
@@ -62,7 +62,7 @@ export default function ImageViewer({
           {images.length > 1 && (
             <button
               onClick={scrollPrev}
-              className="absolute left-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
+              className="absolute left-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white transition-all hover:bg-black/70 active:scale-90"
               aria-label="Previous image"
             >
               <ChevronLeft size={28} />
@@ -73,7 +73,7 @@ export default function ImageViewer({
           {images.length > 1 && (
             <button
               onClick={scrollNext}
-              className="absolute right-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
+              className="absolute right-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white transition-all hover:bg-black/70 active:scale-90"
               aria-label="Next image"
             >
               <ChevronRight size={28} />
