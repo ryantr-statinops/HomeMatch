@@ -2,7 +2,12 @@
 
 ## Status
 
-- **Phase 1 (Quick Wins):** Pending
+- **Phase 1 (Quick Wins):** ✅ Done
+  - 1.1 RoomCard click feedback: `active:scale-[0.98]` — commit `b4afc11`
+  - 1.2 Button click feedback: `active:scale-95/90` trên 6 files — commit `e0eead3`
+  - 1.3 RoomCard staggered entry: `animate-in fade-in slide-in-from-bottom-4` + `index * 50ms` — commit `1f211be`
+  - 1.4 Filter panel toggle: fade opacity + `translate-y` + `ease-out duration-700` — thay vì max-h — commit `6c6c363`, `2316ff5`, `19b5aa6`, `f9622d7`
+  - Dialog animation speed: thêm `duration-300` — commit `4939ebb`
 - **Phase 2 (Component Animations):** Pending
 - **Phase 3 (Page Transitions):** Pending
 
@@ -90,19 +95,32 @@
 
 **Hiện tại:** `{isOpen && (...)}` — content xuất hiện/ biến mất tức thì.
 
-**Cần thay đổi:** Wrap nội dung filter trong div với `data-open`/`data-closed` + `animate-collapsible-down/up`:
+**Giải pháp cuối cùng (sau 4 lần iteration):**
+
+Thay conditional render bằng absolute positioning để kiểm soát layout + pure opacity transition:
 
 ```tsx
-<div
-  className={`overflow-hidden transition-all duration-300 ${
-    isOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
-  }`}
->
-  {/* Nội dung filter */}
+<div className="relative rounded-2xl bg-primary shadow-lg shadow-blue-200">
+  {/* Collapsed — absolute out-of-flow khi mở */}
+  <div className={`flex items-center justify-between transition-opacity duration-150 ${
+    isOpen ? "pointer-events-none absolute inset-0 opacity-0" : "cursor-pointer px-4 py-3"
+  }`}>
+    ...
+  </div>
+
+  {/* Expanded — absolute out-of-flow khi đóng */}
+  <div className={`transition-all duration-700 ease-out ${
+    isOpen ? "relative translate-y-0 opacity-100" : "pointer-events-none absolute inset-0 translate-y-4 opacity-0"
+  }`}>
+    ...
+  </div>
 </div>
 ```
 
-> Hoặc dùng `@base-ui` Collapsible nếu muốn chuẩn shadcn pattern (tương tự dialog đã làm).
+**Key decisions:**
+- `duration-150` cho collapsed (mờ nhanh khi đóng), `duration-700` + `ease-out` + `translate-y` cho expanded (mở chậm, mượt, trượt lên)
+- Dùng `absolute inset-0` để invisible elements không chiếm layout space
+- Bỏ `max-h` hoàn toàn — user không thích hiệu ứng "co lên"
 
 ---
 
@@ -271,10 +289,11 @@ export default function RootLayout({ children }) {
 
 | Phase | Item | Effort | Impact | Dependencies |
 |-------|------|--------|--------|-------------|
-| 1 | 1.1 RoomCard click feedback | ⭐ | 🔥🔥🔥🔥 | None |
-| 1 | 1.2 Button click feedback | ⭐ | 🔥🔥🔥 | None |
-| 1 | 1.3 RoomCard staggered entry | ⭐ | 🔥🔥🔥 | None |
-| 1 | 1.4 Filter panel toggle | ⭐ | 🔥🔥 | RoomFilter refactor |
+| 1 | 1.1 RoomCard click feedback | ⭐ | 🔥🔥🔥🔥 | ✅ Done `b4afc11` |
+| 1 | 1.2 Button click feedback | ⭐ | 🔥🔥🔥 | ✅ Done `e0eead3` |
+| 1 | 1.3 RoomCard staggered entry | ⭐ | 🔥🔥🔥 | ✅ Done `1f211be` |
+| 1 | 1.4 Filter panel toggle | ⭐⭐ | 🔥🔥 | ✅ Done `6c6c363` `2316ff5` `19b5aa6` `f9622d7` |
+| 1 | — Dialog animation speed | ⭐ | 🔥🔥 | ✅ Done `4939ebb` |
 | 2 | 2.1 Mobile menu animation | ⭐⭐ | 🔥🔥🔥🔥 | None |
 | 2 | 2.4 RoomDetail staggered sections | ⭐ | 🔥🔥 | RoomDetail page |
 | 2 | 2.2 Gallery crossfade | ⭐⭐ | 🔥🔥 | Embla plugin |

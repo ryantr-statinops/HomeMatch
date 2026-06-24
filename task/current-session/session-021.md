@@ -17,7 +17,8 @@ SESSION-021
 1. Setup Vercel Web Analytics
 2. Thêm loading skeleton cho trang `/rooms/[id]`
 3. Tối ưu room listing: review filter logic, xoá dead code, implement ORDER BY
-4. Ghi lại session log
+4. UX Animation Phase 1: click feedback, staggered entry, filter toggle, dialog speed
+5. Ghi lại session log
 
 ---
 
@@ -30,6 +31,8 @@ SESSION-021
 - Không có ordering → thứ tự phòng ngẫu nhiên
 - `ngaytao` column tồn tại nhưng NULL cho tất cả existing records
 - `idphong` là string 13 chữ số (dạng "2026616153141"), cùng độ dài → string sort = numeric sort
+- UX animations gần như không có — thiếu click feedback, staggered entry, filter toggle instant
+- `tw-animate-css` đã cài sẵn, có thể dùng `data-open:fade-in`, `animate-in`, `slide-in-from-bottom-4`, ...
 - Session-020 đã ghi lại quá trình migrate
 
 ---
@@ -45,9 +48,16 @@ SESSION-021
 7. Xoá `dienTichMin` khỏi type (dead code, không UI không logic)
 8. Tạo plan `docs/rooms-listing-optimization.md` (Phase 1-3)
 9. Triển khai ORDER BY: chọn Option B (`idphong DESC` — chữa cháy)
-10. Build verify sạch lỗi
-11. Commit & push lên GitHub
-12. Tạo session log (file này)
+10. Tạo plan `docs/ux-animation-plan.md` (Phase 1-3)
+11. Triển khai UX Phase 1:
+    - 1.1 RoomCard click feedback (`active:scale-[0.98]`)
+    - 1.2 Button click feedback (`active:scale-95/90`) — 6 components
+    - 1.3 RoomCard staggered entry (`animate-in fade-in slide-in-from-bottom-4`)
+    - 1.4 Filter panel toggle animation (fade + translate-y + absolute positioning)
+    - Dialog animation speed (`duration-300`)
+12. Build verify sạch lỗi
+13. Commit & push lên GitHub
+14. Tạo session log (file này)
 
 ### Out Of Scope (cho ordering)
 
@@ -75,12 +85,23 @@ SESSION-021
 3. **src/components/room/RoomDetailSkeleton.tsx** — Spinner `Loader2` xoay + text "Đang tải..." căn giữa, `min-h-[60vh]`
 4. **src/app/rooms/[id]/loading.tsx** — Next.js loading page: breadcrumb skeleton (`animate-pulse`) + `RoomDetailSkeleton` ở content area
 5. **docs/rooms-listing-optimization.md** — Plan chi tiết: ordering (Phase 1), pagination (Phase 2), advanced performance (Phase 3)
-6. **task/current-session/session-021.md** — Session log này
+6. **docs/ux-animation-plan.md** — Plan chi tiết UX animation: Phase 1 (Quick Wins), Phase 2 (Component), Phase 3 (Page Transitions)
+7. **task/current-session/session-021.md** — Session log này
 
 ### Modified Files
 
-7. **src/types/room.ts** — Xoá `keyword`, `dienTichMin` khỏi `RoomFilterParams`; thêm `createdAt: string` vào `Room`
-8. **src/services/room.service.ts** — Xoá keyword filter (Supabase + client-side); thêm `createdAt` mapping; đổi ORDER BY từ `ngaytao` → `idphong DESC`
+8. **src/types/room.ts** — Xoá `keyword`, `dienTichMin` khỏi `RoomFilterParams`; thêm `createdAt: string` vào `Room`
+9. **src/services/room.service.ts** — Xoá keyword filter (Supabase + client-side); thêm `createdAt` mapping; đổi ORDER BY từ `ngaytao` → `idphong DESC`
+10. **src/components/room/RoomCard.tsx** — Thêm `active:scale-[0.98]` click feedback
+11. **src/components/room/RoomList.tsx** — Thêm staggered entry animation cho RoomCard grid
+12. **src/components/room/RoomFilter.tsx** — Thêm button click feedback, chuyển filter toggle instant → fade + translate-y animation
+13. **src/components/room/RoomDetail.tsx** — Thêm `active:scale-[0.98]` copy button
+14. **src/components/room/RoomGallery.tsx** — Thêm `active:scale-90` cho nav/expand buttons
+15. **src/components/room/ImageViewer.tsx** — Thêm `active:scale-90` cho close/nav buttons
+16. **src/components/shared/ContactButton.tsx** — Thêm `active:scale-[0.98]` Zalo CTA
+17. **src/components/layout/Navbar.tsx** — Thêm `active:scale-95/90` cho Zalo button, mobile menu toggle
+18. **src/components/ui/dialog.tsx** — Thêm `duration-300` cho dialog open/close animation
+19. **src/configs/site.ts** — Cập nhật Facebook URL
 
 ---
 
@@ -118,10 +139,33 @@ SESSION-021
 5. **Lưu ý (chữa cháy):** Phương pháp này dựa trên giả định AppSheet sinh ID tăng dần và cùng độ dài. Nếu sau này ID format thay đổi hoặc không cùng length, string sort sẽ sai thứ tự. Khi đó cần Option A (backfill `ngaytao` bằng `ctid`).
 6. Build OK
 
+### Implementation Steps — UX Phase 1 (Quick Wins)
+
+1. **1.1 RoomCard click feedback:** Thêm `active:scale-[0.98]` vào `<Link>` wrapping RoomCard — 1 dòng
+2. **1.2 Button click feedback:** Thêm `active:scale-95/90` vào tất cả buttons — 6 files, 16 edits
+3. **1.3 RoomCard staggered entry:** Wrap mỗi card trong `<div className="animate-in fade-in slide-in-from-bottom-4" style={{ animationDelay: ${index * 50}ms }}>`
+4. **1.4 Filter panel toggle:** Ban đầu dùng `max-h` transition, user thấy không ưng (hiệu ứng "co lên"). Chuyển sang pure fade + `absolute inset-0` positioning + `translate-y` cho mượt hơn:
+   - Iteration 1: `max-h-[2000px]` + `opacity` (commit `6c6c363`)
+   - Iteration 2: Bỏ `max-h`, chuyển sang `absolute inset-0` layout (commit `2316ff5`)
+   - Iteration 3: Điều chỉnh fade speed: collapsed `150ms`, expanded `500ms` (commit `19b5aa6`)
+   - Iteration 4: Thêm `ease-out` + `translate-y` + `duration-700` cho expanded mượt hơn (commit `f9622d7`)
+5. **Dialog animation speed:** Thêm `duration-300` vào backdrop + popup trong `dialog.tsx` — commit `4939ebb`
+6. Build OK
+
+**Key decisions cho filter toggle:**
+- Không dùng `max-h` vì CSS không animate `max-height` mượt — transition bị giật
+- Dùng `absolute inset-0` để invisible elements không chiếm layout space
+- `duration-150` collapsed (mờ nhanh) + `duration-700 ease-out` expanded (mở chậm, mượt)
+- Thêm `translate-y-4` khi đóng → mở ra trượt nhẹ từ dưới lên kết hợp fade
+
 ### User Steps After Deploy
 
 - Vào Vercel Dashboard → project → **Analytics** tab → Enable Web Analytics
 - Redeploy (Deployments → ... → Redeploy)
+
+### Other Changes
+
+- **Facebook URL:** Cập nhật từ `https://facebook.com/185ect` → `https://www.facebook.com/share/17pxYJint4/` — commit `5806752`
 
 ---
 
@@ -144,3 +188,13 @@ SESSION-021
 | `d96345e` | docs: add rooms listing optimization plan (Phase 1-3) | Plan doc |
 | `36d9de6` | feat: add ORDER BY ngaytao DESC + createdAt field | Triển khai Phase 1 (sau đổi sang B) |
 | `2c05d3a` | feat: ORDER BY idphong DESC (numeric string, newest-first) | Đổi sang Option B — chữa cháy |
+| `5806752` | fix: update Facebook fanpage URL | |
+| `11d74e1` | docs: add UX animation improvement plan (Phase 1-3) | Plan doc |
+| `b4afc11` | feat: add click feedback (active:scale-[0.98]) to RoomCard | 1.1 |
+| `e0eead3` | feat: add click feedback (active:scale-95/90) to all buttons | 1.2 |
+| `1f211be` | feat: add staggered entry animation to RoomCard grid | 1.3 |
+| `6c6c363` | feat: add smooth expand/collapse animation to RoomFilter panel | 1.4 (iteration 1) |
+| `2316ff5` | fix: change filter toggle to pure fade opacity (remove max-h) | 1.4 (iteration 2) |
+| `19b5aa6` | fix: adjust filter fade speeds - close fast (150ms), open slow (500ms) | 1.4 (iteration 3) |
+| `f9622d7` | fix: smoother filter open with translate-y + ease-out 700ms | 1.4 (iteration 4) |
+| `4939ebb` | fix: slow down dialog open/close animation (duration-300) | Dialog speed |
