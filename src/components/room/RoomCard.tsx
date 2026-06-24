@@ -61,7 +61,7 @@ export default function RoomCard({ room }: RoomCardProps) {
   return (
     <Link
       href={routes.roomDetail(room.id)}
-      className="group overflow-hidden rounded-2xl border border-gray-100 bg-white transition-all hover:shadow-lg hover:shadow-blue-100"
+      className="group overflow-hidden rounded-2xl border border-gray-100 bg-white transition-all hover:shadow-lg hover:shadow-blue-100 active:scale-[0.98]"
     >
       {/* Image */}
       <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
