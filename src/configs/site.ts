@@ -5,5 +5,5 @@ export const site = {
   language: "vi",
   zaloUrl: process.env.NEXT_PUBLIC_ZALO_URL ?? "",
   phone: "0344997897",
-  facebookUrl: "https://facebook.com/185ect",
+  facebookUrl: "https://www.facebook.com/share/17pxYJint4/",
 } as const;
