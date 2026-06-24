@@ -145,8 +145,10 @@ export default function RoomFilter({ areas, onFilter }: RoomFilterProps) {
 
       {/* Expanded state — Filter panel */}
       <div
-        className={`transition-opacity duration-500 ${
-          isOpen ? "relative" : "pointer-events-none absolute inset-0 opacity-0"
+        className={`transition-all duration-700 ease-out ${
+          isOpen
+            ? "relative translate-y-0 opacity-100"
+            : "pointer-events-none absolute inset-0 translate-y-4 opacity-0"
         }`}
       >
         <div className="px-4 py-3">
