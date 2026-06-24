@@ -114,7 +114,7 @@ export default function RoomFilter({ areas, onFilter }: RoomFilterProps) {
     >
       {/* Collapsed state — Blue card */}
       <div
-        className={`flex items-center justify-between transition-opacity duration-300 ${
+        className={`flex items-center justify-between transition-opacity duration-150 ${
           isOpen
             ? "pointer-events-none absolute inset-0 opacity-0"
             : "cursor-pointer px-4 py-3 hover:shadow-xl"
@@ -145,7 +145,7 @@ export default function RoomFilter({ areas, onFilter }: RoomFilterProps) {
 
       {/* Expanded state — Filter panel */}
       <div
-        className={`transition-opacity duration-300 ${
+        className={`transition-opacity duration-500 ${
           isOpen ? "relative" : "pointer-events-none absolute inset-0 opacity-0"
         }`}
       >
