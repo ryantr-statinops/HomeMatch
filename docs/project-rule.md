@@ -163,7 +163,9 @@ MVP chỉ cần tracking lead cơ bản.
 
 ## Rule D1
 
-Google Sheet là database của MVP.
+Supabase (PostgreSQL) là database của MVP (migrated từ Google Sheet).
+
+Google Sheet vẫn là nguồn dữ liệu trung gian qua AppSheet.
 
 ---
 
@@ -204,16 +206,17 @@ Không lưu dữ liệu trùng lặp nếu đã tồn tại quan hệ dữ liệ
 
 ## Rule A1
 
-Kiến trúc hệ thống:
+Kiến trúc hệ thống hiện tại:
 
 ```text
-User
-↓
-Next.js Website
-↓
-Apps Script API
-↓
-Google Sheet
+AppSheet (Admin Operations)
+    ↓
+Supabase (PostgreSQL) — Source of Truth
+    ↓
+Next.js Website (Supabase SDK)
+
+Image Resolution:
+Google Drive → ImageCache table (Supabase) → Website
 ```
 
 ---
@@ -226,7 +229,9 @@ Frontend không được đọc Google Sheet trực tiếp.
 
 ## Rule A3
 
-Google Apps Script là lớp API duy nhất trong MVP.
+Supabase SDK là lớp API chính trong hệ thống hiện tại.
+
+Google Apps Script đã được thay thế (không còn sử dụng).
 
 ---
 
@@ -335,7 +340,10 @@ src/types/
 
 ## Rule DEP1
 
-Frontend deploy bằng Cloudflare Pages.
+Frontend deploy bằng Vercel.
+
+**URL:** https://homematchvn.vercel.app
+**Custom domain:** https://homematch.id.vn
 
 ---
 
@@ -347,7 +355,7 @@ API deploy bằng Google Apps Script.
 
 ## Rule DEP3
 
-Database sử dụng Google Sheet.
+Database sử dụng Supabase (PostgreSQL), đồng bộ dữ liệu từ Google Sheet qua AppSheet.
 
 ---
 

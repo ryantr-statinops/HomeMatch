@@ -9,12 +9,13 @@
 1. [Yêu cầu hệ thống](#1-yêu-cầu-hệ-thống)
 2. [Cài đặt môi trường local](#2-cài-đặt-môi-trường-local)
 3. [Cấu hình biến môi trường](#3-cấu-hình-biến-môi-trường)
-4. [Cấu hình Google Apps Script API](#4-cấu-hình-google-apps-script-api)
-5. [Deploy Apps Script](#5-deploy-apps-script)
-6. [Kiểm tra kết nối API](#6-kiểm-tra-kết-nối-api)
+4. [Kiến trúc dữ liệu](#4-kiến-trúc-dữ-liệu)
+5. [Supabase Setup](#5-supabase-setup)
+6. [Google Cloud Console & Drive API](#6-google-cloud-console--drive-api)
 7. [Cấu trúc dự án](#7-cấu-trúc-dự-án)
 8. [Quy trình phát triển](#8-quy-trình-phát-triển)
 9. [Xử lý sự cố](#9-xử-lý-sự-cố)
+10. [Phụ lục: Apps Script (Deprecated)](#10-phụ-lục-apps-script-deprecated)
 
 ---
 
@@ -25,8 +26,8 @@
 | Node.js | >= 20 | Kiểm tra: `node --version` |
 | npm | >= 10 | Kiểm tra: `npm --version` |
 | Git | >= 2.x | Kiểm tra: `git --version` |
-| Clasp | >= 3.x | Dùng để deploy Apps Script |
-| Google Account | — | Cần quyền truy cập Google Sheet & Apps Script |
+| Google Cloud Account | — | Cần để tạo Service Account + Drive API |
+| Supabase Account | — | Free tier, dùng làm database chính |
 
 ---
 
@@ -73,17 +74,17 @@ npm run lint
 Tạo file `.env.local` (đã có trong `.gitignore`, không commit lên Git):
 
 ```env
-# === Google Apps Script API ===
-# URL deploy của Apps Script Web App
-# Xem hướng dẫn ở phần 4 và 5
-NEXT_PUBLIC_API_URL=https://script.google.com/macros/s/{DEPLOY_ID}/exec
+# === Supabase ===
+# URL project + Anon key từ Supabase Dashboard → Settings → API
+NEXT_PUBLIC_SUPABASE_URL=https://rccszqpjeikcjrfmbzpl.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_...
 
 # === Zalo (tuỳ chọn) ===
 # URL Zalo Official Account để người dùng liên hệ
 NEXT_PUBLIC_ZALO_URL=
 
-# === Google Analytics (tuỳ chọn) ===
-NEXT_PUBLIC_GA_ID=
+# === Vercel Analytics (tuỳ chọn) ===
+# Tự động sau khi enable trên Vercel Dashboard
 
 # === Site (tuỳ chọn) ===
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
@@ -93,9 +94,9 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 
 | Biến | Bắt buộc | Mô tả |
 |------|----------|-------|
-| `NEXT_PUBLIC_API_URL` | ✅ Có | URL deploy của Google Apps Script Web App |
+| `NEXT_PUBLIC_SUPABASE_URL` | ✅ Có | URL Supabase project |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | ✅ Có | Anon key từ Supabase Dashboard |
 | `NEXT_PUBLIC_ZALO_URL` | ❌ Không | Link Zalo OA (để hiển thị nút Liên hệ) |
-| `NEXT_PUBLIC_GA_ID` | ❌ Không | Google Analytics Measurement ID |
 | `NEXT_PUBLIC_SITE_URL` | ❌ Không | URL production (dùng cho SEO) |
 
 ### File tham khảo
@@ -105,174 +106,104 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 
 ---
 
-## 4. Cấu hình Google Apps Script API
+## 4. Kiến trúc dữ liệu
 
-### 4.1. Yêu cầu
-
-- Google Sheet **DATABASE_HomeMatch** (chứa dữ liệu phòng trọ, ở ghép,...)
-- Google Apps Script project (đã deploy sẵn trong thư mục `apps-script/`)
-
-### 4.2. Kiến trúc
+### Sơ đồ luồng dữ liệu
 
 ```text
-Browser (Client)
+AppSheet (Admin Operations)
     │
     ▼
-/api/proxy (Next.js server-side)
+Supabase (PostgreSQL) — Source of Truth
     │
-    ▼
-Google Apps Script Web App (deploy URL)
+    ├── Website (Next.js) — Supabase SDK trực tiếp
     │
-    ▼
-Google Sheet (DATABASE_HomeMatch)
+    └── Google Drive — Image Storage (resolve path → URL qua ImageCache table)
 ```
 
-**Tại sao cần proxy?** — Google Apps Script ContentService không hỗ trợ CORS, trình duyệt không thể gọi trực tiếp. Proxy server-side giải quyết vấn đề này.
+### Các bảng Supabase
 
-### 4.3. Cấu trúc Apps Script
+| Table | Mục đích |
+|-------|----------|
+| `phongtro` | Danh sách phòng trọ |
+| `hinhanh` | Hình ảnh các phòng |
+| `roommate` | Bài đăng ở ghép |
+| `imagecache` | Cache mapping path ảnh → Google Drive URL |
+| `lead` | Lead từ website |
 
-| File | Mô tả |
-|------|-------|
-| `Code.js` | Entry point (`doGet`, `doPost`) |
-| `sheets.js` | Kết nối & đọc/ghi Google Sheet |
-| `rooms.js` | API endpoints cho phòng trọ |
-| `roommates.js` | API endpoints cho ở ghép |
-| `leads.js` | API tạo lead |
-| `utils.js` | Helper functions |
-| `appsscript.json` | Manifest (timezone, runtime) |
+Xem chi tiết tại: [docs/database_structure.md](database_structure.md)
 
-### 4.4. API Endpoints
+## 5. Supabase Setup
 
-Xem chi tiết tại: [docs/api-contracts.md](api-contracts.md)
+### 5.1. Tạo Supabase project
 
-| Endpoint | Method | Mô tả |
-|----------|--------|-------|
-| `?action=getRooms` | GET | Danh sách phòng (có filter) |
-| `?action=getRoomDetail&id={ID}` | GET | Chi tiết phòng + hình ảnh |
-| `?action=getRoommatePosts` | GET | Danh sách ở ghép |
-| `?action=getRoommatePostDetail&id={ID}` | GET | Chi tiết bài ở ghép |
-| `?action=createLead` | POST | Ghi nhận lead |
+1. Vào [supabase.com](https://supabase.com) → **New project**
+2. Điền thông tin:
+   - **Name:** `HomeMatch`
+   - **Database Password:** (tạo mới)
+   - **Region:** Singapor (asia-southeast-1) — gần Việt Nam nhất
+3. Chờ vài phút cho project khởi tạo
+
+### 5.2. Cấu hình RLS (Row Level Security)
+
+Sau khi migrate dữ liệu, cần cho phép anonymous read:
+
+```sql
+-- Cho phép đọc phòng
+CREATE POLICY "anon_read_phongtro" ON phongtro FOR SELECT TO anon USING (true);
+
+-- Cho phép đọc hình ảnh
+CREATE POLICY "anon_read_hinhanh" ON hinhanh FOR SELECT TO anon USING (true);
+
+-- Cho phép đọc image cache
+CREATE POLICY "anon_read_imagecache" ON imagecache FOR SELECT TO anon USING (true);
+
+-- Cho phép đọc roommate posts
+CREATE POLICY "anon_read_roommate" ON roommate FOR SELECT TO anon USING (true);
+
+-- Cho phép insert lead
+CREATE POLICY "anon_insert_lead" ON lead FOR INSERT TO anon WITH CHECK (true);
+```
+
+### 5.3. ImageCache & Google Drive API
+
+Để resolve path ảnh từ AppSheet (VD: `PHONGTRO_Images/abc.jpg`) → Google Drive URL, hệ thống dùng:
+
+1. **Google Cloud Console** — Tạo Service Account, enable Drive API
+2. **Script `scripts/build-image-cache.ts`** — Dùng Service Account để tìm file trong Drive folder, lấy thumbnail URL, insert vào `imagecache` table
+3. **Service layer** (`room.service.ts`) — Khi get rooms, tự động query `imagecache` để resolve ảnh
+
+> **Lưu ý:** Cần share folder ảnh (PHONGTRO_Images, HINHANH_Images) với Service Account email.
 
 ---
 
-## 5. Deploy Apps Script
 
-### 5.1. Cài đặt Clasp
+
+## 6. Kiểm tra kết nối
+
+### 6.1. Kiểm tra Supabase trực tiếp
+
+Vào Supabase Dashboard → **SQL Editor** → chạy:
+
+```sql
+SELECT * FROM phongtro WHERE trangthai = 'Trống' LIMIT 5;
+```
+
+### 6.2. Kiểm tra local dev
 
 ```bash
-npm install -g @google/clasp
+npm run dev
 ```
 
-### 5.2. Đăng nhập
-
-```bash
-clasp login
-```
-
-Trình duyệt sẽ mở, đăng nhập Google Account có quyền truy cập Script.
-
-### 5.3. Kiểm tra kết nối
-
-```bash
-cd apps-script
-clasp list
-```
-
-Kết quả mong đợi:
-```
-Found 1 script.
-HomeMatch API - https://script.google.com/d/{SCRIPT_ID}/edit
-```
-
-### 5.4. Push code
-
-```bash
-cd apps-script
-clasp push -f        # -f để force push (kể cả khi không có thay đổi)
-```
-
-### 5.5. Tạo version & deploy
-
-```bash
-# Tạo version mới
-clasp version "Mô tả ngắn về phiên bản"
-
-# Deploy version
-clasp deploy -V {VERSION_NUMBER} -d "Mô tả deployment"
-```
-
-### 5.6. Deploy từ Google Script Editor (khuyến nghị)
-
-Sau khi push code bằng clasp, vào **Google Script Editor** để deploy Web App:
-
-1. Mở script: [HomeMatch API](https://script.google.com/d/1-ohEkoebv5XqZE1O6pfehTqRpUOmw48zGvcLX1Q5RCDWzLm9Ub_pWe32/edit)
-2. **Deploy → New deployment**
-3. Chọn **Web app**
-4. Cấu hình:
-   - **Execute as**: `Me` (chính bạn)
-   - **Who has access**: `Anyone`
-5. Nhấn **Deploy**
-6. Copy URL dạng: `https://script.google.com/macros/s/{DEPLOY_ID}/exec`
-
-### 5.7. Cấu hình Script Properties
-
-Sau khi deploy, cần set `SHEET_ID` để script biết Google Sheet nào cần đọc:
-
-1. Trong Script Editor: **File → Project properties → Script properties**
-2. Thêm key: `SHEET_ID` = `{ID_CUA_GOOGLE_SHEET}`
-
-> **Mẹo:** Sheet ID là phần `{ID}` trong URL `https://docs.google.com/spreadsheets/d/{ID}/edit`
-
-### 5.8. Cập nhật .env.local
-
-Sao chép URL deploy từ bước 5.6 vào `.env.local`:
-
-```env
-NEXT_PUBLIC_API_URL=https://script.google.com/macros/s/{DEPLOY_ID}/exec
-```
-
----
-
-## 6. Kiểm tra kết nối API
-
-### 6.1. Kiểm tra trực tiếp
-
-Mở URL deploy trong trình duyệt:
-
-```
-https://script.google.com/macros/s/{DEPLOY_ID}/exec?action=getRooms
-```
-
-Kết quả mong đợi — JSON array danh sách phòng:
-
-```json
-[
-  {
-    "id": 2026616144133,
-    "image": "PHONGTRO_Images/...",
-    "address": { "soNha": "214", "duong": "Đường số 9", ... },
-    "price": 7000000,
-    ...
-  }
-]
-```
-
-### 6.2. Kiểm tra qua proxy
-
-Dự án đã có proxy endpoint tại `/api/proxy`. Kiểm tra:
-
-```bash
-curl http://localhost:3000/api/proxy?action=getRooms
-```
-
-Hoặc mở trong trình duyệt khi dev server đang chạy.
-
-### 6.3. Kiểm tra frontend
-
-Khởi động dev server và truy cập:
-
+Mở trình duyệt:
 - `http://localhost:3000/` — Homepage
-- `http://localhost:3000/rooms` — Danh sách phòng (gọi API thật)
+- `http://localhost:3000/rooms` — Danh sách phòng
+- `http://localhost:3000/rooms/{id}` — Chi tiết phòng
+
+### 6.3. Kiểm tra production
+
+- https://homematchvn.vercel.app/rooms
+- https://homematch.id.vn/rooms
 
 ---
 
@@ -316,20 +247,25 @@ HomeMatch/
 
 1. Chạy `npm run dev`
 2. Code tại `src/`
-3. Frontend gọi API qua service layer (`src/services/`)
-4. Service gọi `apiRequest()` trong `src/lib/api-client.ts`
-5. `api-client.ts` gọi proxy `/api/proxy`
-6. Proxy forward request đến Google Apps Script
+3. Frontend gọi Supabase trực tiếp qua service layer (`src/services/`)
+4. Service dùng `supabase.from("phongtro").select(...)` từ `src/lib/supabase/client.ts`
+5. Image path tự động resolve qua `imagecache` table
 
-### 8.2. Thay đổi Apps Script
+### 8.2. Thay đổi database
 
-1. Sửa code trong `apps-script/`
-2. Push: `cd apps-script && clasp push`
-3. Tạo version: `clasp version "Mô tả"`
-4. Deploy: `clasp deploy -V {VERSION} -d "Mô tả"`
-5. Cập nhật `.env.local` nếu deploy ID thay đổi
+1. Migrate data từ Google Sheet → AppSheet → Supabase (đồng bộ)
+2. Chạy script `scripts/build-image-cache.ts` nếu có ảnh mới
+3. Cập nhật docs tại `docs/database_structure.md`
 
-### 8.3. Commit convention
+### 8.3. Deploy lên Vercel
+
+Dự án đã deploy trên Vercel. Khi push code mới:
+
+1. Commit & push lên GitHub
+2. Vercel tự động rebuild (connected Git repo)
+3. Kiểm tra tại: https://homematchvn.vercel.app hoặc https://homematch.id.vn
+
+### 8.4. Commit convention
 
 ```
 feat: thêm tính năng mới
@@ -343,51 +279,88 @@ refactor: tái cấu trúc code
 
 ## 9. Xử lý sự cố
 
-### API trả về 404
+### Không kết nối được Supabase
 
-**Nguyên nhân:** Deployment chưa được cấu hình đúng.
-
-**Fix:**
-1. Mở Script Editor → **Deploy → New deployment**
-2. Chọn **Web app** (không phải Library)
-3. **Execute as**: `Me` | **Who has access**: `Anyone`
-
-### API trả về lỗi xác thực
-
-**Nguyên nhân:** Script chưa được cấp quyền.
+**Nguyên nhân:** Thiếu hoặc sai env vars.
 
 **Fix:**
-1. Mở Script Editor
-2. Chạy thử hàm `doGet` hoặc `doPost` từ editor
-3. Chấp nhận quyền (Review Permissions → Allow)
-
-### API trả về mảng rỗng `[]`
-
-**Nguyên nhân:** SHEET_ID chưa set hoặc sai, hoặc sheet name không đúng.
-
-**Fix:**
-1. Kiểm tra Script Properties: `SHEET_ID` đã set đúng chưa
-2. Kiểm tra tên tab trong Sheet: phải khớp với `SHEET_NAME` trong `Code.js`
-3. Kiểm tra Sheet có dữ liệu không
-
-### API trả về lỗi "API_URL_NOT_CONFIGURED"
-
-**Nguyên nhân:** `.env.local` chưa có `NEXT_PUBLIC_API_URL`.
-
-**Fix:** Thêm URL deploy vào `.env.local` như hướng dẫn ở phần 3.
-
-### Proxy trả về lỗi CORS
-
-**Nguyên nhân:** Gọi trực tiếp đến Google Apps Script URL (bỏ qua proxy).
-
-**Fix:** Frontend luôn gọi qua `/api/proxy`, không gọi thẳng URL deploy. Kiểm tra `src/lib/api-client.ts` — URL phải bắt đầu bằng `/api/proxy`.
+1. Kiểm tra `.env.local` có `NEXT_PUBLIC_SUPABASE_URL` và `NEXT_PUBLIC_SUPABASE_ANON_KEY` chưa
+2. Vào Supabase Dashboard → **Settings → API** để copy đúng URL + anon key
+3. Nếu deploy Vercel: kiểm tra Environment Variables trong Vercel Dashboard
 
 ### Ảnh không hiển thị
 
-**Nguyên nhân:** Đường dẫn ảnh trong Sheet là relative path, không phải URL đầy đủ.
+**Nguyên nhân:** Path ảnh chưa được cache trong `imagecache` table.
 
-**Fix:** Cập nhật cột `HinhAnhChinh` trong Sheet với URL đầy đủ hoặc thêm logic xử lý trong `mapRoom()`.
+**Fix:**
+1. Chạy lại script: `npx tsx scripts/build-image-cache.ts`
+2. Kiểm tra Service Account có quyền đọc Drive folder không
+3. Kiểm tra bảng `imagecache` trong Supabase có dữ liệu không
+
+### Trang /rooms trống
+
+**Nguyên nhân:**
+- Supabase không có dữ liệu
+- RLS chưa cho phép anon read
+
+**Fix:**
+1. Kiểm tra Supabase Dashboard → Table Editor → `phongtro` có dữ liệu không
+2. Chạy SQL: `CREATE POLICY "anon_read_phongtro" ON phongtro FOR SELECT TO anon USING (true);`
+
+### Không build được trên Vercel
+
+**Nguyên nhân:** Thiếu env vars trên Vercel Dashboard.
+
+**Fix:**
+1. Vào Vercel → Project → **Settings → Environment Variables**
+2. Thêm `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_SITE_URL`
+3. **Redeploy**
 
 ---
 
-> **Xem thêm:** [docs/api-contracts.md](api-contracts.md) | [docs/database_structure.md](database_structure.md) | [docs/business-flow.md](business-flow.md)
+> **Ghi chú:** Dự án đã chuyển từ Google Apps Script sang Supabase SDK. Code Apps Script trong thư mục `apps-script/` vẫn được giữ lại để tham khảo.
+
+---
+
+## 10. Phụ lục: Apps Script (Deprecated)
+
+> Dự án đã migrate từ Google Apps Script + Google Sheet sang Supabase (PostgreSQL). Phần này để tham khảo.
+
+### Cấu trúc Apps Script cũ
+
+| File | Mô tả |
+|------|-------|
+| `Code.js` | Entry point (`doGet`, `doPost`) |
+| `sheets.js` | Kết nối & đọc/ghi Google Sheet |
+| `rooms.js` | API endpoints cho phòng trọ |
+| `roommates.js` | API endpoints cho ở ghép |
+| `leads.js` | API tạo lead |
+| `utils.js` | Helper functions |
+| `appsscript.json` | Manifest (timezone, runtime) |
+
+### API Endpoints cũ
+
+Xem chi tiết tại: [docs/api-contracts.md](api-contracts.md)
+
+| Endpoint | Method | Mô tả |
+|----------|--------|-------|
+| `?action=getRooms` | GET | Danh sách phòng (có filter) |
+| `?action=getRoomDetail&id={ID}` | GET | Chi tiết phòng + hình ảnh |
+| `?action=getRoommatePosts` | GET | Danh sách ở ghép |
+| `?action=getRoommatePostDetail&id={ID}` | GET | Chi tiết bài ở ghép |
+| `?action=createLead` | POST | Ghi nhận lead |
+
+### Kiến trúc cũ
+
+```text
+Browser (Client)
+    │
+    ▼
+/api/proxy (Next.js server-side)
+    │
+    ▼
+Google Apps Script Web App (deploy URL)
+    │
+    ▼
+Google Sheet (DATABASE_HomeMatch)
+```
