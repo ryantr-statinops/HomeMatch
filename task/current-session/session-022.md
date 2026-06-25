@@ -14,7 +14,7 @@ SESSION-022
 
 ## Goal
 
-Triển khai UX Animation Phase 2: Mobile menu, gallery crossfade, staggered sections.
+Triển khai UX Animation Phase 2: Mobile menu, gallery crossfade, staggered sections. ✅ Hoàn thành
 
 ---
 
@@ -24,34 +24,36 @@ Triển khai UX Animation Phase 2: Mobile menu, gallery crossfade, staggered sec
 - `tw-animate-css` + `@base-ui/react` đã sẵn sàng
 - `docs/ux-animation-plan.md` tại mục **Phase 2** có plan chi tiết cho từng item
 - Phase 1 đã có: click feedback, staggered entry, filter toggle fade, dialog speed
+- Phase 2 đã hoàn thành đủ 5 items
 
 ---
 
 ## Scope
 
 1. **2.1 Mobile menu animation** (`src/components/layout/Navbar.tsx`)
-   - Thêm backdrop overlay với `fade-in`/`fade-out`
-   - Menu panel `data-open:slide-in-from-top-2 data-open:fade-in`
-   - Dùng `@base-ui` Dialog hoặc Collapsible pattern
-   - Tham khảo: `docs/ux-animation-plan.md` mục 2.1
+   - ✅ Thêm backdrop overlay (`fixed bg-black/50 ` + click để đóng)
+   - ✅ Menu panel slide-down: `-translate-y-full` → `translate-y-0` + `opacity`
+   - `duration-300 ease-out`
+   - Commit: `a399771`
 
-2. **2.2 Gallery slide crossfade** (`src/components/room/RoomGallery.tsx`)
-   - Cài `embla-carousel-fade` plugin
-   - Thêm crossfade transition thay vì hard slide
-   - Tham khảo: `docs/ux-animation-plan.md` mục 2.2
+2. **2.2 Gallery slide crossfade** (`src/components/room/RoomGallery.tsx` + `ImageViewer.tsx`)
+   - ✅ Cài `embla-carousel-fade` package
+   - ✅ Thêm `[Fade()]` plugin vào cả gallery và viewer
+   - Commit: `bf7af3d`
 
 3. **2.3 Thumbnail hover zoom** (`src/components/room/RoomGallery.tsx`)
-   - Thêm `overflow-hidden` + `hover:scale-110` cho thumb images
-   - Tham khảo: `docs/ux-animation-plan.md` mục 2.3
+   - ✅ Thêm `transition-transform duration-300 hover:scale-110` cho thumb images
+   - Commit: `4a12092`
 
-4. **2.4 RoomDetail staggered sections** (`src/app/rooms/[id]/page.tsx` hoặc `RoomDetail.tsx`)
-   - Gallery, RoomInfo, RoomAmenities, ContactButton xuất hiện lần lượt
-   - `animate-in fade-in slide-in-from-bottom-4` với staggered delay
-   - Tham khảo: `docs/ux-animation-plan.md` mục 2.4
+4. **2.4 RoomDetail staggered sections** (`src/components/room/RoomDetail.tsx`)
+   - ✅ Gallery (0ms), RoomInfo (100ms), Amenities (200ms), CTA (300ms)
+   - `animate-in fade-in slide-in-from-bottom-4`
+   - Commit: `91327bd`
 
 5. **2.5 Amenity dialog staggered items** (`src/components/room/RoomFilter.tsx`)
-   - Các nút tiện ích xuất hiện lần lượt khi dialog mở
-   - Tham khảo: `docs/ux-animation-plan.md` mục 2.5
+   - ✅ 12 amenity buttons xuất hiện lần lượt: `index * 30ms`
+   - `animate-in fade-in`
+   - Commit: `fa2815f`
 
 ---
 
@@ -91,10 +93,22 @@ Xem `docs/ux-animation-plan.md` từ mục **Phase 2** — mỗi item có code m
 
 ## Definition Of Done
 
-* [ ] Hoàn thành tất cả Phase 2 items
-* [ ] Không vi phạm project-rules
-* [ ] Build sạch (0 errors)
-* [ ] Commit & push từng item riêng
+* [x] Hoàn thành tất cả Phase 2 items
+* [x] Không vi phạm project-rules
+* [x] Build sạch (0 errors)
+* [x] Commit & push từng item riêng
+
+---
+
+## Commits
+
+| Hash | Message | Item |
+|------|---------|------|
+| `4a12092` | feat: add thumbnail hover zoom (scale-110) to RoomGallery | 2.3 |
+| `91327bd` | feat: add staggered entry animation to RoomDetail sections | 2.4 |
+| `fa2815f` | feat: add staggered entry animation to amenity dialog items | 2.5 |
+| `bf7af3d` | feat: add crossfade transition to gallery slides (embla-carousel-fade) | 2.2 |
+| `a399771` | feat: add mobile menu slide-down animation + backdrop overlay | 2.1 |
 
 ---
 

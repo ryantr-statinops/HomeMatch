@@ -8,7 +8,12 @@
   - 1.3 RoomCard staggered entry: `animate-in fade-in slide-in-from-bottom-4` + `index * 50ms` — commit `1f211be`
   - 1.4 Filter panel toggle: fade opacity + `translate-y` + `ease-out duration-700` — thay vì max-h — commit `6c6c363`, `2316ff5`, `19b5aa6`, `f9622d7`
   - Dialog animation speed: thêm `duration-300` — commit `4939ebb`
-- **Phase 2 (Component Animations):** Pending
+- **Phase 2 (Component Animations):** ✅ Done
+  - 2.1 Mobile menu: `translate-y-full` slide + backdrop overlay — commit `a399771`
+  - 2.2 Gallery crossfade: `embla-carousel-fade` plugin — commit `bf7af3d`
+  - 2.3 Thumbnail zoom: `hover:scale-110` — commit `4a12092`
+  - 2.4 RoomDetail staggered: `animate-in fade-in slide-in-from-bottom-4` + delay — commit `91327bd`
+  - 2.5 Amenity dialog staggered: `animate-in fade-in` + `index * 30ms` — commit `fa2815f`
 - **Phase 3 (Page Transitions):** Pending
 
 ---
@@ -294,11 +299,11 @@ export default function RootLayout({ children }) {
 | 1 | 1.3 RoomCard staggered entry | ⭐ | 🔥🔥🔥 | ✅ Done `1f211be` |
 | 1 | 1.4 Filter panel toggle | ⭐⭐ | 🔥🔥 | ✅ Done `6c6c363` `2316ff5` `19b5aa6` `f9622d7` |
 | 1 | — Dialog animation speed | ⭐ | 🔥🔥 | ✅ Done `4939ebb` |
-| 2 | 2.1 Mobile menu animation | ⭐⭐ | 🔥🔥🔥🔥 | None |
-| 2 | 2.4 RoomDetail staggered sections | ⭐ | 🔥🔥 | RoomDetail page |
-| 2 | 2.2 Gallery crossfade | ⭐⭐ | 🔥🔥 | Embla plugin |
-| 2 | 2.3 Thumbnail zoom | ⭐ | 🔥 | RoomGallery |
-| 2 | 2.5 Amenity dialog staggered | ⭐ | 🔥 | RoomFilter |
+| 2 | 2.1 Mobile menu animation | ⭐⭐ | 🔥🔥🔥🔥 | ✅ Done `a399771` |
+| 2 | 2.4 RoomDetail staggered sections | ⭐ | 🔥🔥 | ✅ Done `91327bd` |
+| 2 | 2.2 Gallery crossfade | ⭐⭐ | 🔥🔥 | ✅ Done `bf7af3d` |
+| 2 | 2.3 Thumbnail zoom | ⭐ | 🔥 | ✅ Done `4a12092` |
+| 2 | 2.5 Amenity dialog staggered | ⭐ | 🔥 | ✅ Done `fa2815f` |
 | 3 | 3.1 Route transitions | ⭐⭐⭐⭐ | 🔥🔥🔥 | next-view-transitions |
 | 3 | 3.2 Scroll animations | ⭐⭐⭐ | 🔥🔥 | IntersectionObserver |
 
