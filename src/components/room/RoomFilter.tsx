@@ -227,11 +227,15 @@ export default function RoomFilter({ areas, onFilter }: RoomFilterProps) {
                       </DialogClose>
                     </div>
                     <div className="mt-4 grid grid-cols-2 gap-2 md:grid-cols-3">
-                      {AMENITIES.map((item) => {
+                      {AMENITIES.map((item, index) => {
                         const active = selectedAmenities.has(item.key);
                         return (
-                          <button
+                          <div
                             key={item.key}
+                            className="animate-in fade-in"
+                            style={{ animationDelay: `${index * 30}ms` }}
+                          >
+                          <button
                             onClick={() => toggleAmenity(item.key)}
                             className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2.5 text-xs font-medium transition-all active:scale-95 ${
                               active
@@ -242,6 +246,7 @@ export default function RoomFilter({ areas, onFilter }: RoomFilterProps) {
                             <span className={active ? "" : "text-accent-light"}>{item.icon}</span>
                             {item.label}
                           </button>
+                        </div>
                         );
                       })}
                     </div>
