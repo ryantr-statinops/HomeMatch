@@ -163,7 +163,7 @@ export default function RoomGallery({ images }: RoomGalleryProps) {
                 src={img.url}
                 alt=""
                 referrerPolicy="no-referrer"
-                className="h-16 w-16 object-cover"
+                className="h-16 w-16 object-cover transition-transform duration-300 hover:scale-110"
                 onError={(e) => {
                   const target = e.currentTarget;
                   target.style.display = "none";
