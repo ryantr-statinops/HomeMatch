@@ -111,20 +111,22 @@ export default function RoomDetail({ room }: RoomDetailProps) {
   return (
     <div className="grid gap-8 lg:grid-cols-5">
       {/* Gallery */}
-      <div className="lg:col-span-3">
+      <div className="lg:col-span-3 animate-in fade-in slide-in-from-bottom-4" style={{ animationDelay: '0ms' }}>
         <RoomGallery images={galleryImages} />
       </div>
 
       {/* Info + Amenities + CTA */}
       <div className="space-y-8 lg:col-span-2">
-        <RoomInfo room={room} />
+        <div className="animate-in fade-in slide-in-from-bottom-4" style={{ animationDelay: '100ms' }}>
+          <RoomInfo room={room} />
+        </div>
 
-        <div className="border-t border-gray-100 pt-8">
+        <div className="animate-in fade-in slide-in-from-bottom-4 border-t border-gray-100 pt-8" style={{ animationDelay: '200ms' }}>
           <RoomAmenities amenities={room.amenities} />
         </div>
 
         {/* Copy + Contact */}
-        <div className="space-y-3">
+        <div className="animate-in fade-in slide-in-from-bottom-4 space-y-3" style={{ animationDelay: '300ms' }}>
           <button
             onClick={handleCopy}
             className={`flex w-full items-center justify-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all active:scale-[0.98] ${
