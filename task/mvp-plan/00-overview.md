@@ -195,9 +195,10 @@ MVP được xem là thành công khi:
 
 ## Technical
 
-* Deploy thành công lên Vercel
-* Kết nối được Google Sheet
-* Không cần database riêng
+* ✅ Deploy thành công lên Vercel (https://homematchvn.vercel.app + https://homematch.id.vn)
+* ✅ Kết nối được Supabase (PostgreSQL) — migrated từ Google Sheet
+* ✅ Image cache hoạt động qua Google Drive API + Google Cloud Console
+* ✅ Vercel Web Analytics enabled
 
 ---
 
@@ -314,11 +315,11 @@ Hosting
 
 API
 
-* Google Apps Script
+* Supabase SDK (JavaScript client)
 
 Database
 
-* Google Sheet
+* Supabase (PostgreSQL) — migrated từ Google Sheet
 
 Admin
 
@@ -326,7 +327,7 @@ Admin
 
 Analytics
 
-* Google Analytics
+* Vercel Web Analytics
 
 ---
 
@@ -433,7 +434,7 @@ File:
 
 ---
 
-## Phase 9 (🔧 CODE READY)
+## Phase 9 (✅ DONE)
 
 Deployment lên Vercel
 
@@ -443,7 +444,11 @@ File:
 09-deployment.md
 ```
 
-**Status:** Code đã switch từ Cloudflare → Vercel (commit `a54ae9d`). Chờ deploy thực tế lên Vercel dashboard.
+**Status:** ✅ Đã deploy thủ công qua Vercel Dashboard.
+- **URL:** https://homematchvn.vercel.app
+- **Custom domain:** https://homematch.id.vn (đã hoạt động)
+- **Vercel Web Analytics:** ✅ enabled
+- **Env vars:** ✅ đã cấu hình Supabase + Zalo + Google Analytics
 
 ---
 

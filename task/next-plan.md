@@ -33,8 +33,9 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 | Phase 5 — Roommate Listing | ⏸️ ON HOLD (components ready, chưa có data, page giữ Coming Soon) | — |
 | Phase 6 — Roommate Detail | ⏳ PENDING | — |
 | Phase 8 — Zalo Contact | ⏳ PENDING | — |
-| Phase 9 — Deployment (Vercel) | 🔧 CODE READY (switched Cloudflare → Vercel, chờ deploy thực tế) | `a54ae9d` |
+| Phase 9 — Deployment (Vercel) | ✅ DONE (deployed thủ công qua Vercel Dashboard) | `a54ae9d` + Vercel Dashboard |
 | Phase 9.5 — Favicon & Rename | ✅ DONE | `24a47d2`, `a944898` |
+| — Vercel Custom Domain | ✅ DONE | `homematch.id.vn` → Vercel |
 | Phase 10 — Final Review | ⏳ PENDING | — |
 
 ## Planning Docs
@@ -133,7 +134,11 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 11. ⏸️ **Phase 5 — Roommate Listing page** (code ready, hidden — chờ data)
 12. ⏳ **Phase 6 — Roommate Detail page**
 13. ⏳ Phase 8 — Zalo Contact integration
-14. 🔧 **Phase 9 — Deployment (Vercel)** — code switched from Cloudflare → Vercel (commit `a54ae9d`), chờ deploy thực tế lên Vercel
+14. ✅ **Phase 9 — Deployment (Vercel)** — deployed thủ công qua Vercel Dashboard
+   - **URL:** https://homematchvn.vercel.app
+   - **Custom domain:** https://homematch.id.vn ✅ đã hoạt động
+   - **Vercel Web Analytics:** ✅ enabled
+   - **Env vars:** ✅ đã cấu hình trên Vercel Dashboard
 15. ✅ **Phase 9.5 — Favicon & Rename** — favicon + rename Homematch → HomeMatch
 16. ⏳ Phase 10 — Final Review
 
@@ -167,18 +172,33 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 
 # Deploy Info
 
-## Apps Script
+## Apps Script (Deprecated)
+
+> **Trạng thái:** Không còn sử dụng. Đã chuyển hoàn toàn sang Supabase SDK.
 
 | Item | Value |
 |------|-------|
 | Script Name | HomeMatch API |
 | Latest Version | @22 (CacheService: sheet reads + image URLs) |
-| Web App URL | (updated after deployment) |
+| Trạng thái | ❌ Đã ngừng sử dụng |
 
-## Yêu cầu
+## Vercel
 
-- SHEET_ID đã set trong Script Properties
-- Web App deploy từ editor với "Execute as: Me" và "Who has access: Anyone"
+| Item | Value |
+|------|-------|
+| Vercel URL | https://homematchvn.vercel.app |
+| Custom Domain | https://homematch.id.vn ✅ |
+| Vercel Web Analytics | ✅ enabled |
+| Deployment Method | Thủ công qua Vercel Web Dashboard |
+
+## Supabase
+
+| Item | Value |
+|------|-------|
+| Project URL | https://rccszqpjeikcjrfmbzpl.supabase.co |
+| Database | PostgreSQL (migrated từ Google Sheet) |
+| Image Storage | Google Drive (resolve path → URL qua ImageCache table + Google Drive API) |
+| Google Cloud Console | ✅ Đã tạo project để cấp quyền Drive API |
 
 ---
 
@@ -248,6 +268,7 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 - `next.config.ts` — xoá images.unoptimized
 - `src/app/api/proxy/route.ts` — xoá runtime = "edge"
 - `src/app/rooms/[id]/page.tsx` — xoá runtime = "edge"
+- **Deployed thủ công** qua Vercel Dashboard → https://homematchvn.vercel.app + https://homematch.id.vn
 
 ## Session 017 — Thêm section Cam Kết vào Homepage
 - `task/current-session/session-017.md` — thêm Section 5 "Cam Kết" vào trang chủ
@@ -263,3 +284,8 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 - `src/components/room/RoomGallery.tsx` — aspect 1/1, +object-left-top
 - `src/components/room/RoomInfo.tsx` — bỏ soNha, bỏ font-bold, format 7.000.000đ
 - `src/components/roommate/RoommateCard.tsx` — format budget 7.000.000đ
+
+## Session 021-022 — UX Animation Phase 1 & 2 + Vercel Analytics
+- ✅ Vercel Web Analytics enabled trên Dashboard
+- ✅ UX Phase 1: click feedback, staggered entry, filter toggle, dialog speed
+- ✅ UX Phase 2: mobile menu, gallery crossfade, thumbnail zoom, staggered sections

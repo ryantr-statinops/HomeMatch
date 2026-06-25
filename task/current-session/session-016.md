@@ -83,8 +83,18 @@ git push
 
 ## Định nghĩa hoàn thành
 
-- [ ] Xoá sạch Cloudflare config + dependencies
-- [ ] Revert edge runtime
-- [ ] Deploy thành công trên Vercel
-- [ ] Các trang load được, API hoạt động
-- [ ] Zalo button hoạt động
+- [x] Xoá sạch Cloudflare config + dependencies
+- [x] Revert edge runtime
+- [x] Deploy thành công trên Vercel (thủ công qua Web Dashboard)
+- [x] Các trang load được, API hoạt động
+- [x] Zalo button hoạt động
+
+---
+
+## Cập nhật sau deploy (2026-06-25)
+
+- **Vercel URL:** https://homematchvn.vercel.app
+- **Custom domain:** https://homematch.id.vn ✅ đã hoạt động
+- **Vercel Web Analytics:** ✅ enabled
+- **Env vars:** ✅ đã cấu hình Supabase + Zalo + Site URL trên Vercel Dashboard
+- **Lưu ý:** Dự án đã chuyển từ Apps Script → Supabase SDK nên không cần API proxy như kế hoạch cũ
