@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
+import Fade from "embla-carousel-fade";
 import { Dialog } from "@base-ui/react/dialog";
 import type { RoomImage } from "@/types/room";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
@@ -19,7 +20,7 @@ export default function ImageViewer({
   open,
   onClose,
 }: ImageViewerProps) {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, startIndex: initialIndex });
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, startIndex: initialIndex }, [Fade()]);
   const [selectedIndex, setSelectedIndex] = useState(initialIndex);
 
   const onSelect = useCallback(() => {

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
+import Fade from "embla-carousel-fade";
 import type { RoomImage } from "@/types/room";
 import { ChevronLeft, ChevronRight, ImageOff, Maximize2 } from "lucide-react";
 import ImageViewer from "@/components/room/ImageViewer";
@@ -11,7 +12,7 @@ type RoomGalleryProps = {
 };
 
 export default function RoomGallery({ images }: RoomGalleryProps) {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Fade()]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
   const [viewerOpen, setViewerOpen] = useState(false);
