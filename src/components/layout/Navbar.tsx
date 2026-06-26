@@ -71,7 +71,7 @@ export default function Navbar() {
       {/* Backdrop overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/50 md:hidden data-open:fade-in data-closed:fade-out"
+          className="fixed inset-0 z-40 bg-black/50 md:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}
