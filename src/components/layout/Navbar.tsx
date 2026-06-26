@@ -78,7 +78,7 @@ export default function Navbar() {
 
       {/* Mobile nav */}
       <div
-        className={`relative z-50 transition-all duration-300 ease-out md:hidden ${
+        className={`absolute left-0 right-0 z-50 transition-all duration-300 ease-out md:hidden ${
           isOpen
             ? "translate-y-0 opacity-100"
             : "-translate-y-full opacity-0 pointer-events-none"
