@@ -211,32 +211,28 @@ Mở trình duyệt:
 
 ```
 HomeMatch/
-├── apps-script/          # Google Apps Script API
-│   ├── Code.js           #   Entry point (doGet/doPost)
-│   ├── appsscript.json   #   Manifest
-│   ├── rooms.js          #   Room API
-│   ├── roommates.js      #   Roommate API
-│   ├── leads.js          #   Lead API
-│   ├── sheets.js         #   Google Sheet connector
-│   └── utils.js          #   Helpers
+├── apps-script/          # Google Apps Script (Deprecated)
+├── docs/                 # Documentation
+├── scripts/              # Build scripts (build-image-cache.ts)
 ├── src/
 │   ├── app/              # Next.js App Router pages
 │   │   ├── page.tsx      #   Homepage
-│   │   ├── rooms/        #   Room pages
-│   │   ├── roommates/    #   Roommate pages
-│   │   └── api/proxy/    #   API proxy route
+│   │   ├── rooms/        #   Room pages (/rooms, /rooms/[id])
+│   │   └── roommates/    #   Roommate pages (/roommates)
 │   ├── components/       # React components
 │   │   ├── layout/       #   Navbar, Footer, Container
-│   │   ├── room/         #   Room components
-│   │   ├── shared/       #   Shared components
-│   │   └── ui/           #   shadcn/ui components
-│   ├── configs/          # App configuration
-│   ├── constants/        # Constants
-│   ├── lib/              # Utilities
-│   ├── services/         # API service wrappers
-│   └── types/            # TypeScript types
-├── docs/                 # Documentation
-└── task/                 # Task management
+│   │   ├── providers/    #   QueryProvider (React Query)
+│   │   ├── room/         #   Room components (Card, Filter, List, Detail, Gallery...)
+│   │   ├── roommate/     #   Roommate components (Card, Filter, List)
+│   │   ├── shared/       #   Shared components (ContactButton, SectionTitle...)
+│   │   └── ui/           #   shadcn/ui components (button, dialog)
+│   ├── configs/          # App configuration (env.ts, site.ts)
+│   ├── constants/        # Constants (routes, how-it-works, commitments)
+│   ├── lib/              # Utilities + Supabase client
+│   ├── services/         # Database service layer (room, roommate, lead)
+│   └── types/            # TypeScript types (room, roommate-post)
+├── task/                 # Task management & session logs
+└── package.json
 ```
 
 ---
@@ -263,7 +259,11 @@ Dự án đã deploy trên Vercel. Khi push code mới:
 
 1. Commit & push lên GitHub
 2. Vercel tự động rebuild (connected Git repo)
-3. Kiểm tra tại: https://homematchvn.vercel.app hoặc https://homematch.id.vn
+3. Kiểm tra tại:
+   - https://homematchvn.vercel.app
+   - https://homematch.id.vn (custom domain)
+
+> **Vercel Web Analytics:** Đã enable trên Vercel Dashboard.
 
 ### 8.4. Commit convention
 
