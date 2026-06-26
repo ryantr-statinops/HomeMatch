@@ -66,32 +66,6 @@ export default function Navbar() {
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
-
-        {/* Mobile nav */}
-        {isOpen && (
-          <div className="border-t border-blue-800 pb-4 pt-2 md:hidden">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setIsOpen(false)}
-                className="block rounded-lg px-3 py-2 text-base font-medium text-white transition-colors hover:bg-primary-dark hover:text-blue-200 active:scale-[0.98]"
-              >
-                {link.label}
-              </Link>
-            ))}
-            <div className="mt-3 px-3">
-              <a
-                href={site.zaloUrl || "#"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={cn(zaloButtonClass, "w-full")}
-              >
-                Liên hệ Zalo
-              </a>
-            </div>
-          </div>
-        )}
       </Container>
 
       {/* Backdrop overlay */}
