@@ -1,4 +1,4 @@
-# Assumptions V1
+# Assumptions V2
 
 ## Product
 
@@ -22,15 +22,15 @@
 ## Room Data
 
 - Dữ liệu phòng được quản lý tập trung.
-- Dữ liệu hiện tại lưu trên Google Sheet.
+- Dữ liệu lưu trên Supabase (PostgreSQL) — migrated từ Google Sheet.
 - AppSheet tiếp tục được sử dụng cho đội sale.
-- Website chỉ đọc dữ liệu từ nguồn dữ liệu trung tâm.
+- Website đọc dữ liệu trực tiếp từ Supabase qua Supabase SDK.
 
 ---
 
 ## Roommate Data
 
-- Chỉ admin được tạo bài ở ghép.
+- Chỉ admin được tạo bài ở ghép (qua AppSheet).
 - Người dùng không được tự đăng bài.
 - Mỗi bài ở ghép có thời hạn 14 ngày.
 - Bài ở ghép luôn gắn với phòng thuộc hệ thống.
@@ -49,15 +49,15 @@
 
 Bao gồm:
 
-- Landing Page
-- Room Listing
-- Room Detail
-- Roommate Listing
-- Roommate Detail
-- Contact via Zalo
-- Admin Room Management
-- Admin Roommate Management
-- Lead Dashboard cơ bản
+- Landing Page ✅
+- Room Listing ✅
+- Room Detail ✅
+- Roommate Listing ⏸️ (Coming Soon — components ready, chờ data)
+- Roommate Detail ❌ (Phase 6 — PENDING)
+- Contact via Zalo ✅
+- Admin Room Management (AppSheet — không phải website)
+- Admin Roommate Management (AppSheet — không phải website)
+- Lead Dashboard cơ bản (chưa implement)
 
 Không bao gồm:
 
@@ -74,8 +74,9 @@ Không bao gồm:
 
 ## Technical Assumptions
 
-- Google Sheet là nguồn dữ liệu chính (Single Source of Truth).
-- Website đọc dữ liệu từ Google Sheet thông qua API.
-- Dữ liệu được thiết kế theo chuẩn database để dễ migrate sau này.
-- Khi quy mô lớn hơn sẽ chuyển sang PostgreSQL hoặc Supabase.
+- **Supabase (PostgreSQL)** là nguồn dữ liệu chính (Single Source of Truth).
+- Website đọc dữ liệu từ Supabase qua Supabase SDK (`@supabase/supabase-js`).
+- Google Sheet vẫn được dùng làm nguồn dữ liệu trung gian qua AppSheet.
+- Image path từ AppSheet được resolve qua ImageCache table trong Supabase → Google Drive URL.
+- Google Apps Script đã deprecated, không còn sử dụng.
   
