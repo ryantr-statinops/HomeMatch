@@ -51,7 +51,7 @@ Lấy danh sách phòng từ Supabase.
 
 | Param | Type | Required | Description |
 |-------|------|----------|-------------|
-| keyword | string | No | Tìm theo địa chỉ/mô tả |
+| ~~keyword~~ | ~~string~~ | ~~No~~ | **Đã xoá** — không có UI, không dùng |
 | khuVuc | string | No | Lọc khu vực (VD: "Quận 7") |
 | giaMin | number | No | Giá tối thiểu |
 | giaMax | number | No | Giá tối đa |
@@ -166,3 +166,4 @@ SUPABASE_SERVICE_KEY=sb_secret_...   # Chỉ dùng cho migration script
 | V2 | 2026-06-14 | Cập nhật API endpoints |
 | V3 | 2026-06-16 | Đồng bộ với Google Sheet thật |
 | V4 | 2026-06-23 | Thay Apps Script → Supabase SDK, thêm ImageCache resolve |
+| V5 | 2026-06-26 | Sync docs với codebase: xoá keyword param, cập nhật notes |
