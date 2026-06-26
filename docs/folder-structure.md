@@ -1,4 +1,4 @@
-# 📁 Folder Structure V1
+# 📁 Folder Structure V2
 
 ## Overview
 
@@ -7,10 +7,10 @@ Project sử dụng:
 * Next.js 16
 * App Router
 * TypeScript
-* Tailwind CSS
-* shadcn/ui
-* Cloudflare Pages
-* Google Apps Script API
+* Tailwind CSS v4
+* shadcn/ui + @base-ui/react
+* Vercel (Hosting)
+* Supabase SDK (Database API)
 
 ---
 
@@ -18,22 +18,20 @@ Project sử dụng:
 
 ```text
 project-root/
-
-├── apps-script/
-
-├── docs/
-
-├── public/
-
-├── src/
-
-├── .env.local
-
+├── apps-script/          # Google Apps Script (Deprecated)
+├── docs/                 # Tài liệu dự án
+├── scripts/              # Build scripts (build-image-cache.ts)
+├── src/                  # Source code
+├── task/                 # Task management & session logs
+├── .env.local            # Environment variables
+├── .gitignore
+├── components.json       # shadcn/ui config
 ├── next.config.ts
-
 ├── package.json
-
-└── README.md
+├── postcss.config.mjs
+├── README.md
+├── tsconfig.json
+└── tsconfig.tsbuildinfo
 ```
 
 ---
@@ -42,21 +40,25 @@ project-root/
 
 ```text
 docs/
-
-├── business-flow.md
-├── sitemap.md
-├── user-journeys.md
-├── assumptions.md
-
-├── entities.md
-├── database_structure.md
-
-├── tech-stack.md
-├── folder-structure.md
-├── api-contracts.md
-
+├── api-contracts.md          # API Contracts (Supabase SDK)
+├── assumptions.md            # Product & Technical assumptions
+├── business-flow.md          # Business flow diagrams
+├── database_structure.md     # Supabase DB schema (V4)
+├── entities.md               # Entity definitions
+├── folder-structure.md       # This file
+├── naming-convention.md      # Naming rules
+├── project-rule.md           # Project rules & scope
+├── rooms-listing-optimization.md  # Performance optimization plan
+├── setup-guide.md            # Setup & configuration guide
+├── sheet-design.md           # Google Sheet schema (deprecated)
+├── sitemap.md                # Site map
+├── tech-stack.md             # Tech stack
+├── ui-spec.md                # UI specifications
+├── user-journeys.md          # User journey maps
+├── ux-animation-plan.md      # UX & animation plan
 └── diagrams/
-    └── erd-v1.md
+    ├── erd-v1.md
+    └── system-architecture.md
 ```
 
 Mục đích:
@@ -66,36 +68,17 @@ Mục đích:
 
 ---
 
-# Public
-
-```text
-public/
-
-├── images/
-├── icons/
-└── logo/
-```
-
-Mục đích:
-
-* Static Assets
-
----
-
 # Source
 
 ```text
 src/
-
-├── app/
-├── components/
-├── features/
-├── services/
-├── lib/
-├── hooks/
-├── types/
-├── constants/
-└── configs/
+├── app/              # Next.js App Router pages
+├── components/       # React components
+├── configs/          # App configuration
+├── constants/        # Constants & static data
+├── lib/              # Utilities & Supabase client
+├── services/         # Database service layer
+└── types/            # TypeScript types
 ```
 
 ---
@@ -104,28 +87,21 @@ src/
 
 ```text
 src/app/
-
-├── page.tsx
-
+├── page.tsx                  # Homepage (Hero, About, How It Works, Commitments, CTA)
+├── layout.tsx                # Root layout (Navbar, Footer, QueryProvider)
+├── loading.tsx               # Global loading state
+├── not-found.tsx             # 404 page
+├── globals.css               # Tailwind v4 config + animations
 ├── rooms/
-│   ├── page.tsx
+│   ├── page.tsx              # Room listing (/rooms)
 │   └── [id]/
-│       └── page.tsx
-
-├── roommates/
-│   ├── page.tsx
-│   └── [id]/
-│       └── page.tsx
-
-├── contact/
-│   └── page.tsx
-
-├── layout.tsx
-
-├── loading.tsx
-
-└── not-found.tsx
+│       ├── page.tsx          # Room detail (/rooms/[id]) — Server Component
+│       └── loading.tsx       # Room detail skeleton
+└── roommates/
+    └── page.tsx              # Roommate listing (/roommates) — Coming Soon
 ```
+
+> **Note:** `/roommates/[id]` chưa implement (Phase 6 — PENDING).
 
 ---
 
@@ -139,11 +115,11 @@ src/app/
 
 Nội dung:
 
-* Hero Section
-* Giới thiệu startup
-* Hướng dẫn sử dụng
-* CTA tìm phòng
-* CTA tìm ở ghép
+* Hero Section (title, description, CTA tìm phòng, CTA tìm ở ghép)
+* About Section (3 giá trị cốt lõi — ValueCard)
+* How It Works (5 bước quy trình)
+* Commitments Section (3 cam kết — CommitmentCard)
+* CTA Section (Zalo + Xem danh sách phòng)
 
 ---
 
@@ -155,9 +131,9 @@ Nội dung:
 
 Nội dung:
 
-* Danh sách phòng
-* Bộ lọc
-* Search
+* Danh sách phòng (RoomList)
+* Bộ lọc (RoomFilter — khu vực, giá, tiện ích)
+* Staggered entry animation
 
 ---
 
@@ -169,16 +145,15 @@ Nội dung:
 
 Nội dung:
 
-* Hình ảnh (carousel gallery)
-* Giá
-* Địa chỉ, hợp đồng, lầu
-* Tiện ích (grid badges)
+* Breadcrumb navigation
+* Hình ảnh (Embla carousel với fade transition + thumbnails)
+* Giá, địa chỉ, hợp đồng, lầu
 * Chi phí khác (điện, nước, phí quản lý, giữ xe)
+* Tiện ích (grid badges — 12 loại)
 * Mô tả phòng
 * Quy định (giờ giấc, thú cưng)
-* Nút Zalo
-
-> **Note:** Related rooms (cùng khu vực) sẽ phát triển sau MVP.
+* Sao chép thông tin phòng
+* Nút Zalo (ContactButton)
 
 ---
 
@@ -188,10 +163,9 @@ Nội dung:
 /roommates
 ```
 
-Nội dung:
+Trạng thái: **Coming Soon** — hiển thị landing page giới thiệu tính năng.
 
-* Danh sách ở ghép
-* Bộ lọc
+> Components sẵn sàng: RoommateCard, RoommateFilter, RoommateList — chờ data từ Sale để kích hoạt.
 
 ---
 
@@ -201,11 +175,7 @@ Nội dung:
 /roommates/[id]
 ```
 
-Nội dung:
-
-* Thông tin phòng
-* Nhu cầu ở ghép
-* Nút Zalo
+Trạng thái: **Chưa implement** (Phase 6 — PENDING)
 
 ---
 
@@ -213,12 +183,12 @@ Nội dung:
 
 ```text
 src/components/
-
-├── layout/
-├── ui/
-├── shared/
-├── room/
-└── roommate/
+├── layout/         # Layout components
+├── providers/       # React context providers
+├── room/            # Room domain components
+├── roommate/        # Roommate domain components
+├── shared/          # Shared/reusable components
+└── ui/              # shadcn/ui base components
 ```
 
 ---
@@ -227,10 +197,18 @@ src/components/
 
 ```text
 layout/
+├── Container.tsx    # Max-width wrapper (Container)
+├── Footer.tsx       # Footer (brand, services, Zalo CTA)
+└── Navbar.tsx       # Sticky navbar (logo, nav links, Zalo button, mobile menu)
+```
 
-├── Navbar.tsx
-├── Footer.tsx
-└── Container.tsx
+---
+
+# Providers
+
+```text
+providers/
+└── QueryProvider.tsx    # TanStack React Query provider
 ```
 
 ---
@@ -239,11 +217,11 @@ layout/
 
 ```text
 shared/
-
-├── SectionTitle.tsx
-├── EmptyState.tsx
-├── Loading.tsx
-└── ContactButton.tsx
+├── CommitmentCard.tsx   # Card component cho section Cam Kết
+├── ContactButton.tsx    # Zalo contact CTA button
+├── EmptyState.tsx       # Empty state với action
+├── SectionTitle.tsx     # Section title + description
+└── ValueCard.tsx        # Card component cho section About
 ```
 
 ---
@@ -252,12 +230,15 @@ shared/
 
 ```text
 room/
-
-├── RoomCard.tsx
-├── RoomGallery.tsx
-├── RoomFilter.tsx
-├── RoomList.tsx
-└── RoomDetail.tsx
+├── ImageViewer.tsx          # Fullscreen image viewer (lightbox)
+├── RoomAmenities.tsx        # Grid 12 tiện ích (badges)
+├── RoomCard.tsx             # Card trong danh sách phòng
+├── RoomDetail.tsx           # Layout chính phòng detail (Gallery + Info + Amenities + CTA)
+├── RoomDetailSkeleton.tsx   # Skeleton loading cho room detail
+├── RoomFilter.tsx           # Filter panel (khu vực, giá, tiện ích dialog)
+├── RoomGallery.tsx          # Embla carousel + thumbnails + ImageViewer
+├── RoomInfo.tsx             # Thông tin phòng (giá, địa chỉ, chi phí, quy định)
+└── RoomList.tsx             # Client component: React Query + client filter + grid
 ```
 
 ---
@@ -266,52 +247,21 @@ room/
 
 ```text
 roommate/
-
-├── RoommateCard.tsx
-├── RoommateList.tsx
-├── RoommateFilter.tsx
-└── RoommateDetail.tsx
+├── RoommateCard.tsx     # Card bài đăng ở ghép (chưa dùng — Coming Soon)
+├── RoommateFilter.tsx   # Filter (postType, gender, khuVuc) — chưa dùng
+└── RoommateList.tsx     # Listing + filter — chưa dùng
 ```
+
+> Các component này đã sẵn sàng nhưng `/roommates` page hiện hiển thị Coming Soon chờ data.
 
 ---
 
-# Features
+# UI Components (shadcn/ui)
 
 ```text
-src/features/
-
-├── rooms/
-└── roommates/
-```
-
-Mục đích:
-
-Chứa business logic theo domain.
-
----
-
-# Rooms Feature
-
-```text
-features/rooms/
-
-├── api.ts
-├── mapper.ts
-├── schema.ts
-└── utils.ts
-```
-
----
-
-# Roommates Feature
-
-```text
-features/roommates/
-
-├── api.ts
-├── mapper.ts
-├── schema.ts
-└── utils.ts
+ui/
+├── button.tsx          # Button component (cva + variants)
+└── dialog.tsx          # Dialog component (@base-ui/react + DialogBackdrop + DialogContent)
 ```
 
 ---
@@ -320,15 +270,16 @@ features/roommates/
 
 ```text
 src/services/
-
-├── room.service.ts
-├── roommate.service.ts
-└── analytics.service.ts
+├── lead.service.ts         # createLead() — ghi lead vào Supabase
+├── room.service.ts         # getRooms(), getRoomById(), filterRooms(), getDistinctAreas()
+└── roommate.service.ts     # getRoommatePosts(), getRoommatePostById()
 ```
 
 Mục đích:
 
-Kết nối API.
+* Kết nối Supabase database.
+* Resolve image path → URL qua ImageCache table.
+* Map database rows → TypeScript types.
 
 ---
 
@@ -336,22 +287,12 @@ Kết nối API.
 
 ```text
 src/lib/
-
-├── api-client.ts
-├── google-analytics.ts
-└── utils.ts
+├── supabase/
+│   └── client.ts       # Supabase client (createClient)
+└── utils.ts            # cn() utility (clsx + tailwind-merge)
 ```
 
----
-
-# Hooks
-
-```text
-src/hooks/
-
-├── useRooms.ts
-└── useRoommates.ts
-```
+> **Note:** `api-client.ts` đã bị xóa khi migrate sang Supabase SDK.
 
 ---
 
@@ -359,12 +300,8 @@ src/hooks/
 
 ```text
 src/types/
-
-├── room.ts
-├── room-image.ts
-├── roommate-post.ts
-├── lead.ts
-└── sale.ts
+├── room.ts              # Room, RoomImage, RoomAmenities, RoomCosts, RoomAddress, RoomFilterParams
+└── roommate-post.ts     # RoommatePost, Customer, RoommateFilterParams
 ```
 
 ---
@@ -373,10 +310,9 @@ src/types/
 
 ```text
 src/constants/
-
-├── routes.ts
-├── roommate-types.ts
-└── room-status.ts
+├── commitments.ts       # Data 3 cam kết homepage
+├── how-it-works.ts      # Data 5 bước quy trình
+└── routes.ts            # Route definitions (home, rooms, roomDetail, roommates, roommateDetail)
 ```
 
 ---
@@ -385,9 +321,8 @@ src/constants/
 
 ```text
 src/configs/
-
-├── env.ts
-└── site.ts
+├── env.ts               # Environment variables (supabaseUrl, supabaseAnonKey, gaId)
+└── site.ts              # Site config (name, description, url, zaloUrl, phone, facebookUrl)
 ```
 
 ---
@@ -395,10 +330,17 @@ src/configs/
 # Environment Variables
 
 ```env
-NEXT_PUBLIC_API_URL=
+# Supabase (Bắt buộc)
+NEXT_PUBLIC_SUPABASE_URL=https://rccszqpjeikcjrfmbzpl.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_...
 
+# Zalo (Tuỳ chọn)
 NEXT_PUBLIC_ZALO_URL=
 
+# Site (Tuỳ chọn)
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+
+# Google Analytics (Tuỳ chọn — chưa implement)
 NEXT_PUBLIC_GA_ID=
 ```
 
@@ -416,7 +358,7 @@ Không chứa business logic.
 
 ## Rule 2
 
-API call nằm trong:
+API call (database query) nằm trong:
 
 ```text
 services/
@@ -436,39 +378,35 @@ types/
 
 ## Rule 4
 
-Domain logic nằm trong:
+Không gọi trực tiếp Google Sheet từ UI.
 
-```text
-features/
-```
+Supabase SDK là lớp API chính.
 
 ---
 
 ## Rule 5
 
-Không gọi trực tiếp Google Sheet từ UI.
+Image path từ AppSheet được resolve qua:
 
-Luôn thông qua API Layer.
+```text
+ImageCache table (Supabase) → Google Drive URL
+```
 
 ---
 
 # MVP Scope
 
-Chỉ build:
+Đã build:
 
-* Home
-* Rooms
-* Room Detail
-* Roommates
-* Roommate Detail
-* Zalo Contact
+* Home (Hero + About + How It Works + Commitments + CTA)
+* Room Listing (filter + animation)
+* Room Detail (gallery + info + amenities + CTA)
+* Roommate Listing (Coming Soon — components ready)
+* Zalo Contact (ContactButton)
+* Deployment (Vercel)
 
-Không build:
+Chưa build:
 
-* Login
-* Dashboard
-* Payment
-* Booking
-* Chat
-* Mobile App
-
+* Roommate Detail (`/roommates/[id]`)
+* Lead Tracking (createLead chưa gọi từ UI)
+* Login / Dashboard / Payment / Booking / Chat / Mobile App
