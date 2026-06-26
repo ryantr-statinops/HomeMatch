@@ -1,4 +1,4 @@
-# Project Rules V1
+# Project Rules V2
 
 ## Purpose
 
@@ -84,13 +84,15 @@ Người dùng không được chỉnh sửa dữ liệu phòng.
 
 ## Rule R4
 
-Thông tin phòng được quản lý tại Google Sheet.
+Thông tin phòng được quản lý tại Supabase (PostgreSQL).
+
+Dữ liệu đồng bộ từ Google Sheet qua AppSheet.
 
 ---
 
 ## Rule R5
 
-Google Sheet là nguồn dữ liệu chính (Source of Truth).
+Supabase là nguồn dữ liệu chính (Source of Truth).
 
 ---
 
@@ -171,13 +173,17 @@ Google Sheet vẫn là nguồn dữ liệu trung gian qua AppSheet.
 
 ## Rule D2
 
-Không truy cập Google Sheet trực tiếp từ Frontend.
+Frontend gọi Supabase trực tiếp qua Supabase SDK.
+
+Không gọi Google Sheet hay Google Apps Script từ Frontend.
 
 ---
 
 ## Rule D3
 
-Frontend chỉ làm việc với API Layer.
+Database query nằm trong `src/services/`.
+
+Page chỉ render UI, không chứa business logic.
 
 ---
 
@@ -225,13 +231,15 @@ Google Drive → ImageCache table (Supabase) → Website
 
 Frontend không được đọc Google Sheet trực tiếp.
 
+Supabase SDK là lớp API chính.
+
 ---
 
 ## Rule A3
 
-Supabase SDK là lớp API chính trong hệ thống hiện tại.
-
 Google Apps Script đã được thay thế (không còn sử dụng).
+
+API layer hiện tại: Supabase SDK (`@supabase/supabase-js`).
 
 ---
 
@@ -249,10 +257,10 @@ Không public.
 
 Sử dụng:
 
-* Next.js
+* Next.js 16
 * TypeScript
-* Tailwind
-* shadcn/ui
+* Tailwind CSS v4
+* shadcn/ui + @base-ui/react
 
 ---
 
@@ -274,17 +282,7 @@ Không chứa business logic.
 
 ## Rule F4
 
-Business logic nằm trong:
-
-```text
-src/features/
-```
-
----
-
-## Rule F5
-
-API call nằm trong:
+API call (database query) nằm trong:
 
 ```text
 src/services/
@@ -292,7 +290,7 @@ src/services/
 
 ---
 
-## Rule F6
+## Rule F5
 
 Type definitions nằm trong:
 
@@ -302,15 +300,26 @@ src/types/
 
 ---
 
+## Rule F6
+
+Component logic nằm trong:
+
+```text
+src/components/
+```
+
+Page component (`src/app/`) chỉ render UI và gọi component.
+
+---
+
 # 8. MVP Scope Rules
 
 ## MVP Must Have
 
-* Landing Page
-* Danh sách phòng
-* Chi tiết phòng
-* Danh sách ở ghép
-* Chi tiết ở ghép
+* Landing Page (Hero + About + How It Works + Commitments + CTA)
+* Danh sách phòng (filter khu vực, giá, tiện ích)
+* Chi tiết phòng (gallery + info + amenities + Zalo CTA)
+* Danh sách ở ghép (Coming Soon — components ready, chờ data)
 * Bộ lọc cơ bản
 * Nút liên hệ Zalo
 
@@ -319,7 +328,7 @@ src/types/
 ## MVP Nice To Have
 
 * SEO nâng cao
-* Analytics Dashboard
+* Google Analytics integration
 
 ---
 
@@ -349,13 +358,15 @@ Frontend deploy bằng Vercel.
 
 ## Rule DEP2
 
-API deploy bằng Google Apps Script.
+Database sử dụng Supabase (PostgreSQL), đồng bộ dữ liệu từ Google Sheet qua AppSheet.
 
 ---
 
 ## Rule DEP3
 
-Database sử dụng Supabase (PostgreSQL), đồng bộ dữ liệu từ Google Sheet qua AppSheet.
+Google Apps Script đã deprecated.
+
+Không còn sử dụng cho API layer.
 
 ---
 
@@ -407,13 +418,10 @@ Luôn đọc các file trong thư mục `docs/` trước khi generate code.
 
 MVP được xem là hoàn thành khi:
 
-* Người dùng xem được danh sách phòng.
-* Người dùng xem được chi tiết phòng.
-* Người dùng xem được danh sách ở ghép.
-* Người dùng xem được chi tiết ở ghép.
-* Người dùng có thể liên hệ qua Zalo.
-* Sale có thể tiếp tục quy trình chốt khách hiện tại.
-* Không làm thay đổi quy trình vận hành đang sử dụng AppSheet.
-
-```
-```
+* Người dùng xem được danh sách phòng. ✅
+* Người dùng xem được chi tiết phòng. ✅
+* Người dùng xem được danh sách ở ghép. ⏸️ (Coming Soon — chờ data)
+* Người dùng xem được chi tiết ở ghép. ❌ (Phase 6 — PENDING)
+* Người dùng có thể liên hệ qua Zalo. ✅
+* Sale có thể tiếp tục quy trình chốt khách hiện tại. ✅
+* Không làm thay đổi quy trình vận hành đang sử dụng AppSheet. ✅
