@@ -1,4 +1,4 @@
-# ⚙️ Tech Stack V2
+# ⚙️ Tech Stack V3
 
 ## Philosophy
 
@@ -24,7 +24,7 @@ TypeScript
 
 ## Styling
 
-Tailwind CSS
+Tailwind CSS v4
 
 ## UI Components
 
@@ -33,6 +33,14 @@ shadcn/ui + @base-ui/react
 ## Icons
 
 Lucide Icons
+
+## Animation
+
+tw-animate-css (enter/exit animations, staggered entry)
+
+## State Management
+
+@tanstack/react-query (caching, deduplication)
 
 ---
 
@@ -48,7 +56,7 @@ Vercel Edge Network
 
 ## DNS
 
-Vercel DNS (hoặc Cloudflare DNS nếu dùng custom domain)
+Vercel DNS (custom domain: homematch.id.vn)
 
 ---
 
@@ -68,7 +76,7 @@ Single Source of Truth (migrated từ Google Sheet)
 
 ## Current
 
-Google Drive (ảnh vẫn lưu trong Drive, path được resolve qua bảng ImageCache)
+Google Drive (ảnh vẫn lưu trong Drive, path được resolve qua bảng ImageCache trong Supabase)
 
 ## Future
 
@@ -95,12 +103,16 @@ Vai trò:
 
 ## Current
 
-Supabase SDK (JavaScript client)
+Supabase SDK (JavaScript client) — gọi trực tiếp từ Next.js
 
 Vai trò:
 
-* Đọc dữ liệu từ Supabase
+* Đọc dữ liệu từ Supabase (`supabase.from("table").select(...)`)
 * Resolve image path qua ImageCache table
+
+## Deprecated
+
+Google Apps Script API — đã chuyển sang Supabase SDK (Phase 2 → Vercel deployment)
 
 ---
 
@@ -108,73 +120,53 @@ Vai trò:
 
 ## Website Analytics
 
-Google Analytics
+### Vercel Web Analytics
+
+✅ Đã enable trên Vercel Dashboard
 
 Theo dõi:
 
 * Traffic
-* Room Views
-* Roommate Views
+* Page views
 
-## Lead Tracking
+### Google Analytics
 
-Google Analytics Events
-
-Theo dõi:
-
-* Click Zalo
-* Click Contact
+⚠️ Đã cấu hình env var (`NEXT_PUBLIC_GA_ID`) nhưng chưa implement integration code.
 
 ---
 
 # Deployment
 
-Frontend
-
-Vercel
-
-API
-
-Supabase SDK (trực tiếp từ Next.js)
-
-Database
-
-Supabase (PostgreSQL)
-
-Image Cache
-
-Supabase (ImageCache table)
-
-Admin
-
-AppSheet
+| Component | Technology |
+|-----------|-----------|
+| Frontend | Vercel |
+| API | Supabase SDK (trực tiếp từ Next.js) |
+| Database | Supabase (PostgreSQL) |
+| Image Cache | Supabase (ImageCache table) + Google Drive API |
+| Admin | AppSheet |
 
 ---
 
 # Future Migration Path
 
-Phase 1 (MVP — hiện tại)
+### Phase 1 (MVP — đã hoàn thành)
 
-Google Sheet
-↓
-Apps Script
-↓
-Next.js
-
-Phase 2 (hiện tại)
-
-Supabase
-↓
+```
+Supabase (PostgreSQL)
+    ↓
 Supabase SDK
-↓
-Next.js
+    ↓
+Next.js → Vercel
+```
 
-Phase 3 (tương lai)
+### Phase 2 (tương lai — nếu cần)
 
-PostgreSQL
-↓
+```
+PostgreSQL (tự quản lý)
+    ↓
 Cloudflare Workers
-↓
+    ↓
 Next.js
+```
 
 Frontend gần như không thay đổi trong toàn bộ lộ trình.
