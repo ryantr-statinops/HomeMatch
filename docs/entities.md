@@ -1,4 +1,4 @@
-# Entities V1
+# Entities V2
 
 ## Overview
 
@@ -44,13 +44,15 @@ Hình ảnh thuộc về một phòng.
 
 ## Responsibilities
 
-* Hiển thị gallery ảnh
+* Hiển thị gallery ảnh (Embla carousel)
 * Hiển thị thumbnail
+* Resolve path → URL qua ImageCache table
 
 ## Relationships
 
 RoomImage
 └── Room
+└── ImageCache (qua path)
 
 ---
 
