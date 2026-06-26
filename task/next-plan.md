@@ -47,12 +47,15 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 * Database Structure: ✅ DONE (V3 — synced with real sheet)
 * ERD: ✅ DONE (V2 — synced with real sheet)
 * Sheet Design: ✅ DONE (V3 — synced with real sheet)
-* API Contracts: ✅ DONE (V3 — synced with real sheet)
-* Tech Stack: DONE
-* Folder Structure: DONE
+* API Contracts: ✅ DONE (V5 — synced with codebase)
+* Tech Stack: ✅ DONE (V3 — Vercel, Supabase SDK)
+* Folder Structure: ✅ DONE (V2 — synced with codebase)
 * System Architecture: DONE
-* Project Rules: DONE
-* Setup Guide: ✅ **DONE** (docs/setup-guide.md)
+* Project Rules: ✅ DONE (V2 — Supabase as Source of Truth)
+* Setup Guide: ✅ DONE (updated project structure)
+* Assumptions: ✅ DONE (V2 — Supabase)
+* Sitemap: ✅ DONE (V2 — AppSheet admin)
+* Entities: ✅ DONE (V2 — ImageCache relationship)
 
 ---
 
@@ -76,10 +79,11 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 - `apps-script/` folder: Code.js, sheets.js, rooms.js, roommates.js, leads.js, utils.js
 
 ## Phase 2B — Frontend API Client ✅
-- `src/lib/api-client.ts` — Fetch wrapper với proxy server-side
 - `src/types/room.ts`, `src/types/roommate-post.ts` — TypeScript types
 - `src/services/room.service.ts`, `src/services/roommate.service.ts`
-- `src/app/api/proxy/route.ts` — API proxy server-side (tránh CORS)
+- `src/lib/supabase/client.ts` — Supabase client
+- `src/services/lead.service.ts` — Lead tracking
+- ~~`src/lib/api-client.ts`~~, ~~`src/app/api/proxy/route.ts`~~ — Đã xóa khi migrate sang Supabase SDK
 
 ## Phase 2A.5 — Apps Script Deploy ✅
 - Clasp deploy thành công (7 files)
@@ -97,7 +101,7 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 - 6 tiện ích: Máy lạnh, Tủ lạnh, Kệ bếp, Cửa sổ, Thang máy, Để xe
 
 ## Phase 3.6 — Codebase Cleanup ✅
-- Xoá thư mục rỗng: `src/features/`, `src/hooks/`, `src/components/roommate/`
+- Xoá thư mục rỗng: `src/features/`, `src/hooks/`
 - Types đồng bộ API: `banCong`, `thangMay`, `floor`, `needCount`, `desiredArea`
 - Xoá `autoprefixer` (ko cần Tailwind v4)
 - Fix `parseCost`: dùng `match(/^\d+/)` thay `replace(/[^0-9]/g, "")`
@@ -145,9 +149,9 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 ## Performance Optimization — ✅ DONE (Session 013-014)
 #### Frontend
 - [x] **React Query (TanStack Query)** — cache + deduplicate cho RoomList
-- [x] **Cache trên API proxy** — in-memory cache TTL 60s
 - [x] **Filter client-side** — zero round-trip, filter instant
 - [x] **Fix duplicate fetch** — getDistinctAreas là pure function
+- ~~Cache trên API proxy~~ — Đã xóa khi migrate sang Supabase SDK
 #### Apps Script
 - [x] **CacheService cho sheet reads** — cache 30s trong sheets.js
 - [x] **CacheService cho image URLs** — cache 1h trong rooms.js
