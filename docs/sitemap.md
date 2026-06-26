@@ -1,48 +1,30 @@
-# Sitemap V1
+# Sitemap V2
 
 ## Public Website
 
-Home
+```
+Home (/)
 │
-├── Giới thiệu
+├── Tìm phòng (/rooms)
+│   └── Chi tiết phòng (/rooms/[id])
 │
-├── Tìm phòng
-│   │
-│   ├── Danh sách phòng
-│   │
-│   └── Chi tiết phòng
+├── Tìm ở ghép (/roommates) — Coming Soon
+│   └── Chi tiết bài ở ghép (/roommates/[id]) — Chưa implement
 │
-├── Tìm ở ghép
-│   │
-│   ├── Danh sách ở ghép
-│   │
-│   └── Chi tiết bài ở ghép
-│
-└── Liên hệ Zalo
+└── Liên hệ Zalo (nút CTA trên mọi trang)
+```
 
 ---
 
-## Admin
+## Admin (AppSheet — không phải website)
 
-Admin Login
-│
-├── Dashboard
-│
-├── Quản lý phòng
-│   │
-│   ├── Danh sách phòng
-│   ├── Thêm phòng
-│   ├── Sửa phòng
-│   └── Ẩn phòng
-│
-├── Quản lý ở ghép
-│   │
-│   ├── Danh sách bài đăng
-│   ├── Thêm bài đăng
-│   ├── Sửa bài đăng
-│   └── Ẩn bài đăng
-│
-└── Quản lý Lead
-    │
-    ├── Danh sách lead
-    └── Dashboard lead
+> **Lưu ý:** Admin operations được xử lý qua AppSheet, không phải qua website.
+
+```
+AppSheet (Internal)
+├── Quản lý phòng (PHONGTRO)
+├── Quản lý bài ở ghép (ROOMMATE)
+├── Quản lý lịch hẹn (LICHHEN)
+├── Quản lý sale (SALE)
+└── Quản lý lead (LEAD)
+```
