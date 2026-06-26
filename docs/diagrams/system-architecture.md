@@ -1,4 +1,4 @@
-# System Architecture V2
+# System Architecture V3
 
 ## Overview
 
@@ -170,9 +170,11 @@ AppSheet
 
 ## Technology
 
-Google Analytics
+Vercel Web Analytics ✅ (đã enable)
 
-## Tracking Events
+Google Analytics ⚠️ (đã cấu hình env var `NEXT_PUBLIC_GA_ID` nhưng chưa implement integration)
+
+## Tracking Events (tương lai)
 
 room_view
 
@@ -233,3 +235,4 @@ AppSheet là công cụ nội bộ. Không public.
 |---------|------|----------|
 | V1 | 2026-06-13 | Thiết kế ban đầu (Google Sheet + Apps Script) |
 | V2 | 2026-06-23 | Migrate lên Supabase, thêm ImageCache, xoá Apps Script |
+| V3 | 2026-06-26 | Sync analytics layer: Vercel Web Analytics + Google Analytics (chưa implement) |

@@ -1,4 +1,4 @@
-# ERD V3
+# ERD V4
 
 ## Overview
 
@@ -117,12 +117,11 @@ erDiagram
 
 ---
 
-# Ghi chú thay đổi từ V2 → V3
+# Ghi chú thay đổi
 
-| Thay đổi | Chi tiết |
-|----------|----------|
-| Database | Google Sheet → Supabase (PostgreSQL) |
-| ImageCache | Bảng mới: mapping path ảnh → Google Drive URL |
-| API Layer | Google Apps Script → Supabase SDK |
-| Tên bảng | Tự động lowercase trong Supabase (`PHONGTRO` → `phongtro`) |
-| LEAD | Cập nhật cấu trúc: LeadID, SourceType, SourceID, CreatedAt |
+| Version | Ngày | Thay đổi |
+|---------|------|----------|
+| V1 | 2026-06-13 | Thiết kế ban đầu (Google Sheet + Apps Script) |
+| V2 | 2026-06-16 | Đồng bộ với Google Sheet thật |
+| V3 | 2026-06-23 | Migrate lên Supabase, thêm ImageCache, xoá Apps Script |
+| V4 | 2026-06-26 | Sync docs với codebase |
