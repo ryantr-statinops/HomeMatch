@@ -1,4 +1,4 @@
-# ERD V4
+# ERD V5
 
 ## Overview
 
@@ -15,13 +15,16 @@ erDiagram
 
     PHONGTRO {
         string IDPhong PK
+        string MaPhong
         string HinhAnhChinh
+        string LoaiPhong
         string SoNha
         string Duong
         string Phuong
         string KhuVuc
         string HopDong
         number Gia
+        number DienTich
         string MayLanh
         string KeBep
         string Gac
@@ -125,3 +128,4 @@ erDiagram
 | V2 | 2026-06-16 | Đồng bộ với Google Sheet thật |
 | V3 | 2026-06-23 | Migrate lên Supabase, thêm ImageCache, xoá Apps Script |
 | V4 | 2026-06-26 | Sync docs với codebase |
+| V5 | 2026-06-28 | Thêm cột MaPhong, LoaiPhong, DienTich vào PHONGTRO |
