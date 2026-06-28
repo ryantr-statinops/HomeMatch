@@ -14,6 +14,12 @@ function parseCost(value: string | null | undefined): number {
   return match ? Number(match[0]) : 0;
 }
 
+function parseArea(value: string | null | undefined): number {
+  if (!value) return 0;
+  const match = String(value).match(/^\d+(?:\.\d+)?/);
+  return match ? Number(match[0]) : 0;
+}
+
 function mapStatus(status: string | null | undefined): Room["status"] {
   const map: Record<string, Room["status"]> = {
     "trống": "ACTIVE",
@@ -28,6 +34,8 @@ type PhongTroRow = Record<string, any>;
 function mapRoom(row: PhongTroRow): Room {
   return {
     id: row.idphong || "",
+    maPhong: row.maphong || "",
+    loaiPhong: row.loaiphong || "",
     image: row.hinhanhchinh || "",
     address: {
       soNha: row.sonha || "",
@@ -36,7 +44,7 @@ function mapRoom(row: PhongTroRow): Room {
       khuVuc: row.khuvuc || "",
     },
     price: Number(row.gia) || 0,
-    area: 0,
+    area: parseArea(row.dientich),
     contractType: row.hopdong || "",
     amenities: {
       mayLanh: parseBool(row.maylanh),
