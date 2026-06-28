@@ -40,6 +40,8 @@ export type RoomImage = {
 /** Kiểu phòng trọ (từ API) */
 export type Room = {
   id: string;
+  maPhong?: string;
+  loaiPhong?: string;
   image: string;
   address: RoomAddress;
   price: number;
