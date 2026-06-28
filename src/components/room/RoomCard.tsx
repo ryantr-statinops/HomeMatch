@@ -81,7 +81,7 @@ export default function RoomCard({ room }: RoomCardProps) {
 
         {/* LoaiPhong badge */}
         {room.loaiPhong && (
-          <div className="absolute left-3 top-3">
+          <div className="absolute bottom-3 right-3">
             <div className="inline-flex items-center rounded-lg bg-primary/80 px-2.5 py-1 text-xs font-medium text-white shadow-lg backdrop-blur-sm">
               {room.loaiPhong}
             </div>
