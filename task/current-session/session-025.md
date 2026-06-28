@@ -42,6 +42,8 @@ Những việc đã thực hiện:
 5. Thêm hiển thị `loaiPhong` + `area` vào `RoomInfo.tsx`
 6. Commit & push từng file riêng biệt
 7. Debug & fix: RLS policy `anon_read_phongtro` bị mất do `DROP CASCADE` — chạy SQL tạo lại policy
+8. Debug & fix: 20 ảnh không resolution được — chạy `scripts/build-image-cache.ts` (matched 472/472 paths)
+9. Di chuyển badge LoaiPhong từ góc trái trên → góc phải dưới ảnh trong RoomCard
 
 ---
 
@@ -59,7 +61,7 @@ Những việc đã thực hiện:
 ### UI Design
 
 **RoomCard:**
-- Góc trái ảnh: badge `LoaiPhong` (nền primary/80, chữ trắng)
+- Góc phải dưới ảnh: badge `LoaiPhong` (nền primary/80, chữ trắng)
 - Kế giá: `• 25 m²` (nếu có)
 
 **RoomInfo:**
@@ -83,6 +85,16 @@ FOR SELECT
 TO anon
 USING (true);
 ```
+
+### Issue: 20 ảnh không hiển thị (các phòng mới không có trong imagecache)
+
+**Nguyên nhân:** Dữ liệu mới import có 20 đường dẫn ảnh chưa từng được cache trong `imagecache`.
+
+**Fix:** Chạy `npx tsx scripts/build-image-cache.ts` — matched 472/472 paths, inserted 472 entries.
+
+### Issue: Badge LoaiPhong hiển thị chồng lên address badge
+
+**Fix:** Di chuyển badge từ `left-3 top-3` → `bottom-3 right-3` (cùng góc với address badge nhưng phía trên).
 
 ---
 
