@@ -40,6 +40,22 @@ export default function RoomInfo({ room }: RoomInfoProps) {
         <span className="ml-1 text-base text-accent-light">/tháng</span>
       </div>
 
+      {/* Loai phong + Area */}
+      {(room.loaiPhong || room.area > 0) && (
+        <div className="flex flex-wrap items-center gap-3">
+          {room.loaiPhong && (
+            <span className="rounded-lg bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">
+              {room.loaiPhong}
+            </span>
+          )}
+          {room.area > 0 && (
+            <span className="text-sm text-accent">
+              {room.area} m²
+            </span>
+          )}
+        </div>
+      )}
+
       {/* Address */}
       <div className="flex items-start gap-2 text-accent-light">
         <MapPin size={18} className="mt-0.5 shrink-0 text-primary" />
