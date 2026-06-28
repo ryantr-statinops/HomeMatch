@@ -1,4 +1,4 @@
-# DATABASE_STRUCTURE V4
+# DATABASE_STRUCTURE V5
 
 ## Tổng Quan
 
@@ -63,13 +63,16 @@ Lưu trữ thông tin phòng trọ.
 | Field | Type | Description | Ghi chú |
 |-------|------|-------------|---------|
 | IDPhong | String | Mã phòng duy nhất | PK, do AppSheet tự sinh |
+| MaPhong | String | Mã phòng rút gọn (VD: `P001`) | |
 | HinhAnhChinh | String | Path ảnh đại diện (VD: `PHONGTRO_Images/abc.jpg`) | Resolve qua ImageCache |
+| LoaiPhong | String | Loại phòng (VD: `Phòng trọ`, `Căn hộ`, `Studio`) | |
 | SoNha | String | Số nhà | |
 | Duong | String | Đường | |
 | Phuong | String | Phường/Xã | |
 | KhuVuc | String | Khu vực | VD: "Quận 7", "Thủ Đức" |
 | HopDong | String | Loại hợp đồng | VD: "6-12 tháng" |
 | Gia | Number | Giá thuê | Số (VD: 7000000) |
+| DienTich | Number | Diện tích (VD: `25`, `30`) | Đơn vị m² |
 | MayLanh | String | Có máy lạnh | "Có" / "Không" |
 | KeBep | String | Có kệ bếp | "Có" / "Không" |
 | Gac | String | Có gác | "Có" / "Không" |
@@ -328,3 +331,4 @@ Analytics sử dụng:
 | V2 | 2026-06-14 | Cập nhật sau Phase 2A code |
 | V3 | 2026-06-16 | Đồng bộ với Google Sheet thật (DATABASE_HomeMatch) |
 | V4 | 2026-06-23 | Migrate từ Google Sheet → Supabase, thêm ImageCache table |
+| V5 | 2026-06-28 | Thêm cột MaPhong, LoaiPhong, DienTich vào PHONGTRO |
