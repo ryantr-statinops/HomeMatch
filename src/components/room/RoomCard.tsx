@@ -79,6 +79,15 @@ export default function RoomCard({ room }: RoomCardProps) {
           </div>
         )}
 
+        {/* LoaiPhong badge */}
+        {room.loaiPhong && (
+          <div className="absolute left-3 top-3">
+            <div className="inline-flex items-center rounded-lg bg-primary/80 px-2.5 py-1 text-xs font-medium text-white shadow-lg backdrop-blur-sm">
+              {room.loaiPhong}
+            </div>
+          </div>
+        )}
+
         {/* Address badge */}
         <div className="absolute bottom-3 left-3 right-3">
           <div className="inline-flex items-center gap-1.5 rounded-lg bg-black/60 px-3 py-1.5 text-xs text-white shadow-lg backdrop-blur-sm">
@@ -93,12 +102,18 @@ export default function RoomCard({ room }: RoomCardProps) {
 
       {/* Info */}
       <div className="space-y-3 p-4">
-        {/* Price */}
+        {/* Price + Area */}
         <div className="flex items-baseline gap-1">
           <span className="text-xl text-primary">
             {formatPrice(room.price)}
           </span>
           <span className="text-xs text-accent-light">/tháng</span>
+          {room.area > 0 && (
+            <>
+              <span className="mx-1 text-accent-light">•</span>
+              <span className="text-sm text-accent">{room.area} m²</span>
+            </>
+          )}
         </div>
 
         {/* Floor + Contract */}
