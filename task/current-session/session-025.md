@@ -41,6 +41,7 @@ Những việc đã thực hiện:
 4. Thêm badge `LoaiPhong` + hiển thị `area` vào `RoomCard.tsx`
 5. Thêm hiển thị `loaiPhong` + `area` vào `RoomInfo.tsx`
 6. Commit & push từng file riêng biệt
+7. Debug & fix: RLS policy `anon_read_phongtro` bị mất do `DROP CASCADE` — chạy SQL tạo lại policy
 
 ---
 
@@ -66,6 +67,25 @@ Những việc đã thực hiện:
 
 ---
 
+## Post-implementation Issues & Fixes
+
+### Issue: "Không tìm thấy phòng" sau khi chạy dev
+
+**Nguyên nhân:** Lệnh `DROP TABLE IF EXISTS PHONGTRO CASCADE` đã xoá luôn RLS policy `anon_read_phongtro`.
+
+**Fix:** Chạy SQL trên Supabase Dashboard để tạo lại policy:
+
+```sql
+ALTER TABLE phongtro ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "anon_read_phongtro"
+ON phongtro
+FOR SELECT
+TO anon
+USING (true);
+```
+
+---
+
 ## Notes
 
 * `RoomGallery.tsx` không bị ảnh hưởng (chỉ xử lý images)
@@ -76,9 +96,10 @@ Những việc đã thực hiện:
 
 ## Definition Of Done
 
-* [ ] Type + service mapping hoạt động
-* [ ] RoomCard hiển thị loaiPhong + area
-* [ ] RoomInfo hiển thị loaiPhong + area
-* [ ] Build không lỗi (`npm run lint`)
-* [ ] Mỗi file commit & push riêng biệt
-* [ ] Không vi phạm project-rules
+* [x] Type + service mapping hoạt động
+* [x] RoomCard hiển thị loaiPhong + area
+* [x] RoomInfo hiển thị loaiPhong + area
+* [x] Build không lỗi (pre-existing warnings không liên quan)
+* [x] RLS policy đã tạo lại, dữ liệu hiển thị đúng
+* [x] Mỗi file commit & push riêng biệt
+* [x] Không vi phạm project-rules
