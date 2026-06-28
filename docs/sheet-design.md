@@ -1,4 +1,4 @@
-# Sheet Design V3
+# Sheet Design V4
 
 ## Purpose
 
@@ -25,13 +25,16 @@ Quản lý bởi: AppSheet + Website (đọc)
 | Column | Type | Required | Ghi chú |
 |--------|:----:|:--------:|---------|
 | IDPhong | string | Yes | PK, do AppSheet sinh |
+| MaPhong | string | No | Mã phòng rút gọn (VD: `P001`) |
 | HinhAnhChinh | string | Yes | URL ảnh đại diện |
+| LoaiPhong | string | No | Loại phòng (VD: `Phòng trọ`, `Căn hộ`, `Studio`) |
 | SoNha | string | Yes | |
 | Duong | string | Yes | |
 | Phuong | string | Yes | |
 | KhuVuc | string | Yes | VD: "Quận 7", "Thủ Đức" |
 | HopDong | string | No | "6-12 tháng" |
 | Gia | number | Yes | Giá thuê (VD: 7000000) |
+| DienTich | number | No | Diện tích (VD: `25`, `30`), đơn vị m² |
 | MayLanh | string | No | "Có" / "Không" |
 | KeBep | string | No | "Có" / "Không" |
 | Gac | string | No | "Có" / "Không" |
@@ -168,3 +171,4 @@ Quản lý lịch hẹn.
 | V1 | 2026-06-13 | Thiết kế ban đầu |
 | V2 | 2026-06-14 | Cập nhật sau code review |
 | V3 | 2026-06-16 | Đồng bộ với Google Sheet thật (DATABASE_HomeMatch) |
+| V4 | 2026-06-28 | Thêm cột MaPhong, LoaiPhong, DienTich vào sheet PHONGTRO |
