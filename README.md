@@ -17,7 +17,7 @@ Nền tảng tìm phòng trọ và tìm người ở ghép dành cho sinh viên.
 
 ## 🌐 Production
 
-- **Vercel:** https://homematchvn.vercel.app
+- **Vercel:** [https://homematchvn.vercel.app](https://homematch-vn.vercel.app/)
 - **Custom domain:** https://homematch.id.vn ✅
 
 ## 📁 Project Structure
