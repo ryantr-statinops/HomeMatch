@@ -4,7 +4,13 @@ import { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Fade from "embla-carousel-fade";
 import type { RoomImage } from "@/types/room";
-import { ChevronLeft, ChevronRight, ImageOff, Maximize2 } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Download,
+  ImageOff,
+  Maximize2,
+} from "lucide-react";
 import ImageViewer from "@/components/room/ImageViewer";
 
 type RoomGalleryProps = {
@@ -44,6 +50,18 @@ export default function RoomGallery({ images }: RoomGalleryProps) {
     () => emblaApi && emblaApi.scrollNext(),
     [emblaApi],
   );
+
+  const handleDownload = useCallback(async () => {
+    const current = images[selectedIndex];
+    if (!current?.url) return;
+
+    try {
+      const downloadUrl = `/api/images/download?url=${encodeURIComponent(current.url)}`;
+      window.location.assign(downloadUrl);
+    } catch {
+      // Ignore download failures silently for now.
+    }
+  }, [images, selectedIndex]);
 
   if (!images || images.length === 0) {
     return (
@@ -116,17 +134,26 @@ export default function RoomGallery({ images }: RoomGalleryProps) {
           </>
         )}
 
-        {/* Expand button */}
-        <button
-          onClick={() => {
-            setViewerIndex(selectedIndex);
-            setViewerOpen(true);
-          }}
-          className="absolute bottom-3 right-3 rounded-full bg-black/50 p-1.5 text-white shadow-lg backdrop-blur-sm transition-all hover:bg-black/70 active:scale-90"
-          aria-label="View fullscreen"
-        >
-          <Maximize2 size={16} />
-        </button>
+        {/* Action buttons */}
+        <div className="absolute bottom-3 right-3 flex items-center gap-2">
+          <button
+            onClick={handleDownload}
+            className="rounded-full bg-black/50 p-1.5 text-white shadow-lg backdrop-blur-sm transition-all hover:bg-black/70 active:scale-90"
+            aria-label="Download image"
+          >
+            <Download size={16} />
+          </button>
+          <button
+            onClick={() => {
+              setViewerIndex(selectedIndex);
+              setViewerOpen(true);
+            }}
+            className="rounded-full bg-black/50 p-1.5 text-white shadow-lg backdrop-blur-sm transition-all hover:bg-black/70 active:scale-90"
+            aria-label="View fullscreen"
+          >
+            <Maximize2 size={16} />
+          </button>
+        </div>
       </div>
 
       {/* Dots */}
