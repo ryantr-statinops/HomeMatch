@@ -23,6 +23,15 @@ function formatCost(cost: number, unit: string): string {
   return cost.toLocaleString("vi-VN") + unit;
 }
 
+function formatDescription(description: string): string {
+  return description
+    .split(/\s*-\s*/g)
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .map((part) => `- ${part}`)
+    .join("\n");
+}
+
 export default function RoomInfo({ room }: RoomInfoProps) {
   const addressParts = [
     room.address.duong,
@@ -139,8 +148,8 @@ export default function RoomInfo({ room }: RoomInfoProps) {
           <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-accent-light">
             Mô tả
           </h3>
-          <p className="text-sm leading-relaxed text-accent">
-            {room.description}
+          <p className="whitespace-pre-line text-sm leading-relaxed text-accent">
+            {formatDescription(room.description)}
           </p>
         </div>
       )}
