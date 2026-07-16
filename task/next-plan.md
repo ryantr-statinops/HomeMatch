@@ -44,10 +44,10 @@ Mọi AI Agent phải đọc file này trước khi đề xuất hoặc thực h
 * Sitemap: DONE
 * User Journeys: DONE
 * Assumptions: DONE
-* Database Structure: ✅ DONE (V3 — synced with real sheet)
-* ERD: ✅ DONE (V2 — synced with real sheet)
-* Sheet Design: ✅ DONE (V3 — synced with real sheet)
-* API Contracts: ✅ DONE (V5 — synced with codebase)
+* Database Structure: ✅ DONE (V5 — synced with real sheet / Supabase)
+* ERD: ✅ DONE (V5 — synced with real sheet / Supabase)
+* Sheet Design: ✅ DONE (V4 — historical reference)
+* API Contracts: ✅ DONE (V4 — synced with codebase)
 * Tech Stack: ✅ DONE (V3 — Vercel, Supabase SDK)
 * Folder Structure: ✅ DONE (V2 — synced with codebase)
 * System Architecture: DONE
