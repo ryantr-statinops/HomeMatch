@@ -7,7 +7,8 @@
 3. `docs/02-architecture/system-architecture.md`
 4. `docs/03-data/database-structure.md`
 5. `docs/04-ui-ux/ui-spec.md`
-6. `docs/05-features/rooms-listing-optimization.md`
+6. `docs/03-data/image-download-mechanism.md`
+7. `docs/05-features/rooms-listing-optimization.md`
 
 ## Cấu trúc
 
@@ -27,4 +28,3 @@ docs/
 - `canonical`: tài liệu chuẩn để đọc trước
 - `reference`: tài liệu tham khảo
 - `deprecated`: tài liệu cũ, chỉ giữ để đối chiếu
-
