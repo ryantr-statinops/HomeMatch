@@ -3,7 +3,7 @@
 ## Cách đọc
 
 1. `docs/01-product/project-rules.md`
-2. `docs/00-overview/project-summary.md`
+2. `docs/01-product/assumptions.md`
 3. `docs/02-architecture/system-architecture.md`
 4. `docs/03-data/database-structure.md`
 5. `docs/04-ui-ux/ui-spec.md`
@@ -14,7 +14,6 @@
 ```text
 docs/
 ├── README.md
-├── 00-overview/
 ├── 01-product/
 ├── 02-architecture/
 ├── 03-data/

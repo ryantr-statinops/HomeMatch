@@ -244,4 +244,4 @@ Không cần cho data volume hiện tại.
 - `src/components/room/RoomList.tsx` — Consumer component
 - `src/types/room.ts` — Type definitions
 - `docs/database_structure.md` — DB schema
-- `docs/diagrams/erd-v1.md` — ERD
+- `docs/03-data/erd-v1.md` — ERD
