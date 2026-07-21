@@ -19,6 +19,7 @@
 - `03-migration-phases.md`: các phase chuyển đổi
 - `04-risks-and-tradeoffs.md`: rủi ro và mitigation
 - `05-execution-checklist.md`: checklist để triển khai từng bước
+- `06-service-mapping-for-homematch.md`: giải thích mapping giữa bài Todo microservices và HomeMatch
 
 ## Mục đích
 
