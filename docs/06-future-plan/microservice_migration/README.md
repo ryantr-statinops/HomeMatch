@@ -25,3 +25,27 @@
 - Lưu toàn bộ plan migration ở một nơi dễ tra cứu.
 - Tách tài liệu chiến lược khỏi `task/` để tránh lẫn với session ngắn hạn.
 - Làm nguồn tham chiếu duy nhất khi bắt đầu sửa kiến trúc.
+
+## Sketch Tổng Quan
+
+```mermaid
+flowchart TB
+  U[Khách hàng] --> WEB[Public Web]
+  S[Sale / Admin] --> ADM[Admin Portal]
+
+  WEB --> API[Backend Service]
+  ADM --> API
+
+  API --> DB[(Supabase PostgreSQL)]
+  API --> IMG[Image Resolver]
+  IMG --> IC[ImageCache table]
+  IC --> DB
+  IC --> GD[Google Drive]
+```
+
+Sơ đồ trên là bản phác thảo nhanh của kiến trúc đích:
+
+- public web và admin portal tách nhau
+- backend service là điểm truy cập duy nhất cho dữ liệu
+- Supabase giữ vai trò database
+- Google Drive vẫn giữ vai trò image storage
