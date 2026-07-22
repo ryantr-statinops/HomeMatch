@@ -1,15 +1,39 @@
-# Microservice Migration Plan
+# HomeMatch Architecture & Migration Plan
 
-Đây là bộ tài liệu kế hoạch hoàn chỉnh cho hướng chuyển đổi MatchHome sang mô hình public site + admin portal + backend service trung tâm.
+Đây là index chính thức của thư mục. Bộ tài liệu mô tả quyết định cuối cùng: HomeMatch sẽ xây backend modular monolith trước, sau đó chỉ tách microservice khi có nhu cầu vận hành được chứng minh.
 
-## Cách đọc
+## Quyết định cuối cùng
 
-1. Đọc `00-overview.md` để nắm bối cảnh và scope.
-2. Đọc `01-target-architecture.md` để hiểu kiến trúc đích.
-3. Đọc `02-stack-decision.md` để chốt stack và nguyên tắc.
-4. Đọc `03-migration-phases.md` để biết thứ tự triển khai.
-5. Đọc `04-risks-and-tradeoffs.md` để nắm rủi ro và đánh đổi.
-6. Đọc `05-execution-checklist.md` để chuyển từ plan sang action.
+```text
+Public Web ─┐
+Admin Portal ─┼── Backend API (modular monolith)
+             ├── Auth/RBAC
+             ├── Rooms
+             ├── Roommates
+             ├── Leads
+             └── Media
+                    ↓
+             Supabase PostgreSQL
+                    ↓
+             ImageCache → Google Drive
+```
+
+Không xây TODO API, Users API, Redis, Worker, Traefik hay Zipkin trong phase đầu vì HomeMatch hiện chưa có use case tương ứng.
+
+## Cách đọc theo thứ tự
+
+1. `00-overview.md` — bối cảnh và phạm vi.
+2. `07-final-architecture-decision.md` — quyết định kiến trúc bắt buộc.
+3. `08-repository-and-module-structure.md` — cấu trúc code mục tiêu.
+4. `09-api-contracts.md` — API boundary.
+5. `10-auth-and-rbac.md` — authentication và phân quyền.
+6. `11-data-access-and-security.md` — dữ liệu và bảo mật.
+7. `12-local-development-and-docker.md` — local runtime.
+8. `13-testing-and-quality.md` — quality gates.
+9. `14-deployment-and-operations.md` — vận hành và release.
+10. `15-phase-exit-criteria.md` — điều kiện hoàn thành.
+
+Các file `01`–`06` giữ vai trò background, target design, trade-off, checklist và mapping với bài Todo microservices.
 
 ## File Index
 
@@ -20,6 +44,15 @@
 - `04-risks-and-tradeoffs.md`: rủi ro và mitigation
 - `05-execution-checklist.md`: checklist để triển khai từng bước
 - `06-service-mapping-for-homematch.md`: giải thích mapping giữa bài Todo microservices và HomeMatch
+- `07-final-architecture-decision.md`: quyết định kiến trúc cuối cùng
+- `08-repository-and-module-structure.md`: cấu trúc repository và backend modules
+- `09-api-contracts.md`: hợp đồng API
+- `10-auth-and-rbac.md`: authentication và role-based access
+- `11-data-access-and-security.md`: boundary dữ liệu và bảo mật
+- `12-local-development-and-docker.md`: local development và Docker decision
+- `13-testing-and-quality.md`: chiến lược kiểm thử và quality gates
+- `14-deployment-and-operations.md`: môi trường và vận hành
+- `15-phase-exit-criteria.md`: tiêu chí hoàn thành từng phase
 
 ## Mục đích
 
