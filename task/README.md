@@ -15,6 +15,11 @@ Thư mục này quản lý kế hoạch triển khai, session log và hướng �
 - log theo session
 - việc đang chờ
 
+## Active Plans
+
+- `microservice-foundation-plan/`: kế hoạch triển khai backend boundary, Admin
+  Portal và migration an toàn cho Vercel production.
+
 ## Workflow
 
 1. Đọc `docs/README.md`.
