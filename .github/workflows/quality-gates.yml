@@ -1,0 +1,74 @@
+name: Quality Gates
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  frontend:
+    name: Public Web and contracts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check environment boundaries
+        run: npm run security:env-boundaries
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck Public Web
+        run: npm run typecheck
+
+      - name: Typecheck workspaces
+        run: npm run workspaces:typecheck
+
+      - name: Build Public Web
+        run: npm run build
+
+  api:
+    name: FastAPI and OpenAPI
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: services/api
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: services/api/pyproject.toml
+
+      - name: Install API dependencies
+        run: python -m pip install -e ".[dev]"
+
+      - name: Test API
+        run: python -m pytest
+
+      - name: Export OpenAPI
+        run: python scripts/export_openapi.py
+
+      - name: Check OpenAPI artifact
+        working-directory: .
+        run: git diff --exit-code -- packages/api-spec/openapi.json
