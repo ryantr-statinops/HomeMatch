@@ -26,7 +26,7 @@ main
 - Vercel production project tiep tuc build Next.js app tai repository root.
 - Khong doi Root Directory cua production project.
 - Khong chuyen `src/` va `public/` vao `apps/web`.
-- `apps/api` va `apps/admin` duoc tao song song.
+- `services/api` va `apps/admin` duoc tao song song.
 - Vercel Preview duoc dung de kiem tra branch implementation.
 
 ### Deployment units muc tieu
@@ -34,7 +34,7 @@ main
 | Project | Root Directory | Vai tro |
 |---|---|---|
 | `matchhome-web` | repository root, sau nay `apps/web` | Public Web |
-| `matchhome-api` | `apps/api` | Backend API |
+| `matchhome-api` | `services/api` | Python FastAPI Backend API |
 | `matchhome-admin` | `apps/admin` | Sale/Admin Portal |
 
 ## Environment isolation
@@ -52,10 +52,17 @@ main
 
 ### Backend API
 
+- Chay Python + FastAPI trong Vercel Python runtime.
 - So huu Supabase service role key.
 - So huu Google Drive credentials.
 - Verify Supabase access token va role.
 - Khong tra secret ve client.
+
+### Dependency boundaries
+
+- npm workspaces chi quan ly Public Web, Admin va TypeScript packages.
+- Python dependencies duoc quan ly trong `services/api/pyproject.toml`.
+- OpenAPI ket noi hai he sinh; frontend khong import Python source.
 
 Preview, staging va production phai dung cac environment variable sets rieng.
 Khong dung production service credentials trong local development neu khong can
@@ -118,4 +125,3 @@ Thu tu capability:
 - API endpoint cu khong bi xoa trong cung release chuyen client.
 - Database schema moi phai chap nhan ca payload cu va moi trong migration window.
 - Neu API moi loi, Public Web phai co kha nang quay lai data path da verify.
-
