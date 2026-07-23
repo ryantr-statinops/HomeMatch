@@ -6,6 +6,35 @@ Website `homematch.id.vn` dang duoc Vercel deploy tu `main`. Migration phai
 cho phep phat trien API va Admin Portal ma khong thay doi hanh vi cua production
 cho den khi tung capability duoc kiem tra.
 
+## Implementation status
+
+Repository controls were implemented and verified on
+`codex/microservice-foundation`:
+
+- [x] Public Web remains at the repository root.
+- [x] FastAPI runs independently from `services/api`.
+- [x] Public Web production build passes.
+- [x] FastAPI health test passes.
+- [x] OpenAPI drift is checked.
+- [x] Public Web and workspace TypeScript checks pass.
+- [x] ESLint runs through the supported ESLint CLI.
+- [x] Frontend environment boundaries are checked automatically.
+- [x] Public and backend environment templates are separated.
+- [x] GitHub Actions quality gates are defined for pull requests to `main`.
+- [x] Generated Python environments and build artifacts are ignored.
+
+The following owner-controlled Vercel and GitHub settings must be confirmed
+before this plan can be marked fully enforced:
+
+- [ ] Require the `Quality Gates` GitHub check before merging to `main`.
+- [ ] Disable force pushes and branch deletion for `main`.
+- [ ] Keep `main` as the Production Branch for Public Web and Backend API.
+- [ ] Keep Public Web Root Directory at the repository root.
+- [ ] Keep Backend API Root Directory at `services/api`.
+- [ ] Use separate Preview and Production environment variable values.
+- [ ] Confirm a previous Vercel production deployment can be promoted for
+  rollback.
+
 ## Branch strategy
 
 ```text
