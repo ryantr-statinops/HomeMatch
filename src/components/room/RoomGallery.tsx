@@ -31,9 +31,18 @@ export default function RoomGallery({ images }: RoomGalleryProps) {
 
   useEffect(() => {
     if (!emblaApi) return;
-    onSelect();
-    setScrollSnaps(emblaApi.scrollSnapList());
+
+    const initializeCarousel = () => {
+      onSelect();
+      setScrollSnaps(emblaApi.scrollSnapList());
+    };
+
     emblaApi.on("select", onSelect);
+    queueMicrotask(initializeCarousel);
+
+    return () => {
+      emblaApi.off("select", onSelect);
+    };
   }, [emblaApi, onSelect]);
 
   const scrollTo = useCallback(

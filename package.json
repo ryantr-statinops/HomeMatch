@@ -11,9 +11,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
     "api-client:generate": "npm run generate --workspace=@homematch/api-client",
-    "workspaces:typecheck": "npm run typecheck --workspaces --if-present"
+    "workspaces:typecheck": "npm run typecheck --workspaces --if-present",
+    "security:env-boundaries": "node scripts/check-env-boundaries.mjs"
   },
   "repository": {
     "type": "git",
