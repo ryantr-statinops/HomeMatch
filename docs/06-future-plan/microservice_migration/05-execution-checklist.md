@@ -2,8 +2,8 @@
 
 ## Phase 0 - Prepare
 
-- [ ] Chốt naming cho `apps/web`, `apps/admin`, `apps/api`
-- [ ] Chốt shared package nào cần có
+- [x] Chốt naming cho Public Web root, `apps/admin`, `services/api`
+- [x] Chốt `packages/api-client` và `packages/api-spec`
 - [ ] Chốt source control strategy cho migration
 - [ ] Chốt environment variables cho từng app
 
@@ -49,4 +49,3 @@
 - [ ] Thêm health check
 - [ ] Thêm monitoring
 - [ ] Kiểm tra regression trước khi rollout
-
