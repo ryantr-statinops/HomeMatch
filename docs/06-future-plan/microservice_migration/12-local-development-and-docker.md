@@ -7,7 +7,7 @@ The first backend iteration should be runnable without a large infrastructure st
 ```text
 apps/web
 apps/admin
-apps/api
+services/api
 Supabase project or local Supabase
 ```
 
@@ -15,7 +15,9 @@ Each app has its own `.env.local`/environment configuration. Secrets are never c
 
 ## Docker decision
 
-Docker is optional for the first implementation. Add Dockerfiles for `web`, `admin` and `api` when environment parity or deployment requires them.
+Docker is optional for the first implementation. Add Dockerfiles for Web,
+Admin and FastAPI when environment parity or a future container deployment
+requires them.
 
 Docker Compose may orchestrate the applications locally, but the initial stack does not include Redis, Traefik or Zipkin.
 
@@ -26,9 +28,16 @@ npm install
 npm run lint
 npm run test
 npm run build
+
+cd services/api
+python -m venv .venv
+python -m pip install -e ".[dev]"
+python -m pytest
+uvicorn app.main:app --reload
 ```
 
-The exact workspace commands must be finalized when the monorepo structure is created.
+`npm workspaces` manage JavaScript and TypeScript applications and packages.
+Python dependencies and commands remain scoped to `services/api`.
 
 ## Environment groups
 
