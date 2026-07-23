@@ -23,16 +23,16 @@ Repository controls were implemented and verified on
 - [x] GitHub Actions quality gates are defined for pull requests to `main`.
 - [x] Generated Python environments and build artifacts are ignored.
 
-The following owner-controlled Vercel and GitHub settings must be confirmed
-before this plan can be marked fully enforced:
+Owner-controlled Vercel and GitHub settings were confirmed on 2026-07-23.
+This production safety plan is now fully enforced:
 
-- [ ] Require the `Quality Gates` GitHub check before merging to `main`.
-- [ ] Disable force pushes and branch deletion for `main`.
-- [ ] Keep `main` as the Production Branch for Public Web and Backend API.
-- [ ] Keep Public Web Root Directory at the repository root.
-- [ ] Keep Backend API Root Directory at `services/api`.
-- [ ] Use separate Preview and Production environment variable values.
-- [ ] Confirm a previous Vercel production deployment can be promoted for
+- [x] Require the `Quality Gates` GitHub check before merging to `main`.
+- [x] Disable force pushes and branch deletion for `main`.
+- [x] Keep `main` as the Production Branch for Public Web and Backend API.
+- [x] Keep Public Web Root Directory at the repository root.
+- [x] Keep Backend API Root Directory at `services/api`.
+- [x] Use separate Preview and Production environment variable values.
+- [x] Confirm a previous Vercel production deployment can be promoted for
   rollback.
 
 ## Branch strategy
