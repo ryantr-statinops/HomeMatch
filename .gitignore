@@ -9,6 +9,8 @@ next-env.d.ts
 
 # Dependencies
 node_modules
+.venv
+**/.venv
 
 # Build
 out
