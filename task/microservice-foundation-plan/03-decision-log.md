@@ -14,20 +14,19 @@
 | D-008 | Implementation thuc hien tren branch rieng | Accepted |
 | D-009 | Public Web tam thoi giu tai repository root | Accepted |
 
-## Dang cho xac nhan
+## Da chot trong implementation kickoff
 
 ### D-010 - Backend runtime
 
-De xuat:
+Accepted:
 
-- Dung Next.js Route Handlers cho `apps/api`.
-- Deploy thanh Vercel project rieng.
-- Chua dung NestJS trong phase dau.
+- Dung Python 3 + FastAPI + Pydantic trong `services/api`.
+- Deploy FastAPI thanh Vercel project rieng.
+- Dung pytest cho backend tests.
+- Dung OpenAPI do FastAPI sinh ra lam API contract source.
+- Generate TypeScript API client cho Public Web va Admin.
 
-Ly do: phu hop Vercel serverless, giam deployment complexity va van cho phep
-tach module thanh service rieng sau nay.
-
-Status: Pending confirmation.
+Status: Accepted.
 
 ### D-011 - Workspace tooling
 
@@ -41,7 +40,7 @@ De xuat:
 Ly do: repository hien tai dang dung `package-lock.json`; doi ngay sang pnpm se
 tao lockfile churn va tang rui ro cho Vercel build.
 
-Status: Pending confirmation.
+Status: Accepted.
 
 ### D-012 - Vercel deployment model
 
@@ -49,12 +48,12 @@ De xuat:
 
 - Ba Vercel projects cung mot Git repository.
 - Public Web tiep tuc lay root repository trong migration.
-- API lay `apps/api`.
+- API lay `services/api`.
 - Admin lay `apps/admin`.
 - Chi `main` la Production Branch.
 - Feature branches chi tao Preview Deployments.
 
-Status: Pending confirmation.
+Status: Accepted.
 
 ### D-013 - Staging data
 
@@ -65,7 +64,7 @@ De xuat:
 - Neu chua co staging project, foundation chi implement health/contracts va mock
   data; chua chay write integration tests.
 
-Status: Pending confirmation.
+Status: Accepted.
 
 ### D-014 - Role matrix
 
@@ -81,7 +80,7 @@ De xuat:
 | Quan ly user va role | No | Yes |
 | Thay doi system settings | No | Yes |
 
-Status: Pending confirmation.
+Status: Accepted.
 
 ### D-015 - API defaults
 
@@ -108,4 +107,3 @@ Sau khi owner xac nhan:
 1. Doi status cua decision thanh `Accepted`.
 2. Ghi ro neu co dieu chinh so voi de xuat.
 3. Chi bat dau phase phu thuoc sau khi decision lien quan da duoc accepted.
-
