@@ -8,6 +8,11 @@ Accepted decision for the next implementation cycle.
 
 HomeMatch will first use a modular monolith backend with two frontend applications. It will not start as a full microservices system.
 
+The backend modular monolith will be implemented with Python and FastAPI. It
+will run as a separate Vercel project from `services/api`. FastAPI-generated
+OpenAPI is the source contract used to generate the TypeScript client consumed
+by Public Web and Admin Portal.
+
 ```text
 Public Web ─┐
 Admin Portal ─┼── Backend API (modular monolith)
