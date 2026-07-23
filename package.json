@@ -3,11 +3,17 @@
   "version": "1.0.0",
   "description": "Nền tảng tìm phòng trọ và tìm người ở ghép - HomeMatch",
   "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "api-client:generate": "npm run generate --workspace=@homematch/api-client",
+    "workspaces:typecheck": "npm run typecheck --workspaces --if-present"
   },
   "repository": {
     "type": "git",

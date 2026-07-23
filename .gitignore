@@ -9,6 +9,11 @@ next-env.d.ts
 
 # Dependencies
 node_modules
+.venv
+**/.venv
+__pycache__
+**/__pycache__
+*.egg-info
 
 # Build
 out
