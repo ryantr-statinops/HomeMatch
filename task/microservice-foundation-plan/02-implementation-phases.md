@@ -4,7 +4,7 @@
 
 ### Cong viec
 
-- Chot backend runtime va workspace tools.
+- Chot Python FastAPI backend runtime va npm workspace boundaries.
 - Chot Vercel deployment model.
 - Chot role matrix cua `ADMIN` va `SALE`.
 - Chot staging data strategy.
@@ -17,7 +17,7 @@
 - [x] Tao implementation branch rieng.
 - [x] Production build baseline pass.
 - [x] Giu Public Web tai repository root.
-- [ ] Hoan thanh cac decision dang cho xac nhan.
+- [x] Hoan thanh cac decision dang cho xac nhan.
 - [ ] Xac nhan Vercel Preview Deployment.
 
 ### Exit criteria
@@ -31,10 +31,12 @@
 ### Cong viec
 
 - Cau hinh workspace ma khong lam hong root application.
-- Tao `packages/contracts`.
-- Tao `apps/api`.
+- Tao `services/api` voi FastAPI va Pydantic.
+- Tao `packages/api-spec`.
+- Tao `packages/api-client`.
 - Them `GET /api/v1/health`.
-- Them standard response va error contracts.
+- Them standard response va error models.
+- Sinh OpenAPI va TypeScript API client.
 - Them CI commands cho build, typecheck va tests.
 - Chuan bi `apps/admin` skeleton sau khi API foundation pass.
 
@@ -43,7 +45,8 @@
 - Public Web root build pass.
 - API build pass doc lap.
 - Health endpoint chay tren Vercel Preview.
-- Shared contracts duoc consume boi API.
+- OpenAPI duoc sinh tu FastAPI.
+- Generated TypeScript client build thanh cong.
 - Khong thay doi public production behavior.
 
 ## Phase 2 - Room Read API
@@ -162,4 +165,3 @@ Sau mot giai doan van hanh, danh gia tung module dua tren:
 
 Neu chua co bang chung, tiep tuc giu modular monolith. Neu co, tach module phu
 hop thanh service doc lap trong mot ke hoach rieng.
-
