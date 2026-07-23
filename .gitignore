@@ -11,6 +11,9 @@ next-env.d.ts
 node_modules
 .venv
 **/.venv
+__pycache__
+**/__pycache__
+*.egg-info
 
 # Build
 out
