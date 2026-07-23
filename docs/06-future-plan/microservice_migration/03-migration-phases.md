@@ -12,8 +12,9 @@
 
 - `apps/web`
 - `apps/admin`
-- `apps/api`
-- `packages/shared`
+- `services/api`
+- `packages/api-client`
+- `packages/api-spec`
 - base routing and environment config
 
 ## Phase 2 - Backend Read Layer
@@ -93,4 +94,3 @@ Migration is ready when:
 - leads are recorded correctly
 - image URLs still resolve
 - no client reads DB directly
-
