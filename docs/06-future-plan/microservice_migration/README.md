@@ -2,6 +2,10 @@
 
 Đây là index chính thức của thư mục. Bộ tài liệu mô tả quyết định cuối cùng: HomeMatch sẽ xây backend modular monolith trước, sau đó chỉ tách microservice khi có nhu cầu vận hành được chứng minh.
 
+Backend modular monolith được chốt dùng Python + FastAPI, deploy thành Vercel
+project riêng. OpenAPI do FastAPI sinh ra là contract nguồn cho TypeScript API
+client của Public Web và Admin Portal.
+
 ## Quyết định cuối cùng
 
 ```text
