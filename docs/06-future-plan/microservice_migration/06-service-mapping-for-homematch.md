@@ -102,7 +102,7 @@ Hiện tại public app deploy trên Vercel và gọi Supabase SDK trực tiếp
 
 Docker là cách đóng gói và chạy ứng dụng, không phải business service. Docker Compose là công cụ orchestration cho local hoặc một server nhỏ.
 
-Nếu bắt đầu xây `apps/api` riêng, Docker Compose sẽ hữu ích để chạy:
+Nếu bắt đầu xây `services/api` FastAPI riêng, Docker Compose sẽ hữu ích để chạy:
 
 ```text
 web + admin + api + local dependencies
@@ -168,4 +168,3 @@ Bài Todo có nhiều service vì nó muốn trình diễn một hệ sinh thái
 2. Tạo backend boundary trước.
 3. Thêm Admin Portal và Auth/RBAC.
 4. Chỉ thêm Redis, worker, reverse proxy hoặc service độc lập khi có use case và số liệu chứng minh cần thiết.
-
