@@ -12,7 +12,9 @@ Use three environments when the backend work starts:
 
 - Public Web: Vercel.
 - Admin Portal: Vercel or the same managed frontend platform.
-- Backend API: a managed Node.js-compatible service first; container deployment is optional.
+- Backend API: Python FastAPI deployed from `services/api` as a separate Vercel
+  project; container deployment to another managed platform remains a future
+  option.
 - Database: Supabase PostgreSQL.
 - Images: Google Drive with `ImageCache` mapping.
 
