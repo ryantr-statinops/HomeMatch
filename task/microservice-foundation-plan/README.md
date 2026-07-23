@@ -30,7 +30,10 @@ Thu muc nay chi quan ly:
 | Authentication muc tieu | Supabase Auth |
 | Image storage | Google Drive |
 | Image mapping | `ImageCache` trong Supabase |
-| Migration state | Phase 0 - Decision gate |
+| Backend runtime | Python 3 + FastAPI + Pydantic |
+| API contract | FastAPI OpenAPI + generated TypeScript client |
+| Workspace | npm workspaces for JavaScript/TypeScript only |
+| Migration state | Phase 0 - Decisions accepted |
 
 ## Tai lieu trong thu muc
 
@@ -65,10 +68,12 @@ MatchHome/
 ├── src/                    # Public Web production hien tai
 ├── public/
 ├── apps/
-│   ├── api/                # Backend moi
 │   └── admin/              # Sale/Admin Portal moi
+├── services/
+│   └── api/                # Python FastAPI backend
 ├── packages/
-│   └── contracts/          # Shared Zod schemas va API types
+│   ├── api-spec/           # Generated OpenAPI
+│   └── api-client/         # Generated TypeScript client
 ├── docs/
 └── task/
 ```
@@ -88,4 +93,3 @@ Public Web chi duoc chuyen vao `apps/web` sau khi:
 - Moi database migration phai backward-compatible.
 - Moi phase phai pass build, typecheck, tests va smoke test.
 - Chi merge vao `main` sau khi Vercel Preview da duoc kiem tra.
-
