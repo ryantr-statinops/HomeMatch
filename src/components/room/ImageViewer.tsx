@@ -30,8 +30,13 @@ export default function ImageViewer({
 
   useEffect(() => {
     if (!emblaApi) return;
-    onSelect();
+
     emblaApi.on("select", onSelect);
+    queueMicrotask(onSelect);
+
+    return () => {
+      emblaApi.off("select", onSelect);
+    };
   }, [emblaApi, onSelect]);
 
   const scrollPrev = useCallback(
