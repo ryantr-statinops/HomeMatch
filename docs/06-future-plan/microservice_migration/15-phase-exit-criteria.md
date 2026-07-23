@@ -9,7 +9,8 @@
 
 ## Phase 1 — Foundation
 
-- `apps/web`, `apps/admin`, `apps/api` and `packages/shared` exist.
+- Public Web root, `apps/admin`, `services/api`, `packages/api-spec` and
+  `packages/api-client` exist.
 - API health check works.
 - CI runs lint, typecheck, tests and build.
 - Current public website behavior remains available.
