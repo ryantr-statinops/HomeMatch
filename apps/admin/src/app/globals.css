@@ -1,0 +1,331 @@
+@import "tailwindcss";
+
+:root {
+  --ink: #16211c;
+  --paper: #f2efe5;
+  --panel: #fbf9f1;
+  --line: #c9c5b7;
+  --signal: #08785c;
+  --signal-soft: #d9eee5;
+  --warning: #b94b2c;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background:
+    linear-gradient(rgba(22, 33, 28, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(22, 33, 28, 0.045) 1px, transparent 1px),
+    var(--paper);
+  background-size: 32px 32px;
+  color: var(--ink);
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+.admin-shell {
+  display: grid;
+  grid-template-columns: 245px minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid var(--line);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 34px 28px;
+}
+
+.eyebrow {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.sidebar h1 {
+  margin-top: 4px;
+  font-family: Georgia, serif;
+  font-size: 2rem;
+  font-weight: 500;
+}
+
+.sidebar nav {
+  display: grid;
+  gap: 7px;
+}
+
+.nav-item {
+  border-left: 2px solid transparent;
+  color: inherit;
+  padding: 10px 12px;
+  text-decoration: none;
+}
+
+.nav-item.active {
+  border-color: #80d9b8;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.nav-item.muted {
+  opacity: 0.47;
+}
+
+.phase-label {
+  font-family: monospace;
+  font-size: 0.72rem;
+  opacity: 0.6;
+}
+
+.workspace {
+  padding: 34px clamp(24px, 5vw, 76px) 76px;
+}
+
+.topbar,
+.health-heading,
+.module-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.topbar {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 26px;
+}
+
+.topbar h2 {
+  margin-top: 5px;
+  font-family: Georgia, serif;
+  font-size: clamp(1.8rem, 3vw, 3rem);
+  font-weight: 500;
+}
+
+.environment,
+.planned {
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-family: monospace;
+  font-size: 0.7rem;
+  padding: 7px 10px;
+  text-transform: uppercase;
+}
+
+.intro-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 0.65fr;
+  gap: 22px;
+  margin-top: 56px;
+}
+
+.statement,
+.health-card,
+.module-card {
+  border: 1px solid var(--line);
+  background: rgba(251, 249, 241, 0.9);
+}
+
+.statement {
+  min-height: 330px;
+  padding: clamp(28px, 5vw, 56px);
+}
+
+.index {
+  color: var(--signal);
+  font-family: monospace;
+  font-size: 0.75rem;
+}
+
+.statement h3 {
+  max-width: 680px;
+  margin-top: 72px;
+  font-family: Georgia, serif;
+  font-size: clamp(2.2rem, 5vw, 4.9rem);
+  font-weight: 400;
+  letter-spacing: -0.045em;
+  line-height: 0.96;
+}
+
+.statement > p:last-child {
+  max-width: 630px;
+  margin-top: 28px;
+  color: #465149;
+  line-height: 1.7;
+}
+
+.health-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 330px;
+  padding: 28px;
+}
+
+.health-card.online {
+  border-top: 5px solid var(--signal);
+  background: var(--signal-soft);
+}
+
+.health-card.offline {
+  border-top: 5px solid var(--warning);
+}
+
+.health-heading h3 {
+  margin-top: 4px;
+  font-family: Georgia, serif;
+  font-size: 1.5rem;
+}
+
+.health-card dl {
+  display: grid;
+  gap: 12px;
+}
+
+.health-card dl div {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid rgba(22, 33, 28, 0.2);
+  padding-top: 12px;
+}
+
+.health-card dt {
+  color: #526057;
+}
+
+.health-card dd {
+  margin: 0;
+  font-family: monospace;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+.modules {
+  margin-top: 78px;
+}
+
+.section-heading h3 {
+  margin-top: 7px;
+  font-family: Georgia, serif;
+  font-size: clamp(2rem, 3vw, 3rem);
+  font-weight: 500;
+}
+
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 28px;
+}
+
+.module-card {
+  min-height: 265px;
+  margin-right: -1px;
+  padding: 24px;
+}
+
+.module-meta {
+  color: var(--signal);
+  font-family: monospace;
+}
+
+.module-card h4 {
+  margin-top: 54px;
+  font-family: Georgia, serif;
+  font-size: 1.45rem;
+}
+
+.module-card p {
+  min-height: 72px;
+  margin-top: 14px;
+  color: #59635d;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.planned {
+  display: inline-block;
+  margin-top: 20px;
+  color: #6e756f;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 960px) {
+  .admin-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+    height: auto;
+    padding: 22px;
+  }
+
+  .sidebar nav {
+    display: none;
+  }
+
+  .phase-label {
+    margin-top: 18px;
+  }
+
+  .intro-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .module-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 580px) {
+  .workspace {
+    padding: 24px 16px 48px;
+  }
+
+  .topbar {
+    align-items: flex-start;
+    gap: 18px;
+  }
+
+  .environment {
+    display: none;
+  }
+
+  .intro-grid {
+    margin-top: 28px;
+  }
+
+  .statement h3 {
+    margin-top: 52px;
+  }
+
+  .module-grid {
+    grid-template-columns: 1fr;
+  }
+}
