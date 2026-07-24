@@ -24,7 +24,7 @@ Thu muc nay chi quan ly:
 | Production branch | `main` |
 | Production hosting | Vercel |
 | Production public app | Next.js application tai repository root |
-| Implementation branch | `codex/microservice-foundation` |
+| Implementation branch | `codex/phase-1-admin-foundation` |
 | Baseline production build | PASS |
 | Business database | Supabase PostgreSQL |
 | Authentication muc tieu | Supabase Auth |
@@ -33,7 +33,7 @@ Thu muc nay chi quan ly:
 | Backend runtime | Python 3 + FastAPI + Pydantic |
 | API contract | FastAPI OpenAPI + generated TypeScript client |
 | Workspace | npm workspaces for JavaScript/TypeScript only |
-| Migration state | Phase 0 - Decisions accepted |
+| Migration state | Phase 1 - Repository implementation complete; Preview verification pending |
 
 ## Tai lieu trong thu muc
 
