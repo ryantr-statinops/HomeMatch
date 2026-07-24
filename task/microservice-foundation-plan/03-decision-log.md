@@ -98,7 +98,7 @@ De xuat:
   - `RATE_LIMITED`
   - `INTERNAL_ERROR`
 
-Status: Pending confirmation.
+Status: Accepted.
 
 ## Quy tac cap nhat
 

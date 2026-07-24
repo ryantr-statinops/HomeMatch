@@ -24,7 +24,9 @@ Verify backend modules against Supabase test data:
 
 ### Contract tests
 
-Verify that Web and Admin consume the API response schemas from `packages/shared` and that breaking changes are versioned.
+Verify that Web and Admin consume the OpenAPI source from `packages/api-spec`
+through generated types in `packages/api-client`, and that breaking changes are
+reviewed before rollout.
 
 ### Smoke tests
 

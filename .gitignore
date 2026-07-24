@@ -1,5 +1,6 @@
 # Next.js
 .next
+**/.next
 next-env.d.ts
 
 # Environment
@@ -17,6 +18,7 @@ __pycache__
 
 # Build
 out
+*.tsbuildinfo
 
 # IDE
 .vscode

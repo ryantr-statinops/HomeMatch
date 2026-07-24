@@ -25,8 +25,16 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        /** HealthResponse */
-        HealthResponse: {
+        /** DataResponse[HealthData] */
+        DataResponse_HealthData_: {
+            data: components["schemas"]["HealthData"];
+            /** Meta */
+            meta?: {
+                [key: string]: unknown;
+            };
+        };
+        /** HealthData */
+        HealthData: {
             /** Service */
             service: string;
             /**
@@ -61,7 +69,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["HealthResponse"];
+                    "application/json": components["schemas"]["DataResponse_HealthData_"];
                 };
             };
         };

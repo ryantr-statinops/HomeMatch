@@ -3,19 +3,23 @@ from typing import Literal
 from fastapi import APIRouter
 from pydantic import BaseModel
 
+from app.common.schemas import DataResponse
+
 router = APIRouter(tags=["health"])
 
 
-class HealthResponse(BaseModel):
+class HealthData(BaseModel):
     status: Literal["ok"]
     service: str
     version: str
 
 
-@router.get("/health", response_model=HealthResponse)
-def get_health() -> HealthResponse:
-    return HealthResponse(
-        status="ok",
-        service="homematch-api",
-        version="0.1.0",
+@router.get("/health", response_model=DataResponse[HealthData])
+def get_health() -> DataResponse[HealthData]:
+    return DataResponse(
+        data=HealthData(
+            status="ok",
+            service="homematch-api",
+            version="0.1.0",
+        )
     )
