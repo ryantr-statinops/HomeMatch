@@ -28,6 +28,18 @@
 
 ## Phase 1 - Foundation
 
+### Trang thai
+
+- [x] npm workspaces giu Public Web tai repository root.
+- [x] FastAPI service va health endpoint hoat dong doc lap.
+- [x] Standard data/error response models va environment-driven CORS.
+- [x] OpenAPI artifact va generated TypeScript client.
+- [x] `apps/admin` skeleton tich hop typed health contract.
+- [x] Local lint, typecheck, API tests, Public Web build va Admin build pass.
+- [x] Quality Gates build ca Public Web, Admin Portal, API va contracts.
+- [ ] Vercel Preview cua Admin Portal duoc tao va smoke test.
+- [ ] Vercel Preview cua API duoc xac nhan voi response envelope moi.
+
 ### Cong viec
 
 - Cau hinh workspace ma khong lam hong root application.
@@ -48,6 +60,9 @@
 - OpenAPI duoc sinh tu FastAPI.
 - Generated TypeScript client build thanh cong.
 - Khong thay doi public production behavior.
+
+Phase 1 chi duoc danh dau hoan tat sau khi hai Preview Deployment duoc xac nhan.
+Repo implementation da hoan tat; hai checklist Preview la deployment gate con lai.
 
 ## Phase 2 - Room Read API
 
