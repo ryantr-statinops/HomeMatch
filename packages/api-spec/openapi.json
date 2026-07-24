@@ -1,7 +1,24 @@
 {
   "components": {
     "schemas": {
-      "HealthResponse": {
+      "DataResponse_HealthData_": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/HealthData"
+          },
+          "meta": {
+            "additionalProperties": true,
+            "title": "Meta",
+            "type": "object"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "DataResponse[HealthData]",
+        "type": "object"
+      },
+      "HealthData": {
         "properties": {
           "service": {
             "title": "Service",
@@ -22,7 +39,7 @@
           "service",
           "version"
         ],
-        "title": "HealthResponse",
+        "title": "HealthData",
         "type": "object"
       }
     }
@@ -41,7 +58,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HealthResponse"
+                  "$ref": "#/components/schemas/DataResponse_HealthData_"
                 }
               }
             },
