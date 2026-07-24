@@ -57,6 +57,9 @@ jobs:
       - name: Build Public Web
         run: npm run build
 
+      - name: Build Admin Portal
+        run: npm run admin:build
+
   api:
     name: FastAPI and OpenAPI
     runs-on: ubuntu-latest
