@@ -24,7 +24,7 @@ Thu muc nay chi quan ly:
 | Production branch | `main` |
 | Production hosting | Vercel |
 | Production public app | Next.js application tai repository root |
-| Implementation branch | `codex/phase-1-admin-foundation` |
+| Verification branch | `codex/close-phase-1` |
 | Baseline production build | PASS |
 | Business database | Supabase PostgreSQL |
 | Authentication muc tieu | Supabase Auth |
@@ -33,7 +33,18 @@ Thu muc nay chi quan ly:
 | Backend runtime | Python 3 + FastAPI + Pydantic |
 | API contract | FastAPI OpenAPI + generated TypeScript client |
 | Workspace | npm workspaces for JavaScript/TypeScript only |
-| Migration state | Phase 1 - Repository implementation complete; Preview verification pending |
+| Migration state | Phase 1 - Production verified; Preview verification in progress |
+
+## Deployment boundaries
+
+| Deployment | Production endpoint | Root Directory |
+|---|---|---|
+| Public Web | Vercel production domain | `.` |
+| Admin Portal | `https://homematchvn-admin.vercel.app` | `apps/admin` |
+| Backend API | `https://homematchvn-api.vercel.app` | `services/api` |
+
+Production smoke tests confirm that the Admin Portal can call the Backend API
+health endpoint through the configured CORS boundary.
 
 ## Tai lieu trong thu muc
 
