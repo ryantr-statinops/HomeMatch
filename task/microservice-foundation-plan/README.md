@@ -33,7 +33,7 @@ Thu muc nay chi quan ly:
 | Backend runtime | Python 3 + FastAPI + Pydantic |
 | API contract | FastAPI OpenAPI + generated TypeScript client |
 | Workspace | npm workspaces for JavaScript/TypeScript only |
-| Migration state | Phase 1 - Complete |
+| Migration state | Phase 1 - Complete; Urgent Admin Rooms CRUD planning accepted |
 
 ## Deployment boundaries
 
@@ -53,6 +53,8 @@ Preview smoke tests also passed for Public Web, Admin Portal and Backend API.
 1. `01-production-safety.md`: cach bao ve website dang chay tren Vercel.
 2. `02-implementation-phases.md`: thu tu implementation va exit criteria.
 3. `03-decision-log.md`: cac quyet dinh da chot va dang cho xac nhan.
+4. `04-urgent-admin-rooms-crud.md`: vertical slice gap cho Auth, Room CRUD,
+   Google Drive media, audit va Admin UI.
 
 ## Kien truc muc tieu
 

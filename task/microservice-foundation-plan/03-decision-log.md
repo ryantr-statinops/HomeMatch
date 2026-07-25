@@ -100,6 +100,51 @@ De xuat:
 
 Status: Accepted.
 
+### D-016 - Urgent Admin Rooms CRUD priority
+
+Accepted:
+
+- Keo Admin Rooms CRUD vertical slice len truoc Room Read API migration.
+- Public Web va room read path hien tai tiep tuc giu nguyen trong MVP.
+- Van giu modular monolith; khong tach service doc lap trong urgent scope.
+
+Status: Accepted.
+
+### D-017 - Admin authentication
+
+Accepted:
+
+- Dung Supabase Auth cho Admin Portal.
+- Owner tao san mot tap tai khoan `ADMIN` va `SALE`.
+- Khong co public registration trong MVP.
+- Password khong duoc hardcode, commit hoac luu plaintext trong business tables.
+- FastAPI verify Supabase access token va enforce role server-side.
+
+Status: Accepted.
+
+### D-018 - Admin room permissions and deletion
+
+Accepted:
+
+- `SALE` duoc xem, tao draft va cap nhat room.
+- `ADMIN` co quyen cua Sale va duoc publish/archive room.
+- Khong implement hard delete room trong MVP.
+- Archive la soft-delete va phai co audit record.
+
+Status: Accepted.
+
+### D-019 - Admin room media
+
+Accepted:
+
+- Admin Portal co the upload room images.
+- Upload di qua FastAPI; browser khong nhan Google Drive credentials.
+- Google Drive tiep tuc luu original images.
+- `hinhanh` va `ImageCache` tiep tuc luu metadata/mapping phu hop.
+- Remove mapping khong mac dinh xoa original image ngay lap tuc.
+
+Status: Accepted.
+
 ## Quy tac cap nhat
 
 Sau khi owner xac nhan:
