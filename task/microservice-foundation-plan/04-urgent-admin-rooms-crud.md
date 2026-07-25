@@ -236,6 +236,20 @@ Exit:
 
 ### Slice 2 - Backend Supabase boundary
 
+Status: Complete.
+
+Verification:
+
+- FastAPI Supabase client boundary tests pass (`4 passed` total API tests).
+- Supabase CLI migration dry-run passed against HomeMatch Staging.
+- Three versioned migrations applied to Staging and local/remote history match.
+- Staging contains two fake rooms, two fake image records and two fake cache
+  mappings.
+- `admin_profile` and `admin_audit_log` exist and remain empty.
+- Room lifecycle columns and four RLS policies were verified through metadata.
+- Production was not linked, migrated or seeded.
+- `ADMIN_MUTATIONS_ENABLED` remains `false`.
+
 - Them server-only Supabase settings/client.
 - Tach read/write repository.
 - Them startup configuration validation.
