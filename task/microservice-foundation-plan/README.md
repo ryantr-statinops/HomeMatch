@@ -24,7 +24,7 @@ Thu muc nay chi quan ly:
 | Production branch | `main` |
 | Production hosting | Vercel |
 | Production public app | Next.js application tai repository root |
-| Verification branch | `codex/close-phase-1` |
+| Documentation branch | `docs` |
 | Baseline production build | PASS |
 | Business database | Supabase PostgreSQL |
 | Authentication muc tieu | Supabase Auth |
@@ -33,7 +33,7 @@ Thu muc nay chi quan ly:
 | Backend runtime | Python 3 + FastAPI + Pydantic |
 | API contract | FastAPI OpenAPI + generated TypeScript client |
 | Workspace | npm workspaces for JavaScript/TypeScript only |
-| Migration state | Phase 1 - Production verified; Preview verification in progress |
+| Migration state | Phase 1 - Complete |
 
 ## Deployment boundaries
 
@@ -45,6 +45,8 @@ Thu muc nay chi quan ly:
 
 Production smoke tests confirm that the Admin Portal can call the Backend API
 health endpoint through the configured CORS boundary.
+
+Preview smoke tests also passed for Public Web, Admin Portal and Backend API.
 
 ## Tai lieu trong thu muc
 
