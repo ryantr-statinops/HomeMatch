@@ -62,10 +62,13 @@ export default function LoginPage() {
   return (
     <main className="login-shell">
       <section className="login-story">
-        <p className="eyebrow">HomeMatch / Operations</p>
+        <p className="eyebrow">HomeMatch Operations</p>
         <div>
-          <span className="login-index">Private workspace 01</span>
-          <h1>Vận hành kho phòng, trong một luồng thống nhất.</h1>
+          <span className="login-index">Không gian nội bộ</span>
+          <h1>Quản lý phòng trọ đơn giản và thống nhất.</h1>
+          <p className="login-description">
+            Cập nhật thông tin phòng, hình ảnh và trạng thái hiển thị từ một nơi.
+          </p>
         </div>
         <p className="login-note">
           Chỉ tài khoản nội bộ có role admin hoặc sale mới được truy cập.
