@@ -1,6 +1,14 @@
 {
   "components": {
     "schemas": {
+      "AdminRole": {
+        "enum": [
+          "ADMIN",
+          "SALE"
+        ],
+        "title": "AdminRole",
+        "type": "string"
+      },
       "DataResponse_HealthData_": {
         "properties": {
           "data": {
@@ -16,6 +24,58 @@
           "data"
         ],
         "title": "DataResponse[HealthData]",
+        "type": "object"
+      },
+      "DataResponse_SessionData_": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/SessionData"
+          },
+          "meta": {
+            "additionalProperties": true,
+            "title": "Meta",
+            "type": "object"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "DataResponse[SessionData]",
+        "type": "object"
+      },
+      "ErrorBody": {
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "details": {
+            "items": {},
+            "title": "Details",
+            "type": "array"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "ErrorBody",
+        "type": "object"
+      },
+      "ErrorResponse": {
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ErrorBody"
+          }
+        },
+        "required": [
+          "error"
+        ],
+        "title": "ErrorResponse",
         "type": "object"
       },
       "HealthData": {
@@ -41,6 +101,35 @@
         ],
         "title": "HealthData",
         "type": "object"
+      },
+      "SessionData": {
+        "properties": {
+          "display_name": {
+            "title": "Display Name",
+            "type": "string"
+          },
+          "role": {
+            "$ref": "#/components/schemas/AdminRole"
+          },
+          "user_id": {
+            "format": "uuid",
+            "title": "User Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "user_id",
+          "role",
+          "display_name"
+        ],
+        "title": "SessionData",
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "HTTPBearer": {
+        "scheme": "bearer",
+        "type": "http"
       }
     }
   },
@@ -50,6 +139,52 @@
   },
   "openapi": "3.1.0",
   "paths": {
+    "/api/v1/admin/session": {
+      "get": {
+        "operationId": "get_admin_session_api_v1_admin_session_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataResponse_SessionData_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Admin Session",
+        "tags": [
+          "admin-auth"
+        ]
+      }
+    },
     "/api/v1/health": {
       "get": {
         "operationId": "get_health_api_v1_health_get",

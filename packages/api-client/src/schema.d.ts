@@ -4,6 +4,23 @@
  */
 
 export interface paths {
+    "/api/v1/admin/session": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Admin Session */
+        get: operations["get_admin_session_api_v1_admin_session_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/health": {
         parameters: {
             query?: never;
@@ -25,6 +42,11 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /**
+         * AdminRole
+         * @enum {string}
+         */
+        AdminRole: "ADMIN" | "SALE";
         /** DataResponse[HealthData] */
         DataResponse_HealthData_: {
             data: components["schemas"]["HealthData"];
@@ -32,6 +54,27 @@ export interface components {
             meta?: {
                 [key: string]: unknown;
             };
+        };
+        /** DataResponse[SessionData] */
+        DataResponse_SessionData_: {
+            data: components["schemas"]["SessionData"];
+            /** Meta */
+            meta?: {
+                [key: string]: unknown;
+            };
+        };
+        /** ErrorBody */
+        ErrorBody: {
+            /** Code */
+            code: string;
+            /** Details */
+            details?: unknown[];
+            /** Message */
+            message: string;
+        };
+        /** ErrorResponse */
+        ErrorResponse: {
+            error: components["schemas"]["ErrorBody"];
         };
         /** HealthData */
         HealthData: {
@@ -45,6 +88,17 @@ export interface components {
             /** Version */
             version: string;
         };
+        /** SessionData */
+        SessionData: {
+            /** Display Name */
+            display_name: string;
+            role: components["schemas"]["AdminRole"];
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+        };
     };
     responses: never;
     parameters: never;
@@ -54,6 +108,44 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    get_admin_session_api_v1_admin_session_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DataResponse_SessionData_"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
     get_health_api_v1_health_get: {
         parameters: {
             query?: never;
