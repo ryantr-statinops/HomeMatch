@@ -216,6 +216,14 @@ cho phep. Neu khong, failure phai duoc log va monitor.
 
 ### Slice 1 - Schema and safety audit
 
+Status: Complete.
+
+Artifact:
+
+```text
+task/microservice-foundation-plan/05-slice-1-schema-and-safety-audit.md
+```
+
 - Map `phongtro`, `hinhanh`, `imagecache`.
 - Ghi required fields, status mapping va foreign keys.
 - Xac dinh backward-compatible migrations.
