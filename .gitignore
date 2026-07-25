@@ -39,5 +39,9 @@ npm-debug.log*
 scripts/*.json
 !scripts/package.json
 
+# Supabase CLI local state
+supabase/.temp
+supabase/.branches
+
 # Windows reserved device names
 nul

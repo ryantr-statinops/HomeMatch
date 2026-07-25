@@ -1,6 +1,7 @@
 import { Building2, ChartNoAxesCombined, ClipboardList, UsersRound } from "lucide-react";
 
 import { ApiHealthCard } from "@/components/ApiHealthCard";
+import { AdminIdentity } from "@/components/AdminIdentity";
 
 const modules = [
   {
@@ -41,7 +42,10 @@ export default function AdminHome() {
           <span className="nav-item muted">Sale workspace</span>
           <span className="nav-item muted">Phân quyền</span>
         </nav>
-        <p className="phase-label">Foundation / Phase 1</p>
+        <div>
+          <AdminIdentity />
+          <p className="phase-label">Rooms CRUD / Slice 3</p>
+        </div>
       </aside>
 
       <section className="workspace" id="overview">

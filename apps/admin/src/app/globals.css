@@ -5,8 +5,8 @@
   --paper: #f2efe5;
   --panel: #fbf9f1;
   --line: #c9c5b7;
-  --signal: #08785c;
-  --signal-soft: #d9eee5;
+  --signal: #1e40af;
+  --signal-soft: #dbeafe;
   --warning: #b94b2c;
 }
 
@@ -92,9 +92,192 @@ p {
 }
 
 .phase-label {
+  margin-top: 18px;
   font-family: monospace;
   font-size: 0.72rem;
   opacity: 0.6;
+}
+
+.admin-identity {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  padding-top: 18px;
+}
+
+.admin-identity div {
+  display: grid;
+  gap: 3px;
+}
+
+.admin-identity strong {
+  font-size: 0.82rem;
+}
+
+.admin-identity span {
+  font-family: monospace;
+  font-size: 0.68rem;
+  opacity: 0.58;
+  text-transform: uppercase;
+}
+
+.admin-identity button {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.auth-status {
+  display: grid;
+  min-height: 100vh;
+  place-content: center;
+  justify-items: center;
+  gap: 18px;
+  padding: 24px;
+  text-align: center;
+}
+
+.auth-status h1 {
+  max-width: 620px;
+  font-family: Georgia, serif;
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 400;
+}
+
+.auth-status button,
+.login-card button {
+  border: 0;
+  background: var(--signal);
+  color: white;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  padding: 13px 18px;
+}
+
+.login-shell {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  min-height: 100vh;
+}
+
+.login-story {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background:
+    radial-gradient(circle at 82% 18%, rgba(96, 165, 250, 0.32), transparent 28%),
+    #172554;
+  color: #eff6ff;
+  padding: clamp(32px, 7vw, 92px);
+}
+
+.login-index {
+  font-family: monospace;
+  font-size: 0.75rem;
+  opacity: 0.65;
+  text-transform: uppercase;
+}
+
+.login-story h1 {
+  max-width: 790px;
+  margin-top: 22px;
+  font-family: Georgia, serif;
+  font-size: clamp(3rem, 7vw, 7.5rem);
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  line-height: 0.88;
+}
+
+.login-note {
+  max-width: 430px;
+  color: #bfdbfe;
+  line-height: 1.6;
+}
+
+.login-panel {
+  display: grid;
+  place-items: center;
+  padding: clamp(24px, 6vw, 72px);
+}
+
+.login-card {
+  width: min(100%, 430px);
+  border-top: 5px solid var(--signal);
+  background: var(--panel);
+  box-shadow: 16px 16px 0 rgba(30, 64, 175, 0.11);
+  padding: clamp(28px, 5vw, 52px);
+}
+
+.login-card > .eyebrow {
+  margin-top: 42px;
+  color: var(--signal);
+}
+
+.login-card h2 {
+  margin-top: 10px;
+  font-family: Georgia, serif;
+  font-size: 2.6rem;
+  font-weight: 400;
+}
+
+.login-card > p:not(.eyebrow) {
+  margin-top: 12px;
+  color: #526057;
+  line-height: 1.55;
+}
+
+.login-card form {
+  display: grid;
+  margin-top: 38px;
+}
+
+.login-card label {
+  margin: 18px 0 8px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.login-card input {
+  width: 100%;
+  border: 1px solid var(--line);
+  background: white;
+  color: var(--ink);
+  font: inherit;
+  outline: none;
+  padding: 13px 14px;
+}
+
+.login-card input:focus {
+  border-color: var(--signal);
+  box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.12);
+}
+
+.login-card button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 28px;
+}
+
+.login-card button:disabled {
+  cursor: wait;
+  opacity: 0.68;
+}
+
+.form-error {
+  margin-top: 16px;
+  color: var(--warning);
+  font-size: 0.85rem;
+  line-height: 1.5;
 }
 
 .workspace {
@@ -276,6 +459,18 @@ p {
 }
 
 @media (max-width: 960px) {
+  .login-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .login-story {
+    min-height: 48vh;
+  }
+
+  .login-panel {
+    min-height: 52vh;
+  }
+
   .admin-shell {
     grid-template-columns: 1fr;
   }
@@ -304,6 +499,10 @@ p {
 }
 
 @media (max-width: 580px) {
+  .login-story h1 {
+    font-size: 3.25rem;
+  }
+
   .workspace {
     padding: 24px 16px 48px;
   }
