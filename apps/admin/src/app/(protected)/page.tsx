@@ -1,28 +1,24 @@
-import { Building2, ChartNoAxesCombined, ClipboardList, UsersRound } from "lucide-react";
+import {
+  ArrowRight,
+  Building2,
+  ChartNoAxesCombined,
+  ShieldCheck,
+  UsersRound,
+} from "lucide-react";
 import Link from "next/link";
 
-import { ApiHealthCard } from "@/components/ApiHealthCard";
 import { AdminIdentity } from "@/components/AdminIdentity";
+import { ApiHealthCard } from "@/components/ApiHealthCard";
 
-const modules = [
+const upcomingModules = [
   {
-    title: "Kho phòng",
-    description: "Dữ liệu phòng và trạng thái xuất bản sẽ được quản lý tại đây.",
-    icon: Building2,
-  },
-  {
-    title: "Đội ngũ sale",
-    description: "Phân công, theo dõi và bàn giao khách hàng ở Phase 5.",
+    title: "Sale workspace",
+    description: "Phân công và theo dõi khách hàng trong cùng một luồng.",
     icon: UsersRound,
   },
   {
-    title: "Hàng chờ duyệt",
-    description: "Kiểm soát nội dung trước khi đồng bộ sang Public Web.",
-    icon: ClipboardList,
-  },
-  {
     title: "Báo cáo vận hành",
-    description: "Các chỉ số nguồn phòng, lượt liên hệ và hiệu suất sale.",
+    description: "Tổng hợp hiệu suất phòng, liên hệ và đội ngũ sale.",
     icon: ChartNoAxesCombined,
   },
 ];
@@ -36,59 +32,76 @@ export default function AdminHome() {
           <h1>Operations</h1>
         </div>
         <nav aria-label="Điều hướng quản trị">
-          <a className="nav-item active" href="#overview">
-            Tổng quan
-          </a>
+          <Link className="nav-item active" href="/">Tổng quan</Link>
           <Link className="nav-item" href="/rooms">Kho phòng</Link>
           <span className="nav-item muted">Sale workspace</span>
           <span className="nav-item muted">Phân quyền</span>
         </nav>
         <div>
           <AdminIdentity />
-          <p className="phase-label">Rooms CRUD / Slice 3</p>
+          <p className="phase-label">Rooms Read / Slice 4</p>
         </div>
       </aside>
 
-      <section className="workspace" id="overview">
-        <header className="topbar">
+      <section className="workspace dashboard-workspace">
+        <header className="dashboard-header">
           <div>
             <p className="eyebrow">Trung tâm vận hành</p>
-            <h2>Nền móng đã sẵn sàng.</h2>
+            <h2>Chào mừng trở lại.</h2>
+            <p>Quản lý dữ liệu HomeMatch rõ ràng, an toàn và tập trung.</p>
           </div>
-          <span className="environment">Development</span>
+          <span className="secure-badge">
+            <ShieldCheck aria-hidden="true" size={16} />
+            Đã xác thực
+          </span>
         </header>
 
-        <div className="intro-grid">
-          <article className="statement">
-            <p className="index">01 / Foundation</p>
-            <h3>Một không gian riêng cho admin và sale.</h3>
+        <section className="dashboard-hero" aria-labelledby="room-cta-title">
+          <div className="dashboard-hero-copy">
+            <span className="feature-label">Đang hoạt động</span>
+            <h3 id="room-cta-title">Kho phòng đã sẵn sàng để kiểm tra.</h3>
             <p>
-              Portal này là ứng dụng độc lập với Public Web. Mọi nghiệp vụ sẽ đi qua
-              FastAPI và typed contract thay vì truy cập database trực tiếp.
+              Tìm kiếm, lọc trạng thái và đối chiếu dữ liệu phòng đang lưu trên
+              môi trường hiện tại.
             </p>
-          </article>
-          <ApiHealthCard />
-        </div>
-
-        <section aria-labelledby="module-title" className="modules">
-          <div className="section-heading">
-            <p className="eyebrow">Bản đồ chức năng</p>
-            <h3 id="module-title">Những module sẽ được mở dần</h3>
+            <Link className="primary-action" href="/rooms">
+              <Building2 aria-hidden="true" size={19} />
+              Mở Kho phòng
+              <ArrowRight aria-hidden="true" size={18} />
+            </Link>
           </div>
-          <div className="module-grid">
-            {modules.map(({ title, description, icon: Icon }, index) => (
-              <article className="module-card" key={title}>
-                <div className="module-meta">
-                  <span>0{index + 1}</span>
-                  <Icon aria-hidden="true" size={20} strokeWidth={1.8} />
-                </div>
-                <h4>{title}</h4>
-                <p>{description}</p>
-                <span className="planned">Planned</span>
-              </article>
-            ))}
+          <div className="dashboard-hero-mark" aria-hidden="true">
+            <Building2 size={72} strokeWidth={1.35} />
+            <span>Rooms / 01</span>
           </div>
         </section>
+
+        <div className="dashboard-grid">
+          <ApiHealthCard />
+
+          <section className="upcoming-panel" aria-labelledby="upcoming-title">
+            <div className="panel-heading">
+              <div>
+                <p className="eyebrow">Lộ trình</p>
+                <h3 id="upcoming-title">Sắp mở tiếp theo</h3>
+              </div>
+              <span>02 modules</span>
+            </div>
+
+            <div className="upcoming-list">
+              {upcomingModules.map(({ title, description, icon: Icon }) => (
+                <article key={title}>
+                  <Icon aria-hidden="true" size={21} />
+                  <div>
+                    <h4>{title}</h4>
+                    <p>{description}</p>
+                  </div>
+                  <span className="planned">Planned</span>
+                </article>
+              ))}
+            </div>
+          </section>
+        </div>
       </section>
     </main>
   );
