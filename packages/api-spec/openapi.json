@@ -26,6 +26,23 @@
         "title": "DataResponse[HealthData]",
         "type": "object"
       },
+      "DataResponse_RoomDetail_": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/RoomDetail"
+          },
+          "meta": {
+            "additionalProperties": true,
+            "title": "Meta",
+            "type": "object"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "DataResponse[RoomDetail]",
+        "type": "object"
+      },
       "DataResponse_SessionData_": {
         "properties": {
           "data": {
@@ -41,6 +58,27 @@
           "data"
         ],
         "title": "DataResponse[SessionData]",
+        "type": "object"
+      },
+      "DataResponse_list_RoomSummary__": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/RoomSummary"
+            },
+            "title": "Data",
+            "type": "array"
+          },
+          "meta": {
+            "additionalProperties": true,
+            "title": "Meta",
+            "type": "object"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "DataResponse[list[RoomSummary]]",
         "type": "object"
       },
       "ErrorBody": {
@@ -78,6 +116,19 @@
         "title": "ErrorResponse",
         "type": "object"
       },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "title": "HTTPValidationError",
+        "type": "object"
+      },
       "HealthData": {
         "properties": {
           "service": {
@@ -102,6 +153,465 @@
         "title": "HealthData",
         "type": "object"
       },
+      "RoomAddress": {
+        "properties": {
+          "area": {
+            "default": "",
+            "title": "Area",
+            "type": "string"
+          },
+          "house_number": {
+            "default": "",
+            "title": "House Number",
+            "type": "string"
+          },
+          "street": {
+            "default": "",
+            "title": "Street",
+            "type": "string"
+          },
+          "ward": {
+            "default": "",
+            "title": "Ward",
+            "type": "string"
+          }
+        },
+        "title": "RoomAddress",
+        "type": "object"
+      },
+      "RoomAmenities": {
+        "properties": {
+          "air_conditioner": {
+            "default": "",
+            "title": "Air Conditioner",
+            "type": "string"
+          },
+          "balcony": {
+            "default": "",
+            "title": "Balcony",
+            "type": "string"
+          },
+          "elevator": {
+            "default": "",
+            "title": "Elevator",
+            "type": "string"
+          },
+          "ev_support": {
+            "default": "",
+            "title": "Ev Support",
+            "type": "string"
+          },
+          "kitchen_shelf": {
+            "default": "",
+            "title": "Kitchen Shelf",
+            "type": "string"
+          },
+          "loft": {
+            "default": "",
+            "title": "Loft",
+            "type": "string"
+          },
+          "parking": {
+            "default": "",
+            "title": "Parking",
+            "type": "string"
+          },
+          "pets_allowed": {
+            "default": "",
+            "title": "Pets Allowed",
+            "type": "string"
+          },
+          "private_bathroom": {
+            "default": "",
+            "title": "Private Bathroom",
+            "type": "string"
+          },
+          "refrigerator": {
+            "default": "",
+            "title": "Refrigerator",
+            "type": "string"
+          },
+          "washing_machine": {
+            "default": "",
+            "title": "Washing Machine",
+            "type": "string"
+          },
+          "window": {
+            "default": "",
+            "title": "Window",
+            "type": "string"
+          }
+        },
+        "title": "RoomAmenities",
+        "type": "object"
+      },
+      "RoomCosts": {
+        "properties": {
+          "electricity": {
+            "default": "",
+            "title": "Electricity",
+            "type": "string"
+          },
+          "management": {
+            "default": "",
+            "title": "Management",
+            "type": "string"
+          },
+          "parking": {
+            "default": "",
+            "title": "Parking",
+            "type": "string"
+          },
+          "water": {
+            "default": "",
+            "title": "Water",
+            "type": "string"
+          }
+        },
+        "title": "RoomCosts",
+        "type": "object"
+      },
+      "RoomDetail": {
+        "properties": {
+          "address": {
+            "$ref": "#/components/schemas/RoomAddress"
+          },
+          "amenities": {
+            "$ref": "#/components/schemas/RoomAmenities"
+          },
+          "archived_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Archived At"
+          },
+          "area": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Area"
+          },
+          "code": {
+            "default": "",
+            "title": "Code",
+            "type": "string"
+          },
+          "commission": {
+            "default": "",
+            "title": "Commission",
+            "type": "string"
+          },
+          "contract_type": {
+            "default": "",
+            "title": "Contract Type",
+            "type": "string"
+          },
+          "costs": {
+            "$ref": "#/components/schemas/RoomCosts"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          },
+          "description": {
+            "default": "",
+            "title": "Description",
+            "type": "string"
+          },
+          "floor": {
+            "default": "",
+            "title": "Floor",
+            "type": "string"
+          },
+          "hours": {
+            "default": "",
+            "title": "Hours",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "images": {
+            "items": {
+              "$ref": "#/components/schemas/RoomImage"
+            },
+            "title": "Images",
+            "type": "array"
+          },
+          "internal_notes": {
+            "default": "",
+            "title": "Internal Notes",
+            "type": "string"
+          },
+          "legacy_status": {
+            "default": "",
+            "title": "Legacy Status",
+            "type": "string"
+          },
+          "main_image_path": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Main Image Path"
+          },
+          "main_image_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Main Image Url"
+          },
+          "owner_reference": {
+            "default": "",
+            "title": "Owner Reference",
+            "type": "string"
+          },
+          "price": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Price"
+          },
+          "room_type": {
+            "default": "",
+            "title": "Room Type",
+            "type": "string"
+          },
+          "row_version": {
+            "default": 1,
+            "title": "Row Version",
+            "type": "integer"
+          },
+          "slug": {
+            "default": "",
+            "title": "Slug",
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/RoomStatus"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At"
+          }
+        },
+        "required": [
+          "id",
+          "address",
+          "status",
+          "costs",
+          "amenities"
+        ],
+        "title": "RoomDetail",
+        "type": "object"
+      },
+      "RoomImage": {
+        "properties": {
+          "created_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "path": {
+            "title": "Path",
+            "type": "string"
+          },
+          "resolved_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resolved Url"
+          },
+          "sort_order": {
+            "default": 0,
+            "title": "Sort Order",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "path"
+        ],
+        "title": "RoomImage",
+        "type": "object"
+      },
+      "RoomStatus": {
+        "enum": [
+          "ACTIVE",
+          "RENTED",
+          "HIDDEN",
+          "ARCHIVED"
+        ],
+        "title": "RoomStatus",
+        "type": "string"
+      },
+      "RoomSummary": {
+        "properties": {
+          "address": {
+            "$ref": "#/components/schemas/RoomAddress"
+          },
+          "archived_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Archived At"
+          },
+          "area": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Area"
+          },
+          "code": {
+            "default": "",
+            "title": "Code",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "legacy_status": {
+            "default": "",
+            "title": "Legacy Status",
+            "type": "string"
+          },
+          "main_image_path": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Main Image Path"
+          },
+          "main_image_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Main Image Url"
+          },
+          "price": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Price"
+          },
+          "room_type": {
+            "default": "",
+            "title": "Room Type",
+            "type": "string"
+          },
+          "row_version": {
+            "default": 1,
+            "title": "Row Version",
+            "type": "integer"
+          },
+          "status": {
+            "$ref": "#/components/schemas/RoomStatus"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At"
+          }
+        },
+        "required": [
+          "id",
+          "address",
+          "status"
+        ],
+        "title": "RoomSummary",
+        "type": "object"
+      },
       "SessionData": {
         "properties": {
           "display_name": {
@@ -124,6 +634,46 @@
         ],
         "title": "SessionData",
         "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "ctx": {
+            "title": "Context",
+            "type": "object"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location",
+            "type": "array"
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError",
+        "type": "object"
       }
     },
     "securitySchemes": {
@@ -139,6 +689,216 @@
   },
   "openapi": "3.1.0",
   "paths": {
+    "/api/v1/admin/rooms": {
+      "get": {
+        "operationId": "list_admin_rooms_api_v1_admin_rooms_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "search",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 100,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Search"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/RoomStatus"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "in": "query",
+            "name": "area",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 100,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Area"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "minimum": 1,
+              "title": "Page",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "required": false,
+            "schema": {
+              "default": 12,
+              "maximum": 50,
+              "minimum": 1,
+              "title": "Page Size",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataResponse_list_RoomSummary__"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Admin Rooms",
+        "tags": [
+          "admin-rooms"
+        ]
+      }
+    },
+    "/api/v1/admin/rooms/{room_id}": {
+      "get": {
+        "operationId": "get_admin_room_api_v1_admin_rooms__room_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "room_id",
+            "required": true,
+            "schema": {
+              "maxLength": 100,
+              "minLength": 1,
+              "title": "Room Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataResponse_RoomDetail_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Admin Room",
+        "tags": [
+          "admin-rooms"
+        ]
+      }
+    },
     "/api/v1/admin/session": {
       "get": {
         "operationId": "get_admin_session_api_v1_admin_session_get",
