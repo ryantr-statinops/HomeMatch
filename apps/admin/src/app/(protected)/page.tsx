@@ -1,4 +1,5 @@
 import { Building2, ChartNoAxesCombined, ClipboardList, UsersRound } from "lucide-react";
+import Link from "next/link";
 
 import { ApiHealthCard } from "@/components/ApiHealthCard";
 import { AdminIdentity } from "@/components/AdminIdentity";
@@ -38,7 +39,7 @@ export default function AdminHome() {
           <a className="nav-item active" href="#overview">
             Tổng quan
           </a>
-          <span className="nav-item muted">Kho phòng</span>
+          <Link className="nav-item" href="/rooms">Kho phòng</Link>
           <span className="nav-item muted">Sale workspace</span>
           <span className="nav-item muted">Phân quyền</span>
         </nav>

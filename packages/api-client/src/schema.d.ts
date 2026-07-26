@@ -4,6 +4,40 @@
  */
 
 export interface paths {
+    "/api/v1/admin/rooms": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Admin Rooms */
+        get: operations["list_admin_rooms_api_v1_admin_rooms_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/rooms/{room_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Admin Room */
+        get: operations["get_admin_room_api_v1_admin_rooms__room_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/admin/session": {
         parameters: {
             query?: never;
@@ -55,9 +89,26 @@ export interface components {
                 [key: string]: unknown;
             };
         };
+        /** DataResponse[RoomDetail] */
+        DataResponse_RoomDetail_: {
+            data: components["schemas"]["RoomDetail"];
+            /** Meta */
+            meta?: {
+                [key: string]: unknown;
+            };
+        };
         /** DataResponse[SessionData] */
         DataResponse_SessionData_: {
             data: components["schemas"]["SessionData"];
+            /** Meta */
+            meta?: {
+                [key: string]: unknown;
+            };
+        };
+        /** DataResponse[list[RoomSummary]] */
+        DataResponse_list_RoomSummary__: {
+            /** Data */
+            data: components["schemas"]["RoomSummary"][];
             /** Meta */
             meta?: {
                 [key: string]: unknown;
@@ -76,6 +127,11 @@ export interface components {
         ErrorResponse: {
             error: components["schemas"]["ErrorBody"];
         };
+        /** HTTPValidationError */
+        HTTPValidationError: {
+            /** Detail */
+            detail?: components["schemas"]["ValidationError"][];
+        };
         /** HealthData */
         HealthData: {
             /** Service */
@@ -88,6 +144,260 @@ export interface components {
             /** Version */
             version: string;
         };
+        /** RoomAddress */
+        RoomAddress: {
+            /**
+             * Area
+             * @default
+             */
+            area: string;
+            /**
+             * House Number
+             * @default
+             */
+            house_number: string;
+            /**
+             * Street
+             * @default
+             */
+            street: string;
+            /**
+             * Ward
+             * @default
+             */
+            ward: string;
+        };
+        /** RoomAmenities */
+        RoomAmenities: {
+            /**
+             * Air Conditioner
+             * @default
+             */
+            air_conditioner: string;
+            /**
+             * Balcony
+             * @default
+             */
+            balcony: string;
+            /**
+             * Elevator
+             * @default
+             */
+            elevator: string;
+            /**
+             * Ev Support
+             * @default
+             */
+            ev_support: string;
+            /**
+             * Kitchen Shelf
+             * @default
+             */
+            kitchen_shelf: string;
+            /**
+             * Loft
+             * @default
+             */
+            loft: string;
+            /**
+             * Parking
+             * @default
+             */
+            parking: string;
+            /**
+             * Pets Allowed
+             * @default
+             */
+            pets_allowed: string;
+            /**
+             * Private Bathroom
+             * @default
+             */
+            private_bathroom: string;
+            /**
+             * Refrigerator
+             * @default
+             */
+            refrigerator: string;
+            /**
+             * Washing Machine
+             * @default
+             */
+            washing_machine: string;
+            /**
+             * Window
+             * @default
+             */
+            window: string;
+        };
+        /** RoomCosts */
+        RoomCosts: {
+            /**
+             * Electricity
+             * @default
+             */
+            electricity: string;
+            /**
+             * Management
+             * @default
+             */
+            management: string;
+            /**
+             * Parking
+             * @default
+             */
+            parking: string;
+            /**
+             * Water
+             * @default
+             */
+            water: string;
+        };
+        /** RoomDetail */
+        RoomDetail: {
+            address: components["schemas"]["RoomAddress"];
+            amenities: components["schemas"]["RoomAmenities"];
+            /** Archived At */
+            archived_at?: string | null;
+            /** Area */
+            area?: number | null;
+            /**
+             * Code
+             * @default
+             */
+            code: string;
+            /**
+             * Commission
+             * @default
+             */
+            commission: string;
+            /**
+             * Contract Type
+             * @default
+             */
+            contract_type: string;
+            costs: components["schemas"]["RoomCosts"];
+            /** Created At */
+            created_at?: string | null;
+            /**
+             * Description
+             * @default
+             */
+            description: string;
+            /**
+             * Floor
+             * @default
+             */
+            floor: string;
+            /**
+             * Hours
+             * @default
+             */
+            hours: string;
+            /** Id */
+            id: string;
+            /** Images */
+            images?: components["schemas"]["RoomImage"][];
+            /**
+             * Internal Notes
+             * @default
+             */
+            internal_notes: string;
+            /**
+             * Legacy Status
+             * @default
+             */
+            legacy_status: string;
+            /** Main Image Path */
+            main_image_path?: string | null;
+            /** Main Image Url */
+            main_image_url?: string | null;
+            /**
+             * Owner Reference
+             * @default
+             */
+            owner_reference: string;
+            /** Price */
+            price?: number | null;
+            /**
+             * Room Type
+             * @default
+             */
+            room_type: string;
+            /**
+             * Row Version
+             * @default 1
+             */
+            row_version: number;
+            /**
+             * Slug
+             * @default
+             */
+            slug: string;
+            status: components["schemas"]["RoomStatus"];
+            /** Updated At */
+            updated_at?: string | null;
+        };
+        /** RoomImage */
+        RoomImage: {
+            /** Created At */
+            created_at?: string | null;
+            /** Id */
+            id: string;
+            /** Path */
+            path: string;
+            /** Resolved Url */
+            resolved_url?: string | null;
+            /**
+             * Sort Order
+             * @default 0
+             */
+            sort_order: number;
+        };
+        /**
+         * RoomStatus
+         * @enum {string}
+         */
+        RoomStatus: "ACTIVE" | "RENTED" | "HIDDEN" | "ARCHIVED";
+        /** RoomSummary */
+        RoomSummary: {
+            address: components["schemas"]["RoomAddress"];
+            /** Archived At */
+            archived_at?: string | null;
+            /** Area */
+            area?: number | null;
+            /**
+             * Code
+             * @default
+             */
+            code: string;
+            /** Id */
+            id: string;
+            /**
+             * Legacy Status
+             * @default
+             */
+            legacy_status: string;
+            /** Main Image Path */
+            main_image_path?: string | null;
+            /** Main Image Url */
+            main_image_url?: string | null;
+            /** Price */
+            price?: number | null;
+            /**
+             * Room Type
+             * @default
+             */
+            room_type: string;
+            /**
+             * Row Version
+             * @default 1
+             */
+            row_version: number;
+            status: components["schemas"]["RoomStatus"];
+            /** Updated At */
+            updated_at?: string | null;
+        };
         /** SessionData */
         SessionData: {
             /** Display Name */
@@ -99,6 +409,19 @@ export interface components {
              */
             user_id: string;
         };
+        /** ValidationError */
+        ValidationError: {
+            /** Context */
+            ctx?: Record<string, never>;
+            /** Input */
+            input?: unknown;
+            /** Location */
+            loc: (string | number)[];
+            /** Message */
+            msg: string;
+            /** Error Type */
+            type: string;
+        };
     };
     responses: never;
     parameters: never;
@@ -108,6 +431,117 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    list_admin_rooms_api_v1_admin_rooms_get: {
+        parameters: {
+            query?: {
+                search?: string | null;
+                status?: components["schemas"]["RoomStatus"] | null;
+                area?: string | null;
+                page?: number;
+                page_size?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DataResponse_list_RoomSummary__"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_admin_room_api_v1_admin_rooms__room_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                room_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DataResponse_RoomDetail_"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     get_admin_session_api_v1_admin_session_get: {
         parameters: {
             query?: never;
