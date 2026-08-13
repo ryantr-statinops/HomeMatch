@@ -89,3 +89,14 @@ def require_roles(
 
 require_staff = require_roles(AdminRole.ADMIN, AdminRole.SALE)
 require_admin = require_roles(AdminRole.ADMIN)
+
+
+def require_mutations_enabled(
+    settings: Annotated[Settings, Depends(get_settings)],
+) -> None:
+    if not settings.admin_mutations_enabled:
+        raise ApiError(
+            status_code=503,
+            code="MUTATIONS_DISABLED",
+            message="Admin room mutations are disabled for this environment.",
+        )

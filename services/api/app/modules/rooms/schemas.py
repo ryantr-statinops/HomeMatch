@@ -1,7 +1,7 @@
 from datetime import datetime
 from enum import StrEnum
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class RoomStatus(StrEnum):
@@ -84,3 +84,53 @@ class RoomListMeta(BaseModel):
     page_size: int
     total: int
     total_pages: int
+
+
+class RoomMutationInput(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    code: str = ""
+    room_type: str = ""
+    address: RoomAddress = Field(default_factory=RoomAddress)
+    price: float | None = Field(default=None, ge=0)
+    area: float | None = Field(default=None, ge=0)
+    contract_type: str = ""
+    floor: str = ""
+    costs: RoomCosts = Field(default_factory=RoomCosts)
+    amenities: RoomAmenities = Field(default_factory=RoomAmenities)
+    hours: str = ""
+    description: str = ""
+    slug: str = ""
+    commission: str = ""
+    internal_notes: str = ""
+    owner_reference: str = ""
+
+    @field_validator("code", "room_type", "contract_type", "floor", "hours", "slug", "commission", "internal_notes", "owner_reference")
+    @classmethod
+    def trim_text(cls, value: str) -> str:
+        return value.strip()
+
+
+class RoomPatchInput(RoomMutationInput):
+    model_config = ConfigDict(extra="forbid")
+
+    code: str | None = None
+    room_type: str | None = None
+    address: RoomAddress | None = None
+    price: float | None = Field(default=None, ge=0)
+    area: float | None = Field(default=None, ge=0)
+    contract_type: str | None = None
+    floor: str | None = None
+    costs: RoomCosts | None = None
+    amenities: RoomAmenities | None = None
+    hours: str | None = None
+    description: str | None = None
+    slug: str | None = None
+    commission: str | None = None
+    internal_notes: str | None = None
+    owner_reference: str | None = None
+
+
+class RoomMutationResponse(BaseModel):
+    id: str
+    row_version: int
