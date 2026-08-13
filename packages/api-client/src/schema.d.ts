@@ -14,7 +14,8 @@ export interface paths {
         /** List Admin Rooms */
         get: operations["list_admin_rooms_api_v1_admin_rooms_get"];
         put?: never;
-        post?: never;
+        /** Create Admin Room */
+        post: operations["create_admin_room_api_v1_admin_rooms_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -32,6 +33,24 @@ export interface paths {
         get: operations["get_admin_room_api_v1_admin_rooms__room_id__get"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Admin Room */
+        patch: operations["update_admin_room_api_v1_admin_rooms__room_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/admin/rooms/{room_id}/archive": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Archive Admin Room */
+        post: operations["archive_admin_room_api_v1_admin_rooms__room_id__archive_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -92,6 +111,14 @@ export interface components {
         /** DataResponse[RoomDetail] */
         DataResponse_RoomDetail_: {
             data: components["schemas"]["RoomDetail"];
+            /** Meta */
+            meta?: {
+                [key: string]: unknown;
+            };
+        };
+        /** DataResponse[RoomMutationResponse] */
+        DataResponse_RoomMutationResponse_: {
+            data: components["schemas"]["RoomMutationResponse"];
             /** Meta */
             meta?: {
                 [key: string]: unknown;
@@ -354,6 +381,103 @@ export interface components {
              */
             sort_order: number;
         };
+        /** RoomMutationInput */
+        RoomMutationInput: {
+            address?: components["schemas"]["RoomAddress"];
+            amenities?: components["schemas"]["RoomAmenities"];
+            /** Area */
+            area?: number | null;
+            /**
+             * Code
+             * @default
+             */
+            code: string;
+            /**
+             * Commission
+             * @default
+             */
+            commission: string;
+            /**
+             * Contract Type
+             * @default
+             */
+            contract_type: string;
+            costs?: components["schemas"]["RoomCosts"];
+            /**
+             * Description
+             * @default
+             */
+            description: string;
+            /**
+             * Floor
+             * @default
+             */
+            floor: string;
+            /**
+             * Hours
+             * @default
+             */
+            hours: string;
+            /**
+             * Internal Notes
+             * @default
+             */
+            internal_notes: string;
+            /**
+             * Owner Reference
+             * @default
+             */
+            owner_reference: string;
+            /** Price */
+            price?: number | null;
+            /**
+             * Room Type
+             * @default
+             */
+            room_type: string;
+            /**
+             * Slug
+             * @default
+             */
+            slug: string;
+        };
+        /** RoomMutationResponse */
+        RoomMutationResponse: {
+            /** Id */
+            id: string;
+            /** Row Version */
+            row_version: number;
+        };
+        /** RoomPatchInput */
+        RoomPatchInput: {
+            address?: components["schemas"]["RoomAddress"] | null;
+            amenities?: components["schemas"]["RoomAmenities"] | null;
+            /** Area */
+            area?: number | null;
+            /** Code */
+            code?: string | null;
+            /** Commission */
+            commission?: string | null;
+            /** Contract Type */
+            contract_type?: string | null;
+            costs?: components["schemas"]["RoomCosts"] | null;
+            /** Description */
+            description?: string | null;
+            /** Floor */
+            floor?: string | null;
+            /** Hours */
+            hours?: string | null;
+            /** Internal Notes */
+            internal_notes?: string | null;
+            /** Owner Reference */
+            owner_reference?: string | null;
+            /** Price */
+            price?: number | null;
+            /** Room Type */
+            room_type?: string | null;
+            /** Slug */
+            slug?: string | null;
+        };
         /**
          * RoomStatus
          * @enum {string}
@@ -484,6 +608,77 @@ export interface operations {
             };
         };
     };
+    create_admin_room_api_v1_admin_rooms_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "request-id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RoomMutationInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DataResponse_RoomMutationResponse_"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
     get_admin_room_api_v1_admin_rooms__room_id__get: {
         parameters: {
             query?: never;
@@ -538,6 +733,168 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_admin_room_api_v1_admin_rooms__room_id__patch: {
+        parameters: {
+            query?: never;
+            header: {
+                "row-version": number;
+                "request-id"?: string | null;
+            };
+            path: {
+                room_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RoomPatchInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DataResponse_RoomMutationResponse_"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    archive_admin_room_api_v1_admin_rooms__room_id__archive_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "row-version": number;
+                "request-id"?: string | null;
+            };
+            path: {
+                room_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DataResponse_RoomMutationResponse_"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
         };
