@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from typing import Any, Protocol
 
 from supabase import Client
@@ -36,6 +37,33 @@ class RoomRepository(Protocol):
     def get_images(self, room_id: str) -> list[dict[str, Any]]: ...
 
     def get_image_urls(self, paths: list[str]) -> dict[str, str]: ...
+
+    def create_room(self, values: dict[str, Any]) -> dict[str, Any]: ...
+
+    def update_room(
+        self,
+        room_id: str,
+        expected_version: int,
+        values: dict[str, Any],
+    ) -> dict[str, Any] | None: ...
+
+    def archive_room(
+        self,
+        room_id: str,
+        expected_version: int,
+    ) -> dict[str, Any] | None: ...
+
+    def write_audit(
+        self,
+        *,
+        actor_id: str,
+        actor_role: str,
+        request_id: str,
+        action: str,
+        entity_id: str,
+        before_data: dict[str, Any] | None,
+        after_data: dict[str, Any] | None,
+    ) -> None: ...
 
 
 class SupabaseRoomRepository:
@@ -116,3 +144,66 @@ class SupabaseRoomRepository:
             str(row["path"]): str(row["drive_url"])
             for row in response.data or []
         }
+
+    def create_room(self, values: dict[str, Any]) -> dict[str, Any]:
+        response = self._client.table("phongtro").insert(values).execute()
+        return dict(response.data[0])
+
+    def update_room(
+        self,
+        room_id: str,
+        expected_version: int,
+        values: dict[str, Any],
+    ) -> dict[str, Any] | None:
+        response = (
+            self._client.table("phongtro")
+            .update(values)
+            .eq("idphong", room_id)
+            .eq("row_version", expected_version)
+            .is_("archived_at", "null")
+            .select(ROOM_COLUMNS)
+            .maybe_single()
+            .execute()
+        )
+        return response.data
+
+    def archive_room(
+        self,
+        room_id: str,
+        expected_version: int,
+    ) -> dict[str, Any] | None:
+        response = (
+            self._client.table("phongtro")
+            .update({"archived_at": datetime.now(timezone.utc).isoformat()})
+            .eq("idphong", room_id)
+            .eq("row_version", expected_version)
+            .is_("archived_at", "null")
+            .select(ROOM_COLUMNS)
+            .maybe_single()
+            .execute()
+        )
+        return response.data
+
+    def write_audit(
+        self,
+        *,
+        actor_id: str,
+        actor_role: str,
+        request_id: str,
+        action: str,
+        entity_id: str,
+        before_data: dict[str, Any] | None,
+        after_data: dict[str, Any] | None,
+    ) -> None:
+        self._client.table("admin_audit_log").insert(
+            {
+                "actor_id": actor_id,
+                "actor_role": actor_role,
+                "request_id": request_id,
+                "action": action,
+                "entity_type": "room",
+                "entity_id": entity_id,
+                "before_data": before_data,
+                "after_data": after_data,
+            }
+        ).execute()
