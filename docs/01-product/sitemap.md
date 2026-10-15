@@ -1,29 +1,17 @@
-# Sitemap mục tiêu
+# Sitemap
+**Trạng thái:** route định hướng, chưa triển khai.
 
-Sitemap mô tả sản phẩm tìm và khám phá tin cho người thuê. Đây là cấu trúc mục tiêu, chưa xác nhận các route đã được triển khai.
+| Khu vực | Chức năng / quyền |
+|---|---|
+| / | Giới thiệu sản phẩm và dữ liệu/giới hạn |
+| /demo | Workspace mẫu, chỉ đọc, không dữ liệu account |
+| /auth/* | Đăng ký/đăng nhập/xác minh/reset theo managed provider |
+| /terminal/news | News feed, source/event/time filters |
+| /terminal/assets/:instrumentId | Chart, source identity, news và watchlist |
+| /workspace/watchlists | Watchlist private |
+| /workspace/portfolios | Ledger, imports, valuation, P&L private |
+| /workspace/lab | Form, datasets, browser capability và chạy experiment |
+| /workspace/experiments/:id | Config, run status, metrics/artifact private |
+| /account | Profile/session và xóa dữ liệu theo policy |
 
-```text
-Home / Khám phá
-├── Bắt đầu tìm kiếm
-│   └── Nhập nhu cầu / chỉnh bộ lọc
-├── Kết quả
-│   ├── Danh sách tin
-│   ├── Bản đồ (tùy độ phủ và giai đoạn, chưa thuộc MVP mặc định)
-│   └── So sánh tin đã chọn
-├── Chi tiết tin /listings/:id
-│   ├── Thông tin phòng và chi phí
-│   ├── Lý do phù hợp
-│   ├── Khoảng giá tham khảo (khi đủ cơ sở)
-│   └── Tin tương tự
-├── Tin đã lưu
-├── Giải thích cách gợi ý / dữ liệu và phạm vi
-└── Trạng thái hệ thống: không có kết quả, tải lỗi, dữ liệu chưa đủ
-```
-
-## Điều hướng
-
-- Lối vào chính là khám phá/tìm kiếm, không phải luồng đăng tin.
-- Tìm kiếm đã nhập cần duy trì khi mở tin chi tiết rồi quay lại.
-- Lưu và so sánh phải khả dụng trên desktop và mobile, đồng thời thông báo giới hạn lưu cục bộ.
-- Tên route là ví dụ định hướng; hợp đồng URL/API chính thức do tài liệu kiến trúc/API quyết định.
-- Không đưa các khu vực roommate, sale, lead hay Admin cũ vào sitemap mục tiêu.
+Business API không tự public vì biết URL. Public published reports phải có authorization/publishing policy riêng, không chỉ bỏ auth khỏi route private.

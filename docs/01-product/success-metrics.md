@@ -1,33 +1,17 @@
-# Chỉ số thành công
+# Đo thành công
+**Trạng thái:** kế hoạch đo; chưa có kết quả.
 
-Các chỉ số này là mục tiêu đo lường cho MVP; chưa có baseline hoặc kết quả được xác nhận. Đặt baseline sau khi có dữ liệu crawl được kiểm chứng và luồng đo lường hoạt động.
+## Product
+Đo người dùng hoàn tất luồng news → asset → watchlist, import portfolio thành công, lưu/chạy experiment, hiểu nhãn nguồn/stale/client-computed. Không dùng số click hoặc tổng người đăng ký làm bằng chứng model có giá trị.
 
-## Chất lượng tìm kiếm
+## Data/operation
+Đo completeness, candle gaps/duplicates, source freshness, timestamp conflicts, ingestion lag và corrections. Phân biệt publication-to-seen lag với transport lag. News rights/coverage là gate xuất bản.
 
-- Tỷ lệ phiên tìm kiếm có ít nhất một kết quả còn hiệu lực.
-- Tỷ lệ người dùng mở chi tiết từ kết quả.
-- Tỷ lệ người dùng lưu hoặc đưa một tin vào so sánh.
-- Tỷ lệ phiên kết thúc không có tương tác hữu ích; phân tích theo bộ lọc và coverage.
-- Tỷ lệ gợi ý đáp ứng điều kiện bắt buộc, mục tiêu là 100% trên tập kiểm thử.
+## Browser Lab
+Đo cold/warm load, memory, train duration, cancellation/recovery trên mẫu 5k/25k/50k rows và máy thử được ghi cấu hình. P02 khóa mức support sau đo; không cam kết mọi browser/mobile chạy model.
 
-## Mức phù hợp và tin cậy
+## Quant
+So baseline/model trên cùng holdout và sample eligibility. Direction: log-loss/calibration và balanced metrics khi mất cân bằng; regression: MAE/error distribution; strategy: net P&L/drawdown/exposure/turnover có costs. Báo cáo cả thất bại, số thử và out-of-sample window; chưa có ngưỡng hoặc alpha được chứng minh.
 
-- Đánh giá hữu ích do người dùng chủ động gửi sau khi xem gợi ý.
-- Tỷ lệ gợi ý có explanation hợp lệ, kiểm chứng được từ thuộc tính tin và preference.
-- Tỷ lệ tin stale/expired được phát hiện trước khi người dùng dựa vào kết quả.
-- Tỷ lệ field quan trọng bị thiếu theo nguồn/khu vực.
-- Tỷ lệ tin trùng còn xuất hiện riêng biệt trong kết quả.
-
-## ML và giá tham khảo
-
-- So sánh ranking với baseline đơn giản trên tập đánh giá có nhãn, dùng split tránh rò rỉ giữa các tin trùng/cùng phòng.
-- Đo chất lượng khoảng giá bằng coverage của khoảng dự đoán và độ rộng khoảng, phân nhóm theo khu vực và loại hình khi đủ mẫu.
-- Đo riêng chất lượng trên cold-start và khu vực ít dữ liệu.
-- Không đặt ngưỡng accuracy cố định trước khi biết phân phối và chất lượng dataset; mọi ngưỡng phát hành phải được ghi trong tài liệu ML cùng bằng chứng.
-
-## Guardrails
-
-- Theo dõi tỷ lệ lỗi API/trải nghiệm và thời gian tải kết quả.
-- Theo dõi phần trăm kết quả không đáp ứng hard filters; phải bằng 0.
-- Theo dõi tỷ lệ hiển thị ước lượng giá khi điều kiện dữ liệu không đủ; phải bằng 0.
-- Không dùng click đơn lẻ như nhãn khẳng định người dùng hài lòng.
+## Acceptance
+Chỉ đặt mục tiêu số sau khi có pilot baseline và dữ liệu. Mỗi threshold ghi owner, dataset, lý do và ngày; không sửa metric sau khi nhìn test để tuyên bố đạt.
