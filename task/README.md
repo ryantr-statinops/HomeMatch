@@ -1,16 +1,10 @@
-# Project task tracking
+# Task tracking
+[Research Terminal plan](research-terminal-plan/README.md) là roadmap active duy nhất. Đọc [docs](../docs/README.md) và [orchestration](research-terminal-plan/00-orchestration.md) trước khi nhận task.
 
-## Current rebuild
+## Trạng thái
+P00 refactor documentation hoàn tất. P01–P10 chưa triển khai; next phase là legacy inventory/code reset. Chuyển docs không đồng nghĩa tài nguyên Google đã bị ngắt.
 
-The active end-to-end implementation roadmap is [rebuild-plan](rebuild-plan/README.md). It defines task IDs, dependencies, agent ownership, acceptance and rollback for each phase. The current phase is P00, documentation reset. Read [project documentation](../docs/README.md) before taking a task.
+## Lịch sử
+[Archive](archive/README.md) gồm legacy MVP/microservice plans và rental rebuild đã superseded. current-session chứa notes product cũ, không là yêu cầu hiện hành. Legacy audit được chuyển sang [kế hoạch active](research-terminal-plan/legacy-integrations-audit.md), giữ bằng chứng 2026-10-16 và remote state chưa xác minh.
 
-## Historical records
-
-- `archive/legacy-mvp-plan/` and `archive/legacy-microservice-plan/` are superseded planning records preserved for Git-era context; they are not active instructions.
-- `current-session/` contains session notes from the previous product direction. Treat them as historical evidence only; do not use them as current scope or architecture.
-
-## Working rules
-
-- Use `task/rebuild-plan/` as the single active plan and update its phase status with evidence.
-- Follow `docs/08-engineering/agent-collaboration.md` for ownership and orchestration.
-- Do not infer a product/source/runtime decision from archived plans or old session logs.
+Mọi status cần task ID/evidence; không suy current scope từ file archived.

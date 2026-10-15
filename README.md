@@ -1,23 +1,16 @@
-# HomeMatch
-
-HomeMatch hướng tới nền tảng giúp người thuê khám phá tin phòng theo ngân sách, vị trí và ưu tiên cá nhân. Trải nghiệm dự kiến có tìm kiếm/xếp hạng minh bạch, tin tương tự và khoảng giá chào thuê tham khảo khi dữ liệu đủ điều kiện.
+# Research Terminal
+News-first research workspace cho retail trader người Việt: đọc tin theo tài sản, đối chiếu giá, theo dõi danh mục spot và thử nghiệm baseline qua Model Lab form.
 
 ## Trạng thái
-
-Repository hiện chứa ứng dụng của product direction trước đây. Tài liệu mới mô tả target; frontend React/Vite, Go Gateway, crawler batch và các khả năng cá nhân hóa/ML chưa được triển khai theo kiến trúc mới.
+Đây là target documentation. Repository vẫn chứa HomeMatch legacy; chưa migrate code, account, data feed hoặc deployment. Hoàn thiện docs không chứng minh Binance access/rights hoặc Pyodide performance đã test.
 
 ## Tài liệu
+- [Documentation index](docs/README.md) và [glossary](docs/glossary.md).
+- [Bốn thị trường và source register](docs/03-market-research/README.md).
+- [Research Terminal roadmap](task/research-terminal-plan/README.md).
+- [Next action](task/next-plan.md).
 
-- [Documentation index](docs/README.md): product, architecture, data, crawling, ML, API, UI/UX, engineering và operations.
-- [Rebuild roadmap](task/rebuild-plan/README.md): kế hoạch A–Z, dependencies, task ownership, orchestration và acceptance gates.
-- [Current next action](task/next-plan.md): phase đang hoạt động.
+## Default MVP
+Binance Spot BTCUSDT/ETHUSDT, candles 15m/1h/1d; UI tiếng Việt, news-first. Accounts có workspace riêng; portfolio manual/CSV base USDT; experiments private, browser Web Worker training/backtest và client-computed results. Live public market stream theo tab hoạt động; ingestion theo lịch riêng.
 
-## Product principles
-
-- Một tin đăng là dữ liệu của nguồn tại thời điểm quan sát; không đồng nhất mặc định với một phòng vật lý.
-- Khu vực được hỗ trợ tùy theo nguồn đã xác minh và độ phủ dữ liệu đo được.
-- Giá model ước lượng là giá chào thuê tham khảo, không phải giá giao dịch.
-- ML là khả năng có điều kiện; tìm kiếm baseline cần hoạt động khi ML chưa sẵn sàng.
-- Không yêu cầu tài khoản người thuê trong giai đoạn đầu.
-
-Để biết trạng thái thực tế của từng khả năng, xem roadmap và kiểm chứng repository/deployment; không xem target docs là bằng chứng tính năng đã chạy.
+Không yêu cầu exchange trading keys. Nguồn miễn phí, quyền train/public display và chi phí hạ tầng phải được kiểm chứng riêng. Các thị trường Mỹ/FX/Việt Nam là nghiên cứu mở rộng. Tên thư mục repo và deployment hiện tại chưa đổi.
