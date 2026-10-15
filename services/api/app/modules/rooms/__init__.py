@@ -1,1 +1,0 @@
-"""Admin room read module."""
