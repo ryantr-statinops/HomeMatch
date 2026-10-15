@@ -1,3 +1,8 @@
 # Archived plans
+Các tài liệu ở đây là lịch sử, không là scope/architecture hiện hành.
 
-These plans describe superseded product and migration work. They remain for historical reference and are not active guidance. Current scope and implementation order are defined only in [task/rebuild-plan](../rebuild-plan/README.md). Historical session logs remain in `task/current-session/` and are likewise not current requirements.
+- legacy-mvp-plan: product HomeMatch ban đầu.
+- legacy-microservice-plan: kế hoạch Admin/API trước pivot.
+- [rental-rebuild-plan](rental-rebuild-plan/README.md): personalized rental direction đã superseded.
+
+Roadmap active duy nhất: [Research Terminal](../research-terminal-plan/README.md). Session logs cũ tại task/current-session giữ để tham khảo lịch sử. Legacy integrations audit đã chuyển sang kế hoạch active, remote state vẫn chưa kiểm chứng.

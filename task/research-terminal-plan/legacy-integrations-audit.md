@@ -4,6 +4,8 @@
 
 Đây là đầu vào bắt buộc của P01. Kiến trúc mới mặc định không phụ thuộc Google Sheet, Apps Script, AppSheet hoặc Google Drive. Nhà cung cấp object storage mới được chọn độc lập theo nhu cầu crawler/ML.
 
+Audit được chuyển nguyên bằng chứng sang kế hoạch Research Terminal. Phạm vi P01 mới là retirement legacy và reset codebase crypto; các kết nối/tài nguyên Google chưa được ngắt chỉ vì thay tài liệu. Đây không phải source news/market data mới.
+
 ## Kết quả kiểm kê
 
 | Hạng mục | Bằng chứng trong repository | Hướng xử lý P01 |

@@ -1,5 +1,7 @@
 # HomeMatch rebuild plan A–Z
 
+> **Historical / superseded:** roadmap rental, không phải hướng dẫn hiện hành. Kế hoạch hiện tại là [Research Terminal](../../research-terminal-plan/README.md). Các trạng thái Complete dưới đây chỉ là lịch sử rental.
+
 ## Mục tiêu
 
 Xây nền tảng khám phá tin phòng cá nhân hóa cho người thuê nói chung: thu thập tin từ nguồn đã được duyệt, chuẩn hóa và theo dõi độ mới, tìm kiếm/xếp hạng theo nhu cầu, gợi ý tin tương tự và cung cấp khoảng giá chào thuê tham khảo. Phạm vi địa lý được chọn sau khảo sát nguồn. Đây là kế hoạch; trạng thái ban đầu của mọi phase là **Not started**.
@@ -56,7 +58,7 @@ A phase status may be changed only with linked commit/PR or evidence and complet
 
 ## How to continue
 
-P01 includes [legacy integration inventory and removal](legacy-integrations-audit.md) for Google Sheet/Drive, Apps Script, Google Cloud credentials and old media mappings. Repository findings are verified; external account state still requires inspection.
+P01 included [legacy integration inventory and removal](../../research-terminal-plan/legacy-integrations-audit.md); audit này được chuyển sang kế hoạch mới, remote state vẫn chưa xác minh.
 
 1. Read `docs/README.md`, `docs/02-architecture/README.md`, `docs/08-engineering/agent-collaboration.md` and this plan.
 2. Read the active phase and confirm predecessor acceptance.

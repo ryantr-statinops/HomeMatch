@@ -18,7 +18,7 @@ Inventory and replace the old implementation so repository matches target archit
 
 Input: current repo inventory, P00 architecture and UI decisions. Output: clean target workspace, runnable services with deterministic fixtures, dependency lockfiles, env examples and CI scaffold. Existing production credentials/data are never copied into fixtures.
 
-Mandatory input: [kiểm kê và gỡ tích hợp cũ](legacy-integrations-audit.md). Complete LEG-01/02 before removal, then run LEG-03/04 under exclusive ownership. Track repository cleanup separately from credential/resource retirement in Google Cloud, Apps Script, Sheet/Drive and deployment environments.
+Historical input: [kiểm kê và gỡ tích hợp cũ](../../research-terminal-plan/legacy-integrations-audit.md). Audit chuyển sang kế hoạch Research Terminal; phase rental này không còn active.
 
 ## Acceptance and verification
 
