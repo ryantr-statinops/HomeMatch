@@ -1,47 +1,16 @@
-# Task Workflow
+# Project task tracking
 
-## Purpose
+## Current rebuild
 
-Thư mục này quản lý kế hoạch triển khai, session log và hướng đi tiếp theo của dự án.
+The active end-to-end implementation roadmap is [rebuild-plan](rebuild-plan/README.md). It defines task IDs, dependencies, agent ownership, acceptance and rollback for each phase. The current phase is P00, documentation reset. Read [project documentation](../docs/README.md) before taking a task.
 
-## Cách dùng với `docs/`
+## Historical records
 
-`docs/` là nguồn sự thật cho kiến trúc, sản phẩm, data và UI.
+- `archive/legacy-mvp-plan/` and `archive/legacy-microservice-plan/` are superseded planning records preserved for Git-era context; they are not active instructions.
+- `current-session/` contains session notes from the previous product direction. Treat them as historical evidence only; do not use them as current scope or architecture.
 
-`task/` là nơi ghi:
+## Working rules
 
-- kế hoạch hiện tại
-- thứ tự thực hiện
-- log theo session
-- việc đang chờ
-
-## Active Plans
-
-- `microservice-foundation-plan/`: kế hoạch triển khai backend boundary, Admin
-  Portal và migration an toàn cho Vercel production.
-
-## Workflow
-
-1. Đọc `docs/README.md`.
-2. Đọc các tài liệu cốt lõi:
-   - `docs/01-product/project-rules.md`
-   - `docs/02-architecture/system-architecture.md`
-   - `docs/02-architecture/folder-structure.md`
-   - `docs/03-data/database-structure.md`
-3. Đọc `task/next-plan.md`.
-4. Chốt scope cho session hiện tại.
-5. Tạo `task/current-session/session-xxx.md`.
-6. Thực hiện đúng phạm vi session.
-
-## Rules
-
-- Không tự mở rộng scope.
-- Không tự thêm tính năng.
-- Không tự thay đổi kiến trúc.
-- Không tự thêm package không cần thiết.
-
-Luôn ưu tiên:
-
-- Đơn giản
-- Dễ maintain
-- Phù hợp MVP
+- Use `task/rebuild-plan/` as the single active plan and update its phase status with evidence.
+- Follow `docs/08-engineering/agent-collaboration.md` for ownership and orchestration.
+- Do not infer a product/source/runtime decision from archived plans or old session logs.
