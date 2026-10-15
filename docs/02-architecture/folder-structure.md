@@ -1,5 +1,5 @@
 # Repository mục tiêu
-**Trạng thái:** định hướng sau P01, chưa tạo source mới.
+**Trạng thái:** các thư mục dưới đã có scaffold P01; các trách nhiệm nghiệp vụ trong cây vẫn là mục tiêu. Hiện chỉ có UI/HTTP và CLI đọc fixture, chưa có stream manager, auth, worker training hoặc scheduled ingestion.
 
 ~~~text
 apps/web/                 React/Vite, stream manager, browser-worker adapter

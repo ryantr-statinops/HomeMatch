@@ -1,5 +1,5 @@
 # Technology stack
-**Trạng thái:** lựa chọn mục tiêu; phiên bản/hosting chưa được khóa bằng spike.
+**Trạng thái:** scaffold P01 dùng Node 22.23.1/npm 10.9.8, Go 1.27.2, Python 3.11–3.13/uv 0.11.28. Phiên bản package thực tế nằm trong lockfiles; auth/storage/hosting và browser runtime vẫn cần spike P02.
 
 | Lớp | Default |
 |---|---|

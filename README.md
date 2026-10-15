@@ -2,7 +2,23 @@
 News-first research workspace cho retail trader người Việt: đọc tin theo tài sản, đối chiếu giá, theo dõi danh mục spot và thử nghiệm baseline qua Model Lab form.
 
 ## Trạng thái
-Đây là target documentation. Repository vẫn chứa HomeMatch legacy; chưa migrate code, account, data feed hoặc deployment. Hoàn thiện docs không chứng minh Binance access/rights hoặc Pyodide performance đã test.
+PR #17 documentation đã merge vào main. P01 có khung React/Vite, Go Gateway, FastAPI và CLI fixture trên nhánh reset; code Next.js/Admin và integrations legacy đã được gỡ khỏi tracked source. Chưa có auth/account, data feed thật, portfolio hoặc Model Lab. Deployment cũ và tài nguyên bên ngoài chưa được thay đổi.
+
+## Chạy bản fixture local
+Node 22.23.1/npm 10.9.8, Go 1.27.2, Python 3.11–3.13 và uv 0.11.28. Dependencies JS được pin trong `package-lock.json`, API trong `services/api/uv.lock`.
+
+```powershell
+npm ci
+npm run dev
+```
+
+Web: http://127.0.0.1:5173/terminal/news. Không cần credential hoặc API để xem fixture. Để thử API, chạy riêng [FastAPI theo hướng dẫn](services/api/README.md), rồi terminal khác:
+
+```powershell
+go -C services/gateway run ./cmd/gateway
+```
+
+Web proxy `/api` qua gateway port 8080 đến API port 8000. Chỉ gọi localhost; dữ liệu synthetic nằm tại [data/fixtures](data/fixtures/README.md). [Kế hoạch và inventory P01](task/research-terminal-plan/p01-inventory.md) ghi phạm vi dọn dẹp và các việc bên ngoài còn pending.
 
 ## Tài liệu
 - [Documentation index](docs/README.md) và [glossary](docs/glossary.md).

@@ -1,5 +1,5 @@
 # Kiến trúc
-**Trạng thái:** target, chưa migrate source legacy.
+**Trạng thái:** P01 đã có scaffold fixture; các service boundaries nghiệp vụ dưới đây vẫn là target, chưa có auth/feed/ledger/ML runtime.
 - [System architecture](system-architecture.md)
 - [Tech stack](tech-stack.md)
 - [Repository structure](folder-structure.md)

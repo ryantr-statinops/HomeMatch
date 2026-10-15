@@ -1,7 +1,7 @@
 # Development workflow
-**Trạng thái:** target.
+**Trạng thái:** local fixture workflow đã có trong P01; nghiệp vụ/provider vẫn target.
 
-P01 inventory reusable UI và gỡ domain/runtime legacy bằng commit nhỏ. P02 khóa language/package versions, lockfiles, managed auth provider, storage và scripts có thể tái lập. Chưa ghi lệnh mới như thể tồn tại; README setup phải được cập nhật bằng kết quả chạy thực ở phase đó.
+P01 chuyển reusable UI và gỡ domain/runtime legacy bằng commit nhỏ. [README setup](../../README.md) và [API setup](../../services/api/README.md) mô tả lệnh hiện có. `npm ci`, `npm run security:env-boundaries`, `npm run fixtures:check`, `npm run test:tooling`, `npm run lint`, `npm run typecheck`, `npm run build` là các checks web. Go dùng `go -C services/gateway test ./...` và `go -C services/ingestion test ./...`. API dùng frozen uv lock và pytest; OpenAPI xuất vào `packages/contracts/openapi.json`. P02 mới chọn managed auth/storage và khóa browser runtime sau spike.
 
 Local mặc định dùng fixtures synthetic/licensed, không gọi sàn/nguồn thật hoặc legacy credential. Network source tests là nhóm opt-in, ghi provider/date/region và không chạy bằng production account trong CI.
 

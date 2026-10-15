@@ -1,5 +1,5 @@
 # P01 — Legacy retirement và code reset
-**Trạng thái:** chưa bắt đầu.
+**Trạng thái:** repository reset đã qua checks local; [inventory](p01-inventory.md) và [evidence/commit map](p01-completion-report.md). Remote CI/review và credential/resource retirement còn pending, không được coi đã decommission toàn phase.
 
 ## Mục tiêu và phụ thuộc
 P00 complete; đọc legacy integration audit trước removal.

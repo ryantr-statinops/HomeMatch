@@ -1,5 +1,5 @@
 # P01 — inventory và kế hoạch thực thi
-**Ngày:** 2026-10-16. **Baseline:** cac773f, PR #17 đã merge, main đã pull fast-forward. **Nhánh:** codex/p01-repository-reset. **Trạng thái:** đang thực hiện, chưa retirement tài nguyên bên ngoài.
+**Ngày:** 2026-10-16. **Baseline:** cac773f, PR #17 đã merge, main đã pull fast-forward. **Nhánh:** codex/p01-repository-reset. **Trạng thái:** repository reset hoàn tất kiểm tra local; chưa push/review CI trên remote hoặc retirement tài nguyên bên ngoài. P01 toàn phase còn các việc remote pending.
 
 ## Giữ / bỏ / thay
 | Nhóm | Quyết định |
@@ -30,6 +30,18 @@ data/fixtures/news.json và market.json là synthetic, schema_version=1, source_
 Lock toolchains/dependencies từ metadata chính thức, không latest trong lockfile. npm lint/typecheck/build, API tests+OpenAPI diff, Go tests+CLI, research CLI và fixture/secret-boundary checks. Test explicit localhost HTTP roundtrip; default không cần env secrets hoặc cloud. Nếu thiếu Go/Python toolchain, lấy runtime chính thức có checksum hoặc ghi limitation, không bịa test pass.
 
 P01 repository reset chỉ complete khi fixture stack và CI gates tương ứng pass. Remote credential retirement là trạng thái riêng. P02 Auth/provider/real data/Pyodide/stream feasibility chưa triển khai.
+
+## Kết quả local và bàn giao
+- Đã chuyển 4 UI primitives được dùng; thay Next/Admin bằng Vite; FastAPI fixture không phụ thuộc Supabase/Auth/Google.
+- [Manifest 90 tracked file legacy được gỡ ngoài API](p01-removed-files.txt); API có danh sách file removal riêng trong commit `27bd9b7`. Một số UI được Git nhận diện là move, không phải mất code.
+- Generated caches `.next`, Admin `.next`, API-client node_modules và `next-env.d.ts` đã dọn theo exact paths; npm ci thay node_modules bằng dependencies mới. Venv/env/key legacy được giữ để xử lý riêng.
+- [Verification, commit map và pending](p01-completion-report.md). Required CI job names được giữ, nhưng CI mới chưa chạy trên GitHub vì branch chưa push.
+
+## Kế hoạch tiếp tục
+1. RT-RESET-05: review diff/CI của nhánh reset trước merge; không bật production deployment cũ cho scaffold.
+2. LEG-01/02: account owner xác nhận resource IDs/owners, consumers, triggers, deployment env và backup/retention. Chỉ ghi metadata an toàn.
+3. LEG-05/06: lập thay đổi cụ thể để dừng workload, revoke quyền/keys và xóa bản local sau xác nhận; remote tasks không gộp với code removal.
+4. P02 RT-FOUND tasks: managed Auth isolation, storage/provider ADR, Binance access/stream và Pyodide benchmark. Chỉ mở P03/P04 ingestion thật khi source gates được chấp nhận.
 
 ## Rollback / commits
 Giữ commit theo inventory, web, services, removal/tooling và verification/status. Không rewrite lịch sử hoặc xóa tài nguyên ngoài workspace. Nhánh PR riêng vì main bắt buộc reviews/checks; không tự merge/push cleanup vào deployment hiện tại trong lượt này.
