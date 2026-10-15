@@ -1,238 +1,50 @@
-# System Architecture V3
+# System architecture
 
-## Overview
+## Trạng thái
 
-Hệ thống được xây dựng theo mô hình:
+Đây là kiến trúc mục tiêu. Repository hiện vẫn có Next.js và các thành phần của sản phẩm cũ; chưa có React/Vite frontend, Go Gateway hoặc crawler mới hoàn chỉnh.
 
-User
-↓
-Website
-↓
-Supabase SDK
-↓
-Supabase (PostgreSQL) + Google Drive
+## Thành phần và ownership
 
-Mục tiêu:
+| Thành phần | Công nghệ mục tiêu | Sở hữu |
+|---|---|---|
+| Web | React, Vite, React Router, TypeScript, Tailwind | Thu thập nhu cầu và trình bày kết quả cho người thuê |
+| Gateway | Go | Routing, request ID, timeout, giới hạn truy cập và chuyển tiếp request |
+| Product API | FastAPI | Tìm kiếm, listing lifecycle, preference/session, recommendation orchestration và API contracts |
+| ML | Python | Dataset/features, baseline/model training, evaluation và inference adapter |
+| Crawler | Go batch | Source adapters, crawl scheduling, raw capture và crawl run state |
+| Structured store | PostgreSQL | Normalized listings/rooms, crawl metadata, interactions và model metadata |
+| Artifact store | Object storage contract | Raw snapshots, ảnh nếu được phép lưu, export dataset và model artifact |
 
-* Tạo lead
-* Hiển thị phòng trọ
-* Hiển thị nhu cầu ở ghép
-* Hỗ trợ sale vận hành
+Gateway giữ mỏng và không nhân đôi validation nghiệp vụ. API gọi ML qua interface có timeout; khi provider không khả dụng, trả kết quả dựa trên ranking baseline hoặc đánh dấu phần ML unavailable theo hợp đồng API.
 
----
-
-# High Level Architecture
+## Luồng dữ liệu
 
 ```text
-┌──────────────┐
-│    User      │
-└──────┬───────┘
-       │
-       ▼
-┌──────────────┐
-│  Next.js Web │
-│    Vercel    │
-└──────┬───────┘
-       │
-       ├──────────────────────────────────┐
-       ▼                                  ▼
-┌──────────────┐              ┌──────────────────────┐
-│   Supabase   │              │ ImageCache (Supabase) │
-│  (PostgreSQL)│◄─────────────│  path → drive_url     │
-└──────┬───────┘              └──────────────────────┘
-       │
-       ▼
-┌──────────────┐
-│ Google Drive │
-│ (Image files)│
-└──────────────┘
+Verified source -> Go crawler batch -> immutable raw snapshot
+                                  -> normalization/dedup -> PostgreSQL
+                                                    -> serving dataset/features
+                                                    -> Python training/evaluation
+                                                    -> versioned model artifact
+
+Renter -> React/Vite -> Go Gateway -> FastAPI -> PostgreSQL
+                                             -> Python ML inference (optional)
+                                             -> anonymous interaction event
 ```
 
----
+Tin đăng là thực thể quan sát từ nguồn. Phòng vật lý là thực thể hợp nhất có thể có nhiều tin đăng qua thời gian. Dữ liệu raw được truy vết về source và crawl run; dữ liệu normalized phải lưu trạng thái chất lượng và thời điểm quan sát.
 
-# User Layer
+## Runtime boundary
 
-## Responsibilities
+React/Vite có thể được build và host như frontend trên Vercel. FastAPI và Go HTTP handlers có thể đóng gói thành request APIs trên Vercel nếu qua kiểm tra giới hạn runtime, cold start, thời gian request và native dependencies. Tài liệu không giả định mọi workload phù hợp serverless.
 
-* Tìm phòng
-* Tìm ở ghép
-* Xem thông tin
-* Liên hệ Zalo
+Crawler, training và tác vụ dài chạy trên runner/batch environment riêng, không gắn vào request người dùng. Database và object storage là dịch vụ ngoài ứng dụng, chọn theo contract và chi phí sau khi thử nghiệm.
 
-## Direct Access
+## Failure boundary
 
-Không có quyền truy cập:
-
-* Supabase (trực tiếp)
-* Google Drive
-* AppSheet
-
----
-
-# Website Layer
-
-## Technology
-
-* Next.js
-* TypeScript
-* Tailwind
-* shadcn/ui + @base-ui/react
-
-## Responsibilities
-
-* Render giao diện
-* SEO
-* Hiển thị dữ liệu (qua Supabase SDK)
-* Điều hướng sang Zalo
-
-## Data Flow
-
-* Gọi Supabase SDK từ service layer (`room.service.ts`, `roommate.service.ts`)
-* Resolve image path qua `ImageCache` table
-* Không còn Apps Script proxy
-
----
-
-# API Layer
-
-## Technology
-
-Supabase SDK (`@supabase/supabase-js`)
-
-## Responsibilities
-
-* Đọc dữ liệu từ Supabase
-* Chuyển đổi dữ liệu thành kiểu TypeScript
-* Resolve image path → Drive URL qua ImageCache
-
----
-
-# Data Layer
-
-## Technology
-
-Supabase (PostgreSQL)
-
-## Single Source of Truth
-
-Toàn bộ dữ liệu được quản lý tại đây (migrated từ Google Sheet).
-
-## Image Storage
-
-Google Drive (ảnh gốc) + ImageCache table (mapping path → URL)
-
-## Tables
-
-* phongtro
-* hinhanh
-* roommate
-* lichhen
-* sale
-* lead
-* imagecache (phụ trợ)
-
----
-
-# Image Resolution Flow
-
-```text
-Database stores: "PHONGTRO_Images/abc.jpg"
-       │
-       ▼
-room.service.ts queries:
-  SELECT drive_url FROM imagecache WHERE path = 'PHONGTRO_Images/abc.jpg'
-       │
-       ▼
-Returns: "https://drive.google.com/thumbnail?id=FILEID&sz=w1000"
-       │
-       ▼
-Browser loads ảnh trực tiếp từ Google Drive CDN
-```
-
----
-
-# Admin Layer
-
-## Technology
-
-AppSheet
-
-## Responsibilities
-
-* Quản lý phòng
-* Quản lý lịch hẹn
-* Quản lý sale
-* Quản lý bài ở ghép
-
----
-
-# Analytics Layer
-
-## Technology
-
-Vercel Web Analytics ✅ (đã enable)
-
-Google Analytics ⚠️ (đã cấu hình env var `NEXT_PUBLIC_GA_ID` nhưng chưa implement integration)
-
-## Tracking Events (tương lai)
-
-room_view
-
-roommate_view
-
-zalo_click
-
-lead_created
-
----
-
-# Contact Layer
-
-## Technology
-
-Zalo
-
-## Responsibilities
-
-* Tư vấn khách hàng
-* Chốt phòng
-* Hỗ trợ ở ghép
-
----
-
-# Security Principles
-
-## Rule 1
-
-Database không public — chỉ gọi qua Supabase SDK với anon key.
-
-## Rule 2
-
-ImageCache table có RLS policy chỉ cho phép SELECT với anon.
-
-## Rule 3
-
-Service role key chỉ dùng cho migration script, không expose ra client.
-
-## Rule 4
-
-AppSheet là công cụ nội bộ. Không public.
-
----
-
-# Deleted Components (từ V1)
-
-* Google Apps Script API
-* Api Proxy (`/api/proxy`)
-* `api-client.ts`
-* `resolveImageUrl()` trong Apps Script
-
----
-
-# Lịch sử thay đổi
-
-| Version | Ngày | Thay đổi |
-|---------|------|----------|
-| V1 | 2026-06-13 | Thiết kế ban đầu (Google Sheet + Apps Script) |
-| V2 | 2026-06-23 | Migrate lên Supabase, thêm ImageCache, xoá Apps Script |
-| V3 | 2026-06-26 | Sync analytics layer: Vercel Web Analytics + Google Analytics (chưa implement) |
+- Gateway timeout không làm crawler hay model job bị chạy đồng bộ.
+- ML lỗi/hết hạn không ngăn tìm kiếm cơ bản.
+- Không có listing phù hợp trả empty state; không nới hard filters âm thầm.
+- Listing stale/expired được loại hoặc gắn trạng thái theo freshness policy.
+- Crawler retry có idempotency theo source/listing observation.
+- Model artifact luôn có version và metadata để quay lại bản đã được đánh giá.
