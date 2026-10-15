@@ -1,17 +1,17 @@
 # Technology stack
+**Trạng thái:** lựa chọn mục tiêu; phiên bản/hosting chưa được khóa bằng spike.
 
-Các lựa chọn dưới đây là mục tiêu đã chốt ở mức kiến trúc; chưa đồng nghĩa dependencies đã được cài.
+| Lớp | Default |
+|---|---|
+| Web | React, Vite, React Router, TypeScript, Tailwind |
+| Ingress | Go Gateway HTTP mỏng |
+| Domain | FastAPI/Pydantic, managed Auth JWT |
+| Ingestion | Go scheduled jobs |
+| Data/research | Python tooling, versioned datasets |
+| User training | Web Worker + Pyodide candidate, lazy-loaded; không Python install/desktop companion |
+| Structured/artifact storage | PostgreSQL + object storage contracts, vendor bằng ADR P02 |
+| Hosting | Vercel web/HTTP target; ingestion runner riêng |
 
-| Lớp | Lựa chọn | Lý do/ranh giới |
-|---|---|---|
-| Frontend | React + Vite + React Router + TypeScript + Tailwind | SPA nhẹ, build nhanh; dùng HTTP API thay server framework frontend cũ |
-| Gateway | Go | Một ingress mỏng, kiểm soát timeout, request ID và giới hạn truy cập |
-| Domain API | Python + FastAPI + Pydantic | Một nơi sở hữu rule sản phẩm, validation và OpenAPI |
-| ML | Python ecosystem | Dùng chung ngôn ngữ cho data processing, training và inference |
-| Crawler | Go batch | Tách thu thập khỏi request runtime và domain API |
-| Structured data | PostgreSQL | Quan hệ, lọc, uniqueness và truy vấn listing |
-| Artifacts | Object storage API | Raw snapshots, dataset exports và model files không phụ thuộc vendor |
-| Request API hosting | Vercel target | Frontend và API được đánh giá riêng theo giới hạn runtime |
-| Batch hosting | Runner riêng | Crawl/training có thời lượng dài và lịch chạy riêng |
+[Pyodide](https://pyodide.org/en/stable/index.html) có scientific packages; chạy trong [Web Worker](https://pyodide.org/en/stable/usage/index.html) giúp tách UI. Điều đó chưa chứng minh mọi model/dataset hoạt động. Pin runtime/package bundle sau compatibility benchmark, không dùng latest. Managed Auth được chọn sau thử email/quota/token lifecycle; không tự viết password hashing.
 
-Chưa chốt provider database/object storage, thư viện crawler, router Go, framework model, monorepo tool hoặc versions. Giai đoạn foundation phải benchmark/inventory rồi khóa các phiên bản trong lockfiles; không ghi `latest` làm yêu cầu tái lập.
+Không đưa cloud LLM hoặc paid data vào dependency bắt buộc. Nếu thêm dịch/summary NLP phải có source rights, đánh giá chất lượng và ngân sách riêng.

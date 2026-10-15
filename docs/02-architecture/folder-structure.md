@@ -1,19 +1,18 @@
-# Repository structure mục tiêu
+# Repository mục tiêu
+**Trạng thái:** định hướng sau P01, chưa tạo source mới.
 
-```text
-apps/
-  web/                 # React + Vite client
-services/
-  gateway/             # Go ingress mỏng
-  api/                 # FastAPI domain API
-  crawler/             # Go batch source adapters
-  ml/                  # Python pipeline, evaluation, inference adapter
-packages/
-  contracts/           # API/event shared contract artifacts nếu cần
-  web-ui/               # UI primitives dùng chung
-data/                   # Chỉ fixture nhỏ, công khai, không chứa crawl dump thật
-docs/                   # Product, architecture, data, API và operations docs
-task/rebuild-plan/      # Giai đoạn implementation và orchestration
-```
+~~~text
+apps/web/                 React/Vite, stream manager, browser-worker adapter
+services/gateway/         Go HTTP ingress
+services/api/             FastAPI account/domain
+services/ingestion/       Go scheduled source adapters
+services/research/        Python dataset/evaluation tooling
+packages/contracts/       OpenAPI/event/manifest artifacts có consumers
+data/fixtures/            Tiny synthetic hoặc licensed fixtures
+docs/                     Canonical product/technical docs
+task/research-terminal-plan/  Implementation phases
+~~~
 
-Đây là định hướng, không phải yêu cầu tạo mọi thư mục ngay lập tức. Chỉ thêm workspace/package khi có consumer cụ thể. Raw crawls, credentials, user data và model artifacts không commit vào Git. Mọi thay đổi cấu trúc thực thi phải cập nhật tài liệu và CI cùng giai đoạn.
+Thư mục worker thuộc web vì runtime browser, không tạo server worker queue cho training. Browser Python bundle/package assets được pin theo runtime manifest và deployment budget. Raw dumps, personal CSVs, credentials và binary model lớn không commit Git.
+
+Inventory P01 xác định reusable UI và loại bỏ Next.js/Admin/domain cũ. Không tạo package/service trống chỉ để đủ cây thư mục; workspace/toolchain thực tế và scripts cập nhật cùng implementation phase.
