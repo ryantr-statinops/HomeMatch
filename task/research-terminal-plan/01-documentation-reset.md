@@ -19,7 +19,7 @@ RT-DOC-01 khóa glossary/ADR; RT-DOC-02 parallel authoring; RT-DOC-03 integratio
 ## Kiểm thử và nghiệm thu
 Links/index resolve; 4 surveys có official citations/date/status; không còn renter scope hiện hành; browser-only training, multi-account, tab live nhất quán. Diff chỉ docs/task/README.
 
-Domain docs/roadmap đã được rà links/index, thuật ngữ và scope; chưa coi feed/runtime đã được test. Bằng chứng và commit map được ghi trong completion report P00.
+Domain docs/roadmap đã được rà links/index, thuật ngữ và scope; chưa coi feed/runtime đã được test. Bằng chứng và commit map ở [completion report](completion-report.md).
 
 ## Rollback và handoff
 Revert các commit docs riêng nếu cần; legacy history vẫn trong Git. Handoff P01 với inventory và các deferred source/provider gates.

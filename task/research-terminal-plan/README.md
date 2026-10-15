@@ -1,6 +1,8 @@
 # Research Terminal — kế hoạch A–Z
 **Trạng thái:** P00 hoàn tất documentation; P01–P10 chưa triển khai. Tài liệu rental đã superseded. Source vẫn legacy.
 
+[Báo cáo P00, verification và commit map](completion-report.md).
+
 ## Đọc trước
 [Docs](../../docs/README.md), [glossary](../../docs/glossary.md), [ADR](../../docs/02-architecture/decisions.md), [orchestration](00-orchestration.md), [legacy audit](legacy-integrations-audit.md).
 
