@@ -56,6 +56,8 @@ A phase status may be changed only with linked commit/PR or evidence and complet
 
 ## How to continue
 
+P01 includes [legacy integration inventory and removal](legacy-integrations-audit.md) for Google Sheet/Drive, Apps Script, Google Cloud credentials and old media mappings. Repository findings are verified; external account state still requires inspection.
+
 1. Read `docs/README.md`, `docs/02-architecture/README.md`, `docs/08-engineering/agent-collaboration.md` and this plan.
 2. Read the active phase and confirm predecessor acceptance.
 3. Coordinator assigns exclusive paths/task IDs, records the assignment, then starts at most three subagents.

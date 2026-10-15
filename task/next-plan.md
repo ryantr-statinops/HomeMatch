@@ -13,3 +13,5 @@ This file is a short pointer, not a second roadmap. The canonical A–Z plan is 
 ## Next work
 
 Review the completed documentation and accept the P00 gate. P01 codebase reset can start only after that gate.
+
+P01 must begin with [legacy integrations inventory](rebuild-plan/legacy-integrations-audit.md): remove old Google Sheet/Drive/Apps Script consumers and separately track credential/resource retirement. Repository audit completed on 2026-10-16; external account state has not been inspected.

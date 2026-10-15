@@ -18,6 +18,8 @@ Inventory and replace the old implementation so repository matches target archit
 
 Input: current repo inventory, P00 architecture and UI decisions. Output: clean target workspace, runnable services with deterministic fixtures, dependency lockfiles, env examples and CI scaffold. Existing production credentials/data are never copied into fixtures.
 
+Mandatory input: [kiểm kê và gỡ tích hợp cũ](legacy-integrations-audit.md). Complete LEG-01/02 before removal, then run LEG-03/04 under exclusive ownership. Track repository cleanup separately from credential/resource retirement in Google Cloud, Apps Script, Sheet/Drive and deployment environments.
+
 ## Acceptance and verification
 
 - Old Next.js/Admin/AppSheet/Supabase legacy paths are removed or explicitly retained only by a documented dependency decision.
@@ -25,6 +27,7 @@ Input: current repo inventory, P00 architecture and UI decisions. Output: clean 
 - No crawler network access or production database required for default local setup.
 - Secret scan and env boundary check pass; no real crawl dumps committed.
 - CI installs locked toolchains and runs placeholder checks.
+- Google Sheet/Drive/Apps Script consumers and migration dependencies are removed from the new runtime. Remote credential/resource states are verified or explicitly recorded as pending; local file deletion alone is not decommissioning evidence.
 
 ## Rollback/handoff
 
