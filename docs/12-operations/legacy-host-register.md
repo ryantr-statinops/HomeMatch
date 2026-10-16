@@ -17,6 +17,18 @@ Ngày kiểm tra: 2026-10-16 (Asia/Saigon). Owner yêu cầu giữ đầy đủ 
 
 Production branch, project ID, root/framework/build/output settings, domain redirects và deployment hooks cần ghi sau khi vào được Settings; không dùng giá trị suy đoán. Không ghi environment values, credential hoặc URLs chứa token.
 
+## Hosts từng được ghi trong tài liệu lịch sử
+Git baseline `cac773f` có các địa chỉ sau. Đây là **historical candidates**, chưa xác nhận assignment/ownership/DNS/traffic hiện tại trong Vercel; không mặc định gán chúng cho project cùng tên gần giống.
+
+| Host | Vai trò ghi trong lịch sử | Bằng chứng |
+|---|---|---|
+| `homematchvn.vercel.app` | Public web | [Legacy overview](../../task/archive/legacy-mvp-plan/00-overview.md), [session 016](../../task/current-session/session-016.md) |
+| `homematch.id.vn` | Custom domain public | [Legacy overview](../../task/archive/legacy-mvp-plan/00-overview.md) |
+| `homematchvn-admin.vercel.app` | Admin | [Legacy microservice plan](../../task/archive/legacy-microservice-plan/README.md) |
+| `homematchvn-api.vercel.app` | Backend API | [Legacy microservice plan](../../task/archive/legacy-microservice-plan/README.md) |
+
+`homematch.vercel.app` trong session cũ được ghi dưới dạng ví dụ cấu hình/test, vì vậy chưa coi là resource của dự án. Sau đăng nhập, đối chiếu Settings > Domains và redirects cho cả ba project; giữ nguyên những host không còn gắn project với trạng thái `historical-unverified`, không xóa khỏi log tracking.
+
 ## Preview hosts đã quan sát
 Các host dưới xuất hiện trong Vercel Deployment Overview của đúng commit PR18. Đây là Preview thất bại, không được gọi production hoặc endpoint đang phục vụ tốt.
 
