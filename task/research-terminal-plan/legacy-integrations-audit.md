@@ -41,7 +41,7 @@ File key bị ignore không đồng nghĩa key đã được thu hồi. Không t
 | LEG-04 | Backend/tooling agent | Gỡ Apps Script, image-cache script, dependency `googleapis`, settings và env entries legacy; đồng bộ lockfiles/contracts/tests |
 | LEG-05 | Coordinator / account owner | Thu hồi key/OAuth grants và quyền share không còn dùng, bỏ deployment secrets/trigger legacy sau khi consumers đã dừng; ghi bằng chứng không chứa secret |
 | LEG-06 | Coordinator | Dọn file key local và cấu hình local legacy sau thu hồi; giữ quy tắc ignore và secret-boundary checks phù hợp |
-| LEG-07 | Reviewer độc lập | Rà lại mã nguồn/config/lockfile và kiểm tra runtime bằng fixture; phân biệt rõ code đã gỡ với remote resources còn chờ xử lý |
+| LEG-07 | Reviewer độc lập | Rà lại mã nguồn/config/lockfile và kiểm tra runtime bằng fixture; phân biệt code đã gỡ, Vercel Git đã ngắt và remote credentials/resources còn chờ xử lý |
 
 LEG-01 là dependency của tracked-code removal; LEG-02 là dependency của việc dừng workload, revoke và xóa tài nguyên từ xa. P01 chỉ gỡ artifacts trên nhánh reset, không triển khai thay production; vì vậy không tuyên bố remote consumers đã ngừng. LEG-03/04 có thể song song khi ownership không chồng lấn. LEG-05 chỉ thực hiện trên tài nguyên đã xác định thuộc dự án và không còn consumer cần thiết. Không dùng key đã thu hồi làm phương án rollback.
 

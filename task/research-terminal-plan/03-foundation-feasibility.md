@@ -1,5 +1,5 @@
 # P02 — Foundation và feasibility
-**Trạng thái:** chưa bắt đầu.
+**Trạng thái:** đang thực hiện các spike độc lập; chưa hoàn tất provider/account/storage integration hoặc browser lifecycle acceptance. Xem [execution board](p02-execution-board.md), [Auth](p02-auth-feasibility.md), [browser](p02-browser-feasibility.md), [legacy status](p02-legacy-status.md).
 
 ## Mục tiêu và phụ thuộc
 P01; canonical ADR/API/model/data contracts.
