@@ -1,6 +1,6 @@
 # P01 — repository reset: kết quả local
 
-Ngày 2026-10-16. Baseline: `cac773f` ([PR #17](https://github.com/ryantr-statinops/HomeMatch/pull/17), documentation đã merge/pull main). Nhánh triển khai: `codex/p01-repository-reset`. Chưa push nhánh reset hoặc triển khai production. Đây là nghiệm thu code scaffold local, chưa hoàn tất retirement tài nguyên ngoài repo.
+Ngày 2026-10-16. Baseline: `cac773f` ([PR #17](https://github.com/ryantr-statinops/HomeMatch/pull/17), documentation đã merge/pull main). [PR #18](https://github.com/ryantr-statinops/HomeMatch/pull/18) merge thành công, merge commit `86f100913f94dfdb93b2102e43bb430db3a12929`; ba CI jobs và Vercel Preview Comments thành công. Ba Git connections Vercel đã ngắt trước merge; production domains/deployments được giữ. Chưa hoàn tất retirement tài nguyên ngoài repo.
 
 ## Phạm vi đã làm
 Giữ docs/history và 4 UI primitives có consumer. Thay Next/Admin/rental bằng React/Vite fixture shell, Go Gateway, FastAPI read-only, Go fixture ingestion validator và Python fixture inspector. Gỡ tracked Apps Script/ImageCache, Google SDK dependency, Supabase schema/seed và branding/DB PDF cũ. Không chạy SQL, không đổi database, IAM, key, Sheet/Drive, triggers hoặc deployment.
@@ -20,7 +20,7 @@ Fixture ghi rõ synthetic; không chứng minh dữ liệu Binance/news, permiss
 | Ingestion CLI | 2 articles, synthetic=true, fixture-only; không network |
 | HTTP smoke | Vite route + Vite proxy → gateway → FastAPI health/news/market; 200, synthetic marker, request ID |
 | Internal Markdown links docs/active plan/entrypoints | 149 links hợp lệ sau tích hợp report |
-| GitHub checks | Chưa chạy trên nhánh reset; workflow giữ `Public Web and contracts`, `FastAPI and OpenAPI`, thêm Go job |
+| GitHub checks | `Public Web and contracts`, `FastAPI and OpenAPI`, `Gateway and fixture ingestion` đều success; [snapshot](evidence/p01-pr18-status.json) |
 
 Go 1.27.2 được tải từ archive chính thức, kiểm SHA256 trước chạy; không cài global. Node 22.23.1/npm 10.9.8; API kiểm local bằng Python 3.11.15/uv 0.11.28, CI chọn Python 3.12 trong supported range. Pyodide chưa chọn phiên bản hay benchmark. Dependency test stack có cảnh báo Starlette deprecate httpx TestClient; hiện tests pass, cần theo dõi trước nâng dependency.
 

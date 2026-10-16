@@ -1,5 +1,5 @@
 # Research Terminal — kế hoạch A–Z
-**Trạng thái:** P00 documentation đã merge PR #17. P01 repository reset đã qua checks local trên nhánh riêng; remote CI/review và retirement còn pending. P02–P10 chưa triển khai. [Inventory P01](p01-inventory.md), [verification và commit map](p01-completion-report.md).
+**Trạng thái:** P00 đã merge PR #17; P01 đã merge PR #18 (merge commit `86f1009`). Ba project Vercel legacy đã ngắt Git auto-deploy và vẫn giữ production deployment/domain. Remote credential/database/resource retirement còn pending. P02 đã chạy các spike độc lập, chưa hoàn tất foundation integration; P03–P10 chưa triển khai. [P01 verification](p01-completion-report.md), [P02 execution board](p02-execution-board.md), [Vercel host registry](../../docs/12-operations/legacy-host-register.md).
 
 [Báo cáo P00, verification và commit map](completion-report.md).
 

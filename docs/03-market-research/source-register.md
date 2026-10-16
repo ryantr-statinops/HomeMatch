@@ -1,6 +1,6 @@
 # Source register và source gates
 
-**Ngày review:** 2026-10-16. Chỉ review documentation; không request market/news feed, tạo account, kiểm thử auth hoặc ký agreement. `false` nghĩa chưa đạt evidence, không nhất thiết source không hỗ trợ.
+**Ngày review:** 2026-10-16. Phần lớn nguồn chỉ review documentation; P02 đã thử public Binance REST từ shell và một BTCUSDT stream trong Chrome như evidence dưới. Không tạo provider account hoặc ký agreement. `false` nghĩa chưa đạt evidence, không nhất thiết source không hỗ trợ.
 
 ## Evidence flags độc lập
 
@@ -11,9 +11,11 @@
 
 Một source có thể documented=true nhưng rights=false. Quyền price không bao gồm news. Cờ true phải có evidence URL/document/date/owner; không lưu credential hoặc account identifiers riêng vào register public.
 
+P02 `BIN-SPOT-PUBLIC access-tested` chỉ gồm [6 REST probes](../../task/research-terminal-plan/evidence/p02-binance-rest-probe.json) từ shell local (BTCUSDT/ETHUSDT, 15m/1h/1d, mỗi request 3 rows) và [một BTCUSDT trade stream trong Chrome desktop](../../task/research-terminal-plan/p02-browser-feasibility.md). Không chứng minh REST CORS, hosting/region khác, lịch sử dài, archive, source rights hoặc production availability. Owner: coordinator + browser spike agent; ngày 2026-10-16. `approved=false` không đổi.
+
 | ID / provider + product | Lớp dữ liệu / access | documented | access-tested | rights-confirmed | approved | Store / ML / display / redistribute |
 |---|---|---|---|---|---|---|
-| BIN-SPOT-PUBLIC | Giá; public-only REST/WS, no key | true | false | false | false | Tất cả chờ review API terms và deployment region |
+| BIN-SPOT-PUBLIC | Giá; public-only REST/WS, no key | true | true (phạm vi P02 bên trên) | false | false | Quyền store/ML/display/redistribute còn chờ; deployment region chưa kiểm |
 | BIN-SPOT-ARCHIVE | Giá; download miễn phí có điều kiện | true | false | false | false | Terms v1.0/2026-08-26: CC BY-NC-SA4.0 + giới hạn use case; project fit chưa approved |
 | KRAKEN-OHLCVT | Giá; public archive | true | false | false | false | Chưa xác nhận từng mục đích |
 | SEC-RELEASES | News regulator; public website | true | false | false | false | Review content/third-party fields và attribution |

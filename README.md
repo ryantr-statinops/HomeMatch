@@ -20,6 +20,8 @@ go -C services/gateway run ./cmd/gateway
 
 Web proxy `/api` qua gateway port 8080 đến API port 8000. Chỉ gọi localhost; dữ liệu synthetic nằm tại [data/fixtures](data/fixtures/README.md). [Kế hoạch và inventory P01](task/research-terminal-plan/p01-inventory.md) ghi phạm vi dọn dẹp và các việc bên ngoài còn pending.
 
+P02 có [spikes độc lập](experiments/README.md) cho JWT/ownership, public market access và Pyodide/browser. Kết quả chưa được tích hợp vào sản phẩm. [Execution board](task/research-terminal-plan/p02-execution-board.md) ghi evidence và các gate còn mở; [Vercel host registry](docs/12-operations/legacy-host-register.md) giữ thông tin host legacy và trạng thái ngắt auto-deploy.
+
 ## Tài liệu
 - [Documentation index](docs/README.md) và [glossary](docs/glossary.md).
 - [Bốn thị trường và source register](docs/03-market-research/README.md).

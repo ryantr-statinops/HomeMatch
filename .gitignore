@@ -51,3 +51,4 @@ nul
 .venv-reset/
 dist/
 coverage/
+.pytest_cache/

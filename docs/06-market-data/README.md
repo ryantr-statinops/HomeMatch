@@ -1,6 +1,6 @@
 # Market data — Binance Spot trước
 
-**Trạng thái:** thiết kế mục tiêu; chưa kiểm thử endpoints/stream trong browser hoặc runner.
+**Trạng thái:** nghiệp vụ ingestion/live lifecycle vẫn là thiết kế mục tiêu. P02 đã thử 6 public REST requests trong shell và một BTC trade stream trong Chrome desktop; xem [evidence và giới hạn](../../task/research-terminal-plan/p02-browser-feasibility.md), [REST probe](../../experiments/market-access/README.md). Chưa source-approved hoặc triển khai feed vào app.
 
 1. [Historical ingestion và normalization](historical-ingestion.md)
 2. [Browser live lifecycle](browser-live-lifecycle.md)
