@@ -1,47 +1,10 @@
-# Task Workflow
+# Task tracking
+[Research Terminal plan](research-terminal-plan/README.md) là roadmap active duy nhất. Đọc [docs](../docs/README.md) và [orchestration](research-terminal-plan/00-orchestration.md) trước khi nhận task.
 
-## Purpose
+## Trạng thái
+P00 refactor documentation hoàn tất. P01–P10 chưa triển khai; next phase là legacy inventory/code reset. Chuyển docs không đồng nghĩa tài nguyên Google đã bị ngắt.
 
-Thư mục này quản lý kế hoạch triển khai, session log và hướng đi tiếp theo của dự án.
+## Lịch sử
+[Archive](archive/README.md) gồm legacy MVP/microservice plans và rental rebuild đã superseded. current-session chứa notes product cũ, không là yêu cầu hiện hành. Legacy audit được chuyển sang [kế hoạch active](research-terminal-plan/legacy-integrations-audit.md), giữ bằng chứng 2026-10-16 và remote state chưa xác minh.
 
-## Cách dùng với `docs/`
-
-`docs/` là nguồn sự thật cho kiến trúc, sản phẩm, data và UI.
-
-`task/` là nơi ghi:
-
-- kế hoạch hiện tại
-- thứ tự thực hiện
-- log theo session
-- việc đang chờ
-
-## Active Plans
-
-- `microservice-foundation-plan/`: kế hoạch triển khai backend boundary, Admin
-  Portal và migration an toàn cho Vercel production.
-
-## Workflow
-
-1. Đọc `docs/README.md`.
-2. Đọc các tài liệu cốt lõi:
-   - `docs/01-product/project-rules.md`
-   - `docs/02-architecture/system-architecture.md`
-   - `docs/02-architecture/folder-structure.md`
-   - `docs/03-data/database-structure.md`
-3. Đọc `task/next-plan.md`.
-4. Chốt scope cho session hiện tại.
-5. Tạo `task/current-session/session-xxx.md`.
-6. Thực hiện đúng phạm vi session.
-
-## Rules
-
-- Không tự mở rộng scope.
-- Không tự thêm tính năng.
-- Không tự thay đổi kiến trúc.
-- Không tự thêm package không cần thiết.
-
-Luôn ưu tiên:
-
-- Đơn giản
-- Dễ maintain
-- Phù hợp MVP
+Mọi status cần task ID/evidence; không suy current scope từ file archived.

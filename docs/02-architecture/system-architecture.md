@@ -1,238 +1,31 @@
-# System Architecture V3
-
-## Overview
-
-Hệ thống được xây dựng theo mô hình:
-
-User
-↓
-Website
-↓
-Supabase SDK
-↓
-Supabase (PostgreSQL) + Google Drive
-
-Mục tiêu:
-
-* Tạo lead
-* Hiển thị phòng trọ
-* Hiển thị nhu cầu ở ghép
-* Hỗ trợ sale vận hành
-
----
-
-# High Level Architecture
-
-```text
-┌──────────────┐
-│    User      │
-└──────┬───────┘
-       │
-       ▼
-┌──────────────┐
-│  Next.js Web │
-│    Vercel    │
-└──────┬───────┘
-       │
-       ├──────────────────────────────────┐
-       ▼                                  ▼
-┌──────────────┐              ┌──────────────────────┐
-│   Supabase   │              │ ImageCache (Supabase) │
-│  (PostgreSQL)│◄─────────────│  path → drive_url     │
-└──────┬───────┘              └──────────────────────┘
-       │
-       ▼
-┌──────────────┐
-│ Google Drive │
-│ (Image files)│
-└──────────────┘
-```
-
----
-
-# User Layer
-
-## Responsibilities
-
-* Tìm phòng
-* Tìm ở ghép
-* Xem thông tin
-* Liên hệ Zalo
-
-## Direct Access
-
-Không có quyền truy cập:
-
-* Supabase (trực tiếp)
-* Google Drive
-* AppSheet
-
----
-
-# Website Layer
-
-## Technology
-
-* Next.js
-* TypeScript
-* Tailwind
-* shadcn/ui + @base-ui/react
-
-## Responsibilities
-
-* Render giao diện
-* SEO
-* Hiển thị dữ liệu (qua Supabase SDK)
-* Điều hướng sang Zalo
-
-## Data Flow
-
-* Gọi Supabase SDK từ service layer (`room.service.ts`, `roommate.service.ts`)
-* Resolve image path qua `ImageCache` table
-* Không còn Apps Script proxy
-
----
-
-# API Layer
-
-## Technology
-
-Supabase SDK (`@supabase/supabase-js`)
-
-## Responsibilities
-
-* Đọc dữ liệu từ Supabase
-* Chuyển đổi dữ liệu thành kiểu TypeScript
-* Resolve image path → Drive URL qua ImageCache
-
----
-
-# Data Layer
-
-## Technology
-
-Supabase (PostgreSQL)
-
-## Single Source of Truth
-
-Toàn bộ dữ liệu được quản lý tại đây (migrated từ Google Sheet).
-
-## Image Storage
-
-Google Drive (ảnh gốc) + ImageCache table (mapping path → URL)
-
-## Tables
-
-* phongtro
-* hinhanh
-* roommate
-* lichhen
-* sale
-* lead
-* imagecache (phụ trợ)
-
----
-
-# Image Resolution Flow
-
-```text
-Database stores: "PHONGTRO_Images/abc.jpg"
-       │
-       ▼
-room.service.ts queries:
-  SELECT drive_url FROM imagecache WHERE path = 'PHONGTRO_Images/abc.jpg'
-       │
-       ▼
-Returns: "https://drive.google.com/thumbnail?id=FILEID&sz=w1000"
-       │
-       ▼
-Browser loads ảnh trực tiếp từ Google Drive CDN
-```
-
----
-
-# Admin Layer
-
-## Technology
-
-AppSheet
-
-## Responsibilities
-
-* Quản lý phòng
-* Quản lý lịch hẹn
-* Quản lý sale
-* Quản lý bài ở ghép
-
----
-
-# Analytics Layer
-
-## Technology
-
-Vercel Web Analytics ✅ (đã enable)
-
-Google Analytics ⚠️ (đã cấu hình env var `NEXT_PUBLIC_GA_ID` nhưng chưa implement integration)
-
-## Tracking Events (tương lai)
-
-room_view
-
-roommate_view
-
-zalo_click
-
-lead_created
-
----
-
-# Contact Layer
-
-## Technology
-
-Zalo
-
-## Responsibilities
-
-* Tư vấn khách hàng
-* Chốt phòng
-* Hỗ trợ ở ghép
-
----
-
-# Security Principles
-
-## Rule 1
-
-Database không public — chỉ gọi qua Supabase SDK với anon key.
-
-## Rule 2
-
-ImageCache table có RLS policy chỉ cho phép SELECT với anon.
-
-## Rule 3
-
-Service role key chỉ dùng cho migration script, không expose ra client.
-
-## Rule 4
-
-AppSheet là công cụ nội bộ. Không public.
-
----
-
-# Deleted Components (từ V1)
-
-* Google Apps Script API
-* Api Proxy (`/api/proxy`)
-* `api-client.ts`
-* `resolveImageUrl()` trong Apps Script
-
----
-
-# Lịch sử thay đổi
-
-| Version | Ngày | Thay đổi |
-|---------|------|----------|
-| V1 | 2026-06-13 | Thiết kế ban đầu (Google Sheet + Apps Script) |
-| V2 | 2026-06-23 | Migrate lên Supabase, thêm ImageCache, xoá Apps Script |
-| V3 | 2026-06-26 | Sync analytics layer: Vercel Web Analytics + Google Analytics (chưa implement) |
+# System architecture
+**Trạng thái:** mục tiêu; code Next.js/Admin cũ vẫn tồn tại.
+
+| Thành phần | Sở hữu |
+|---|---|
+| React/Vite web | UI, managed-auth client, private client state, stream lifecycle, browser Model Lab |
+| Go Gateway HTTP | Routing, request ID, bounded requests/timeouts; không tự tính ledger/model |
+| FastAPI | JWT/ownership, watchlist/ledger, dataset delivery policy, experiment config/results validation |
+| Go ingestion | Scheduled news/history capture và source run metadata |
+| Python pipeline | Chuẩn hóa/features/dataset/evaluation tooling; không nhận arbitrary user training jobs |
+| Web Worker/Pyodide | Form-approved training/backtest trên thiết bị user |
+| PostgreSQL | Metadata, source/version refs, ownership, ledger/config/result summaries |
+| Object storage | Raw/dataset/artifact theo quyền và retention, không public bucket mặc định |
+
+## Luồng
+~~~text
+Approved sources -> scheduled Go ingestion -> raw/versioned normalized data
+                                              -> dataset snapshot + manifest
+Browser -> Gateway -> FastAPI -> managed Auth/JWT + PostgreSQL/object storage
+Browser -> public Binance WS (display only; no exchange keys)
+Browser dataset -> Web Worker -> client-computed result -> owner API sync
+~~~
+
+News/history acquisition không phụ thuộc user đang online. Live stream phục vụ màn hình, không là nguồn duy nhất để xây lịch sử nghiên cứu. Browser quote không là authoritative proof cho ledger fill hay valuation lưu trên backend.
+
+## Boundaries và failure
+Managed Auth cấp token; FastAPI kiểm issuer/audience/expiry và ownership, không tin ownerId client gửi. Source quyền không cho train/display thì dataset route chặn tương ứng. Result client không đạt verified chỉ qua schema validation.
+
+Browser WebSocket không cần server relay trong MVP; phải thử access/origin/region/CSP. Nếu không truy cập được, báo unavailable/historical; không proxy để vượt restrictions. Vercel chỉ xử lý web/HTTP API; không giả định giữ upstream socket. Batch runner chọn bằng evidence.
+
+Worker crash không làm hỏng ledger. Dataset immutable; config lưu trước run; closing tab có thể interrupted. Account switch/logout đóng stream và hủy/xóa private worker state; không tự tiếp tục experiment cho account khác.

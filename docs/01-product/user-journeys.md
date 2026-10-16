@@ -1,91 +1,17 @@
-# User Journeys V1
+# User journeys
+**Trạng thái:** target.
 
-## User Types
+## Từ news đến tài sản
+Người dùng mở demo có nhãn mẫu hoặc đăng nhập workspace. Lọc news theo BTC/ETH, thời gian, nguồn và event. Mở tin để xem published/first-seen/updated, link gốc, asset mapping và mức chắc chắn. Mở chart cùng venue/timeframe để đối chiếu diễn biến; không diễn đạt tương quan thành quan hệ nhân quả.
 
-### 1. Sinh viên tìm phòng
+## Theo dõi riêng
+Thêm asset vào watchlist, bật live khi tab hoạt động. Kết nối chậm/mất phải hiện stale/reconnecting; khi trở lại tab, đồng bộ snapshot trước khi cập nhật. Logout dừng stream và xóa state private khỏi client.
 
-Mục tiêu:
+## Portfolio
+Tạo ledger USDT, nhập cash/opening balances hoặc CSV. Xem preview/errors/duplicates trước xác nhận; sau commit xem holdings, cost basis, P&L và timestamp valuation. Sửa ledger bằng phiên bản/correction có audit, không sửa kết quả P&L trực tiếp.
 
-- Tìm phòng phù hợp với ngân sách.
-- Xem thông tin chi tiết.
-- Liên hệ Sale.
+## Model Lab
+Chọn dataset snapshot, asset, timeframe, features, target/horizon và baseline/model. Xem dữ liệu hợp lệ/missing và số mẫu sau label/split. Lưu config trước rồi chạy Web Worker. Có progress/cancel; đóng tab có thể làm run interrupted. Kết quả ghi dataset/runtime/seed/split/cost và client-computed.
 
-Journey:
-
-Truy cập website
-→ Tìm phòng
-→ Lọc theo khu vực
-→ Lọc theo giá
-→ Xem chi tiết phòng
-→ Bấm liên hệ Zalo
-→ Sale hỗ trợ
-
----
-
-### 2. Sinh viên tìm người ở ghép
-
-Mục tiêu:
-
-- Tìm người phù hợp để ở chung.
-
-Journey:
-
-Truy cập website
-→ Vào mục ở ghép
-→ Lọc theo khu vực
-→ Lọc theo giới tính
-→ Xem chi tiết bài đăng
-→ Bấm liên hệ Zalo
-→ Sale hỗ trợ
-
----
-
-### 3. Khách hàng cần đăng nhu cầu ở ghép
-
-Mục tiêu:
-
-- Tìm thêm người ở chung phòng.
-
-Journey:
-
-Liên hệ Sale
-→ Cung cấp thông tin
-→ Sale ghi nhận
-→ Admin tạo bài đăng
-→ Bài đăng xuất hiện trên website
-→ Có người liên hệ
-→ Sale hỗ trợ ghép
-
----
-
-### 4. Sale
-
-Mục tiêu:
-
-- Tiếp nhận lead.
-- Tư vấn khách hàng.
-- Chốt phòng.
-
-Journey:
-
-Khách liên hệ Zalo
-→ Tiếp nhận thông tin
-→ Tư vấn
-→ Hẹn xem phòng
-→ Chốt phòng
-
----
-
-### 5. Admin
-
-Mục tiêu:
-
-- Quản lý dữ liệu hệ thống.
-
-Journey:
-
-Đăng nhập
-→ Quản lý phòng
-→ Quản lý bài ở ghép
-→ Theo dõi lead
-→ Cập nhật dữ liệu
+## Thiếu khả năng
+Nguồn chưa đủ quyền: ẩn dữ liệu liên quan hoặc dùng demo được ghi nhãn. Không đủ lịch sử news: cho chạy price-only thay vì bịa feature. Browser không hỗ trợ: xem report và cấu hình nhưng không hứa train được.

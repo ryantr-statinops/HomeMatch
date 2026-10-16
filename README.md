@@ -1,68 +1,16 @@
-# HomeMatch 🏠
+# Research Terminal
+News-first research workspace cho retail trader người Việt: đọc tin theo tài sản, đối chiếu giá, theo dõi danh mục spot và thử nghiệm baseline qua Model Lab form.
 
-Nền tảng tìm phòng trọ và tìm người ở ghép dành cho sinh viên.
+## Trạng thái
+Đây là target documentation. Repository vẫn chứa HomeMatch legacy; chưa migrate code, account, data feed hoặc deployment. Hoàn thiện docs không chứng minh Binance access/rights hoặc Pyodide performance đã test.
 
-## 🚀 Tech Stack
+## Tài liệu
+- [Documentation index](docs/README.md) và [glossary](docs/glossary.md).
+- [Bốn thị trường và source register](docs/03-market-research/README.md).
+- [Research Terminal roadmap](task/research-terminal-plan/README.md).
+- [Next action](task/next-plan.md).
 
-- **Framework:** Next.js 16 (App Router)
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS v4
-- **UI Components:** shadcn/ui + @base-ui/react
-- **Icons:** Lucide Icons
-- **Hosting:** Vercel
-- **API:** Supabase SDK (JavaScript client)
-- **Database:** Supabase (PostgreSQL)
-- **Animation:** tw-animate-css + Embla Carousel
-- **Analytics:** Vercel Web Analytics
+## Default MVP
+Binance Spot BTCUSDT/ETHUSDT, candles 15m/1h/1d; UI tiếng Việt, news-first. Accounts có workspace riêng; portfolio manual/CSV base USDT; experiments private, browser Web Worker training/backtest và client-computed results. Live public market stream theo tab hoạt động; ingestion theo lịch riêng.
 
-## 🌐 Production
-
-- **Vercel:** [https://homematchvn.vercel.app](https://homematch-vn.vercel.app/)
-- **Custom domain:** https://homematch.id.vn ✅
-
-## 📁 Project Structure
-
-```
-src/
-├── app/          # App Router pages
-├── components/   # React components
-│   ├── layout/   # Navbar, Footer, Container
-│   ├── ui/       # shadcn/ui components
-│   ├── shared/   # Shared components
-│   ├── room/     # Room-related components
-│   └── roommate/ # Roommate-related components
-├── services/     # Supabase service layer
-├── lib/          # Utility functions + Supabase client
-├── types/        # TypeScript types
-├── constants/    # Constants
-└── configs/      # Environment configuration
-```
-
-## 🛠️ Getting Started
-
-```bash
-# Install dependencies
-npm install
-
-# Run development server
-npm run dev
-
-# Build for production
-npm run build
-
-# Lint code
-npm run lint
-```
-
-## 🌐 Environment Variables
-
-```env
-NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
-NEXT_PUBLIC_ZALO_URL=
-NEXT_PUBLIC_SITE_URL=
-```
-
-## 📚 Documentation
-
-Xem thêm trong thư mục `docs/` và `task/`.
+Không yêu cầu exchange trading keys. Nguồn miễn phí, quyền train/public display và chi phí hạ tầng phải được kiểm chứng riêng. Các thị trường Mỹ/FX/Việt Nam là nghiên cứu mở rộng. Tên thư mục repo và deployment hiện tại chưa đổi.
