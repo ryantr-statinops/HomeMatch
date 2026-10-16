@@ -8,7 +8,7 @@
 - P01 đã gỡ tracked Apps Script, image-cache/Drive consumer, Supabase migrations/seed/config cũ và dependency legacy khỏi scaffold. Xem [P01 completion report](p01-completion-report.md).
 - [Legacy audit](legacy-integrations-audit.md) ghi nhận env và service-account key bị ignore trên máy nhưng không đọc nội dung. File tồn tại không chứng minh key còn hiệu lực hay đã revoke.
 - Apps Script triggers/deployments, Cloud IAM/key, OAuth grant, Sheet/Drive/AppSheet permissions/automation, Supabase project/keys, Vercel env/deployments/domains, CI secrets và bản sao ở máy/runner khác chưa được xác minh.
-- GitHub commit status API cho PR18 cho thấy 3 CI jobs thành công; Vercel contexts `home-match`, `home-match-admin`, `homematchvn-api` báo Preview failure. Chưa xem logs, nguyên nhân chưa biết và chưa đọc/thay đổi Vercel settings. Chỉ xác nhận được tên context từ status; ownership/resource IDs, deployments và database/keys vẫn chưa được xác minh.
+- PR18 đã merge; web/API/Go checks và Vercel Preview Comments đều thành công. Các preview errors ban đầu của ba project chưa được điều tra build logs. Cả ba Git connections đã ngắt sau khi ghi Project IDs, production domains/deployment URLs trong [host registry](../../docs/12-operations/legacy-host-register.md). Deployments/domains vẫn giữ; database/keys và workload ngoài repo chưa được xác minh.
 - Trạng thái remote hiện là `remote-unverified`; không ghi `disabled`, `revoked` hoặc `deleted` trước evidence provider.
 
 ## Owner checklist
@@ -27,7 +27,7 @@ Vercel tự tạo deploy cho commits/merge vào production branch khi project c�
 
 Các status context cần đối chiếu là `home-match`, `home-match-admin`, `homematchvn-api`. Đây là tên context từ GitHub status; trước khi đổi setting, xác nhận từng context trỏ đến đúng team/project trong Vercel Dashboard. Không suy ra project ID hoặc account từ tên context.
 
-Nếu cần giữ kết nối, lựa chọn per-project là **Settings > Build and Deployment > Ignored Build Step > Don't build anything**. Vercel đặt deployment ở trạng thái canceled; canceled build vẫn tính vào quota, và effect lên required PR checks/branch protection cần được owner kiểm tra. Không áp dụng cấu hình chung `vercel.json`/repo khi project scope chưa được xác định. Owner đã cho phép tạm disconnect và yêu cầu ghi đủ hosts; Vercel yêu cầu authenticator 2FA trước khi vào Settings. Chưa đổi setting, chưa merge P01. [Host registry và change log](../../docs/12-operations/legacy-host-register.md) ghi thông tin đã quan sát và phần còn thiếu.
+Owner cho phép tạm disconnect và giữ host tracking. Thực hiện xong cho ba projects qua **Settings > Git > Disconnect > Remove Connection**; UI xác nhận repository không còn kết nối. Merge PR18 sau khi checks xanh. Không áp dụng cấu hình chung `vercel.json`/repo. [Host registry và change log](../../docs/12-operations/legacy-host-register.md) ghi metadata đã quan sát. Việc này chưa pause deployment, xóa domains hay chứng minh traffic/chi phí đã dừng.
 
 Nguồn: Vercel [Git settings: disconnect repository](https://vercel.com/docs/project-configuration/git-settings), [Ignored Build Step behavior](https://vercel.com/docs/project-configuration/project-settings), [automatic Git deployments and merge behavior](https://vercel.com/docs/git).
 

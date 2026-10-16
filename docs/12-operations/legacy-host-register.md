@@ -11,11 +11,11 @@ Ngày kiểm tra: 2026-10-16 (Asia/Saigon). Owner yêu cầu giữ đầy đủ 
 ## Project registry
 | Vai trò | Project / Dashboard | Production domains/aliases | Git auto-deploy |
 |---|---|---|---|
-| Public web legacy | [home-match](https://vercel.com/ryantr-statinops-projects/home-match) | Chờ Settings > Domains; không suy ra từ tên project | Owner đã cho phép disconnect; chờ hoàn tất 2FA |
-| Admin legacy | [home-match-admin](https://vercel.com/ryantr-statinops-projects/home-match-admin) | Chờ Settings > Domains | Owner đã cho phép disconnect; chưa đổi settings |
-| API legacy | [homematchvn-api](https://vercel.com/ryantr-statinops-projects/homematchvn-api) | Chờ Settings > Domains | Owner đã cho phép disconnect; chưa đổi settings |
+| Public web legacy | [home-match](https://vercel.com/ryantr-statinops-projects/home-match) · `prj_uM5yfVeAONdaan79W1Qru6j0Xchb` | `homematch.id.vn`, `www.homematch.id.vn`, `homematch-vn.vercel.app`; deployment hiện tại `home-match-gxwjf5lmb-ryantr-statinops-projects.vercel.app` | **Đã ngắt**, xác nhận UI thành công 2026-10-16 |
+| Admin legacy | [home-match-admin](https://vercel.com/ryantr-statinops-projects/home-match-admin) · `prj_IWAfBU43pm3e0IL0GYbLOnIQwqa8` | `homematchvn-admin.vercel.app`; deployment hiện tại `home-match-admin-7d6hygkqy-ryantr-statinops-projects.vercel.app` | **Đã ngắt**, xác nhận UI thành công 2026-10-16 |
+| API legacy | [homematchvn-api](https://vercel.com/ryantr-statinops-projects/homematchvn-api) · `prj_bYal2MmaehyFUcANcp4H3UoXWTI0` | `homematchvn-api.vercel.app`; deployment hiện tại `homematchvn-er18uvu73-ryantr-statinops-projects.vercel.app` | **Đã ngắt**, xác nhận UI thành công 2026-10-16 |
 
-Production branch, project ID, root/framework/build/output settings, domain redirects và deployment hooks cần ghi sau khi vào được Settings; không dùng giá trị suy đoán. Không ghi environment values, credential hoặc URLs chứa token.
+Baseline Vercel đã kiểm chứng cho cả ba: repository `ryantr-statinops/HomeMatch`, production branch `main`, framework Next.js, Node.js `24.x`; build/install/output/dev dùng mặc định (không override), Ignored Build Step Automatic, Include files outside root directory bật, Skip deployments when there are no changes bật. Root Directory lần lượt `./`, `apps/admin`, `./`. Không phát hiện deploy hooks ở ba Git settings. Không ghi environment values, credential hoặc URLs chứa token. Redirect/DNS/traffic chưa được kiểm chứng.
 
 ## Hosts từng được ghi trong tài liệu lịch sử
 Git baseline `cac773f` có các địa chỉ sau. Đây là **historical candidates**, chưa xác nhận assignment/ownership/DNS/traffic hiện tại trong Vercel; không mặc định gán chúng cho project cùng tên gần giống.
@@ -42,8 +42,10 @@ Các host dưới xuất hiện trong Vercel Deployment Overview của đúng co
 | Thời điểm | Project | Hành động | Evidence / kết quả |
 |---|---|---|---|
 | 2026-10-16 | Cả ba | Owner cho phép tạm ngắt auto-deploy, giữ host để tracking | Chỉ thị trực tiếp trong chat |
-| 2026-10-16 | home-match | Mở Settings > Domains để ghi baseline | Vercel yêu cầu đăng nhập và authenticator 2FA; chưa thay settings |
+| 2026-10-16 | home-match | Đã ghi domains, Project ID, baseline build/Git và ngắt Git | Settings > Domains/General/Build and Deployment/Git; UI báo project không còn kết nối repository |
+| 2026-10-16 | home-match-admin | Đã ghi domain, Project ID, baseline build/Git và ngắt Git | Settings > Domains/General/Build and Deployment/Git; UI báo project không còn kết nối repository |
+| 2026-10-16 | homematchvn-api | Đã ghi domain, Project ID, production deployment, Git baseline và ngắt Git | Settings > Domains/General/Git; UI toast `Disconnected Git Repository successfully` |
 
-Sau disconnect, ghi thời điểm UTC, repository/production branch trước đổi, UI xác nhận disconnected, snapshot metadata/domain và người thực hiện. Kiểm tra deploy hooks/cron/CLI integrations riêng: disconnect Git không chứng minh mọi cách deploy hoặc workload đã dừng. Giữ deployment/domain hiện tại; không đồng nghĩa website đã offline hoặc hết chi phí.
+Disconnect được xác minh trong giao diện Vercel ngày 2026-10-16 (giờ địa phương Asia/Saigon); repository và production branch trước đổi là `ryantr-statinops/HomeMatch`/`main`. Không lưu screenshot có dữ liệu account trong Git. Kiểm tra deploy hooks/cron/CLI integrations riêng: disconnect Git không chứng minh mọi cách deploy hoặc workload đã dừng. Giữ deployment/domain hiện tại; không đồng nghĩa website đã offline hoặc hết chi phí.
 
 Rollback: chọn đúng project → Settings > Git → reconnect repository/production branch đã ghi sau khi build/hosting mới sẵn sàng; kiểm tra preview trước khi cho production auto-deploy. Không reconnect cả ba theo mặc định nếu chỉ web mới còn được dùng. Quy trình rộng hơn: [retirement runbook](legacy-retirement-runbook.md).

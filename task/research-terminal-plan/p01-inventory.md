@@ -1,5 +1,5 @@
 # P01 — inventory và kế hoạch thực thi
-**Ngày:** 2026-10-16. **Baseline:** cac773f, PR #17 đã merge, main đã pull fast-forward. **Nhánh:** codex/p01-repository-reset. **Trạng thái:** repository reset hoàn tất kiểm tra local; chưa push/review CI trên remote hoặc retirement tài nguyên bên ngoài. P01 toàn phase còn các việc remote pending.
+**Ngày:** 2026-10-16. **Baseline:** cac773f, PR #17 đã merge. **Trạng thái:** [PR #18](https://github.com/ryantr-statinops/HomeMatch/pull/18) đã merge thành `86f1009`; three CI jobs và Vercel Preview Comments pass. Ba project Vercel đã disconnect Git, hosts/deployments được ghi lại. P01 toàn phase còn remote credential/database/resource retirement pending.
 
 ## Giữ / bỏ / thay
 | Nhóm | Quyết định |
@@ -35,7 +35,7 @@ P01 repository reset chỉ complete khi fixture stack và CI gates tương ứng
 - Đã chuyển 4 UI primitives được dùng; thay Next/Admin bằng Vite; FastAPI fixture không phụ thuộc Supabase/Auth/Google.
 - [Manifest 90 tracked file legacy được gỡ ngoài API](p01-removed-files.txt); API có danh sách file removal riêng trong commit `27bd9b7`. Một số UI được Git nhận diện là move, không phải mất code.
 - Generated caches `.next`, Admin `.next`, API-client node_modules và `next-env.d.ts` đã dọn theo exact paths; npm ci thay node_modules bằng dependencies mới. Venv/env/key legacy được giữ để xử lý riêng.
-- [Verification, commit map và pending](p01-completion-report.md). Required CI job names được giữ, nhưng CI mới chưa chạy trên GitHub vì branch chưa push.
+- [Verification, commit map và pending](p01-completion-report.md). Required CI job names được giữ và cả ba jobs đã pass trên GitHub; [CI snapshot](evidence/p01-pr18-status.json). Vercel Preview legacy failures là trạng thái riêng, không được đổi thành pass bằng bypass.
 
 ## Kế hoạch tiếp tục
 1. RT-RESET-05: review diff/CI của nhánh reset trước merge; không bật production deployment cũ cho scaffold.
