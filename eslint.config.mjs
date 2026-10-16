@@ -1,3 +1,2 @@
-import config from "eslint-config-next";
-
-export default config;
+import tseslint from "typescript-eslint";
+export default tseslint.config({ignores: ["**/dist/**", "**/node_modules/**"]}, ...tseslint.configs.recommended);

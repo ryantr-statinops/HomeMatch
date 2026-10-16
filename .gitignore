@@ -45,3 +45,9 @@ supabase/.branches
 
 # Windows reserved device names
 nul
+
+# Research Terminal generated artifacts
+.cache/
+.venv-reset/
+dist/
+coverage/

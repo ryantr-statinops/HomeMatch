@@ -1,6 +1,6 @@
 # Research Terminal — documentation
 
-**Trạng thái:** tài liệu mục tiêu; sản phẩm mới chưa triển khai. Repository vẫn chứa Next.js/Admin/FastAPI và tích hợp dữ liệu của sản phẩm legacy. Hoàn thiện docs không chứng minh runtime, feed, account hoặc model đã hoạt động.
+**Trạng thái:** phần nghiệp vụ là kiến trúc mục tiêu. P01 đã tạo scaffold fixture React/Vite, Go Gateway, FastAPI và CLI; xem [setup hiện tại](../README.md). Auth, feed thật, portfolio và browser Model Lab chưa triển khai. Runtime fixture không chứng minh source access/rights hoặc khả năng model.
 
 ## Bắt đầu
 1. [Glossary](glossary.md) và [sản phẩm](01-product/README.md).

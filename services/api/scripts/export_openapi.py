@@ -1,19 +1,14 @@
+"""Export deterministic fixture-only schema from repository root or this service."""
 import json
+import sys
 from pathlib import Path
 
+service_root = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(service_root))
 from app.main import app
 
-
-def main() -> None:
-    repository_root = Path(__file__).resolve().parents[3]
-    output_path = repository_root / "packages" / "api-spec" / "openapi.json"
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(
-        json.dumps(app.openapi(), indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-    )
-    print(f"OpenAPI schema written to {output_path}")
-
-
 if __name__ == "__main__":
-    main()
+    target = service_root.parents[1] / "packages" / "contracts" / "openapi.json"
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(json.dumps(app.openapi(), ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    print(target)

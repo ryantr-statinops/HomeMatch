@@ -1,5 +1,5 @@
 # System architecture
-**Trạng thái:** mục tiêu; code Next.js/Admin cũ vẫn tồn tại.
+**Trạng thái:** kiến trúc nghiệp vụ mục tiêu. P01 đã thay tracked Next.js/Admin bằng fixture scaffold; hiện chỉ có web fixture, gateway proxy, API read-only và CLI inspection. Auth, storage, scheduled feeds và browser ML chưa triển khai.
 
 | Thành phần | Sở hữu |
 |---|---|

@@ -1,6 +1,6 @@
 # Kiểm kê và gỡ tích hợp cũ
 
-**Ngày rà soát:** 2026-10-16. **Trạng thái:** đã kiểm kê repository và tên cấu hình local; chưa gỡ code, thu hồi credential hoặc thay tài nguyên bên ngoài.
+**Ngày rà soát:** 2026-10-16. **Trạng thái cập nhật P01:** tracked code consumers/integrations đã được gỡ trên nhánh reset; chưa thu hồi credential hoặc thay tài nguyên bên ngoài. Bảng bằng chứng dưới mô tả baseline trước removal, giữ nguyên để truy vết. [Inventory và danh sách file gỡ](p01-inventory.md).
 
 Đây là đầu vào bắt buộc của P01. Kiến trúc mới mặc định không phụ thuộc Google Sheet, Apps Script, AppSheet hoặc Google Drive. Nhà cung cấp object storage mới được chọn độc lập theo nhu cầu crawler/ML.
 
@@ -43,7 +43,7 @@ File key bị ignore không đồng nghĩa key đã được thu hồi. Không t
 | LEG-06 | Coordinator | Dọn file key local và cấu hình local legacy sau thu hồi; giữ quy tắc ignore và secret-boundary checks phù hợp |
 | LEG-07 | Reviewer độc lập | Rà lại mã nguồn/config/lockfile và kiểm tra runtime bằng fixture; phân biệt rõ code đã gỡ với remote resources còn chờ xử lý |
 
-LEG-01/02 là dependency của removal; LEG-03/04 có thể song song khi ownership không chồng lấn. LEG-05 chỉ thực hiện trên tài nguyên đã xác định thuộc dự án và không còn consumer cần thiết. Không dùng key đã thu hồi làm phương án rollback.
+LEG-01 là dependency của tracked-code removal; LEG-02 là dependency của việc dừng workload, revoke và xóa tài nguyên từ xa. P01 chỉ gỡ artifacts trên nhánh reset, không triển khai thay production; vì vậy không tuyên bố remote consumers đã ngừng. LEG-03/04 có thể song song khi ownership không chồng lấn. LEG-05 chỉ thực hiện trên tài nguyên đã xác định thuộc dự án và không còn consumer cần thiết. Không dùng key đã thu hồi làm phương án rollback.
 
 ## Nghiệm thu và rollback
 

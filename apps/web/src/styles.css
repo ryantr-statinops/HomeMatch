@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: #fafbf9;
+  --color-foreground: #182923;
+  --color-primary: #21684e;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #eaf1ec;
+  --color-secondary-foreground: #182923;
+  --color-muted: #eaf1ec;
+  --color-muted-foreground: #57685e;
+  --color-border: #d7e0da;
+  --color-ring: #21684e;
+  --color-input: #d7e0da;
+  --color-destructive: #b42318;
+}
+
+body { margin: 0; background: var(--color-background); color: var(--color-foreground); font-family: system-ui, sans-serif; }
+button { cursor: pointer; }
+button:disabled { cursor: wait; }
+a:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 4px; }
+.fixture-badge { border: 1px solid #a7c7b3; border-radius: 99px; padding: 5px 10px; font: 600 11px ui-monospace, monospace; letter-spacing: .04em; color: #21684e; }
+.panel { padding: 24px; border: 1px solid var(--color-border); border-radius: 16px; background: white; }
+.section-title { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 16px; }
+.section-title h2 { font-size: 18px; font-weight: 600; }
+.section-title span { font-size: 12px; color: var(--color-muted-foreground); }
+.skip-link { position: absolute; left: 16px; top: -100px; padding: 10px; background: white; z-index: 100; }
+.skip-link:focus { top: 8px; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0s !important; animation-duration: 0s !important; } }

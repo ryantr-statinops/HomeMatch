@@ -1,5 +1,5 @@
 # Research Terminal — kế hoạch A–Z
-**Trạng thái:** P00 hoàn tất documentation; P01–P10 chưa triển khai. Tài liệu rental đã superseded. Source vẫn legacy.
+**Trạng thái:** P00 documentation đã merge PR #17. P01 repository reset đã qua checks local trên nhánh riêng; remote CI/review và retirement còn pending. P02–P10 chưa triển khai. [Inventory P01](p01-inventory.md), [verification và commit map](p01-completion-report.md).
 
 [Báo cáo P00, verification và commit map](completion-report.md).
 

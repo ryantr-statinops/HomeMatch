@@ -3,22 +3,14 @@ requires = ["setuptools>=75"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "homematch-api"
+name = "research-terminal-api"
 version = "0.1.0"
-description = "HomeMatch modular backend API"
-requires-python = ">=3.12,<3.13"
-dependencies = [
-  "fastapi>=0.115,<1.0",
-  "pydantic-settings>=2.10,<3.0",
-  "supabase>=2.15,<3.0",
-  "uvicorn[standard]>=0.34,<1.0",
-]
+description = "Read-only synthetic Research Terminal API scaffold"
+requires-python = ">=3.11,<3.14"
+dependencies = ["fastapi>=0.115,<1", "pydantic>=2,<3", "uvicorn>=0.34,<1"]
 
 [project.optional-dependencies]
-dev = [
-  "httpx>=0.28,<1.0",
-  "pytest>=8.3,<9.0",
-]
+dev = ["httpx>=0.28,<1", "pytest>=8,<10"]
 
 [tool.setuptools.packages.find]
 include = ["app*"]
