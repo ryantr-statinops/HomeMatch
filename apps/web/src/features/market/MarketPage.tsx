@@ -3,6 +3,7 @@ import Container from "../../components/layout/Container";
 import { useInstruments, useCandles, type Instrument, type Candle } from "./api";
 import { useWatchlist } from "./watchlist";
 import { useBinanceStream } from "./stream";
+import { CandleChart } from "./CandleChart";
 
 const INTERVALS = ["15m", "1h", "1d"] as const;
 type Interval = (typeof INTERVALS)[number];
@@ -227,7 +228,10 @@ export function MarketPage() {
           </div>
         </div>
 
-        <div className="mt-4">
+        <div className="mt-4 space-y-4">
+          {!candlesQuery.isLoading && !candlesQuery.isError && candlesQuery.data && candlesQuery.data.length > 0 && (
+            <CandleChart candles={candlesQuery.data} />
+          )}
           {candlesQuery.isLoading ? (
             <div className="panel animate-pulse">
               <div className="h-4 w-full rounded bg-muted" />
