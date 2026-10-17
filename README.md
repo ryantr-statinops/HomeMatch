@@ -2,7 +2,7 @@
 News-first research workspace cho retail trader người Việt: đọc tin theo tài sản, đối chiếu giá, theo dõi danh mục spot và thử nghiệm baseline qua Model Lab form.
 
 ## Trạng thái
-PR #17 documentation đã merge vào main. P01 có khung React/Vite, Go Gateway, FastAPI và CLI fixture trên nhánh reset; code Next.js/Admin và integrations legacy đã được gỡ khỏi tracked source. Chưa có auth/account, data feed thật, portfolio hoặc Model Lab. Owner đã xóa các project Vercel, Supabase và Apps Script HomeMatch; trạng thái hosting/domain iNET và một số credential/OAuth copies vẫn được theo dõi riêng trong [legacy retirement runbook](docs/12-operations/legacy-retirement-runbook.md).
+PR #17 documentation, PR #18 repository reset, PR #19 P02 spikes và PR #20 retirement updates đã merge vào `main`. P01 có khung React/Vite, Go Gateway, FastAPI và CLI fixture; code Next.js/Admin và integrations legacy đã được gỡ khỏi tracked source. Chưa có auth/account, data feed thật, portfolio hoặc Model Lab. Ngày 2026-10-17 owner đã xóa các project Vercel, Supabase và Apps Script HomeMatch; **credential identity chưa thu hồi** (service-account key, OAuth grants, IAM, CI secrets, hai bản credential local), domain iNET và hosting WordPress vẫn tồn tại — theo dõi trong [legacy retirement runbook](docs/12-operations/legacy-retirement-runbook.md).
 
 Cây thư mục mục tiêu đã được khởi tạo; các README trong web features/workers/services và `data/samples` hiện chỉ ghi ownership, chưa đại diện cho runtime đã triển khai. Xem [repository structure](docs/02-architecture/folder-structure.md).
 
