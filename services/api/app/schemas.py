@@ -28,10 +28,6 @@ class Candle(FixtureModel):
     close: str
     volume: str
 
-class MarketFixture(FixtureHeader):
-    instruments: list[Instrument]
-    candles: list[Candle]
-
 class Article(FixtureModel):
     id: str
     title: str
@@ -41,8 +37,9 @@ class Article(FixtureModel):
     language: str
     url: str | None
 
-class NewsFixture(FixtureHeader):
-    articles: list[Article]
+class Holding(FixtureModel):
+    instrument_id: str
+    amount: str
 
 class Meta(FixtureModel):
     is_synthetic: Literal[True] = True
@@ -56,12 +53,20 @@ class HealthResponse(FixtureModel):
     data: Health
     meta: Meta
 
-class MarketResponse(FixtureModel):
-    data: MarketFixture
+class InstrumentsResponse(FixtureModel):
+    data: list[Instrument]
     meta: Meta
 
-class NewsResponse(FixtureModel):
-    data: NewsFixture
+class CandlesResponse(FixtureModel):
+    data: list[Candle]
+    meta: Meta
+
+class ArticlesResponse(FixtureModel):
+    data: list[Article]
+    meta: Meta
+
+class HoldingsResponse(FixtureModel):
+    data: list[Holding]
     meta: Meta
 
 class ErrorDetail(FixtureModel):
@@ -71,3 +76,17 @@ class ErrorDetail(FixtureModel):
 class ErrorResponse(FixtureModel):
     error: ErrorDetail
     meta: Meta
+
+class MarketFixture(FixtureHeader):
+    instruments: list[Instrument]
+    candles: list[Candle]
+
+class NewsFixture(FixtureHeader):
+    articles: list[Article]
+
+__all__ = [
+    "Article", "ArticlesResponse", "Candle", "CandlesResponse",
+    "ErrorDetail", "ErrorResponse", "FixtureHeader", "Health",
+    "HealthResponse", "Holding", "HoldingsResponse", "Instrument",
+    "InstrumentsResponse", "MarketFixture", "Meta", "NewsFixture",
+]
