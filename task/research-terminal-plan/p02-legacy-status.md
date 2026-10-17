@@ -7,7 +7,8 @@
 
 - P01 đã gỡ tracked Apps Script, image-cache/Drive consumer, Supabase migrations/seed/config cũ và dependency legacy khỏi scaffold. Xem [P01 completion report](p01-completion-report.md).
 - [Legacy audit](legacy-integrations-audit.md) ghi nhận env và service-account key bị ignore trên máy nhưng không đọc nội dung. File tồn tại không chứng minh key còn hiệu lực hay đã revoke.
-- Apps Script triggers/deployments, Cloud IAM/key, OAuth grant, Sheet/Drive/AppSheet permissions/automation, Supabase project/keys, Vercel env/cron/traffic/usage, CI secrets và bản sao ở máy/runner khác chưa được xác minh.
+- Apps Script đã được kiểm tra chỉ đọc ngày 2026-10-17 qua hai link owner cung cấp. `HomeMatch API` (ID che `1-ohEko…`) có 0 trigger, 0 execution trong 7 ngày được xem, 4 active deployments; web app version 23 (deploy 2026-06-19) có access `Anyone`, execute as owner. Consumer chưa rõ nên chưa archive/đổi access. `Supabase_Connection_API` (ID che `1L0ppU…`) có trigger time-driven `pollSupabaseChanges` khoảng 10 phút (error rate UI 10.09%) và spreadsheet on-edit `installedOnEdit`; polling còn chạy trong ngày, phần lớn thành công nhưng có lần timeout. Chưa xác định Sheet/Supabase đích, retention hoặc consumers; chưa dừng trigger. Chi tiết tại [runbook retirement](../../docs/12-operations/legacy-retirement-runbook.md).
+- Cloud IAM/key, OAuth grant, Sheet/Drive/AppSheet permissions/automation, Supabase project/keys, Vercel env/cron/traffic/usage, CI secrets và bản sao ở máy/runner khác vẫn chưa được xác minh.
 - Drive metadata lookup trong account connector hiện tại dùng các từ khóa `HomeMatch`, `homematch`, `imagecache`, `homematch.id.vn`, `Supabase`, `Google Apps Script` chưa tìm thấy tài nguyên phù hợp. Đây không phải bằng chứng các account/shared drive khác không chứa dữ liệu dự án.
 - Local inventory chỉ xác nhận file ignored `scripts/homematch-service-account.json` và `.env.local` tồn tại; không mở nội dung. `gcloud`, `vercel`, `supabase`, `clasp` CLI hiện không có trong PATH.
 - PR18 đã merge; web/API/Go checks và Vercel Preview Comments đều thành công. Các preview errors ban đầu của ba project chưa được điều tra build logs. Cả ba Git connections đã ngắt sau khi ghi Project IDs, production domains/deployment URLs trong [host registry](../../docs/12-operations/legacy-host-register.md). Deployments/domains vẫn giữ; database/keys và workload ngoài repo chưa được xác minh.
@@ -40,7 +41,9 @@ Chi tiết UI/CLI placeholder, rollback và evidence form: [runbook thu hồi t�
 | Nhóm | Trạng thái | Evidence để cập nhật |
 |---|---|---|
 | Apps Script source trong repo | `repo-removed` | P01 inventory/report, Git diff |
-| Triggers, deployments, script properties | `remote-unverified` | Inventory theo từng creator, executions/logs, deployment list, owner sign-off |
+| Apps Script `HomeMatch API` | `identified` (public web app; consumers unknown) | Đối chiếu API consumers và traffic vượt quá cửa sổ 7 ngày; sau owner/retention sign-off mới archive hoặc đổi access |
+| Apps Script `Supabase_Connection_API` | `identified` (2 active triggers; destination unknown) | Xác định Sheet/Supabase đích, owner, consumers, retention và lịch dừng; sau sign-off mới xóa trigger |
+| Các Apps Script khác / script properties | `remote-unverified` | Xác minh inventory đầy đủ theo account/creator và mapping properties tới consumers; không ghi property values |
 | Cloud service accounts/keys/IAM/APIs/jobs/billing | `remote-unverified` | Project inventory, key metadata, IAM policy, usage/audit logs, provider confirmation |
 | Google OAuth grants | `remote-unverified` | Account security review và revoke confirmation |
 | Sheets/Drive/shares/shared drives | `remote-unverified` | Owner, inherited permission, consumer map, retention decision |
