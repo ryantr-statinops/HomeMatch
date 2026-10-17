@@ -1,7 +1,7 @@
 # Runbook thu hồi tích hợp legacy
 
 **Ngày xác minh nguồn chính thức:** 2026-10-16
-**Trạng thái:** P01 đã gỡ code tích hợp legacy khỏi repository. Ba Vercel Git connections đã được xác minh là ngắt; project, deployment và domain vẫn được giữ. Google Cloud/Workspace, Supabase, workload Vercel còn lại và credential bị ignore chưa được xác minh hay thu hồi. Đây là thủ tục cho account owner, không phải bằng chứng đã xóa.
+**Trạng thái:** P01 đã gỡ code tích hợp legacy khỏi repository. Ngày 2026-10-17 owner đã xóa ba project Vercel, hai project Supabase và hai project Apps Script thuộc HomeMatch; bằng chứng theo từng dòng ở mục "Nhật ký thực hiện đợt này" và [evidence log P02](../../task/research-terminal-plan/p02-legacy-status.md). Google Cloud/IAM/keys, OAuth grants, Sheet/Drive/AppSheet, CI secrets và hai bản credential local vẫn `remote-unverified`. Quy trình A–F bên dưới giữ nguyên làm thủ tục dùng lại, **không** tick theo đợt này; xem mục "Kết quả đối chiếu với quy trình" để xem bước nào đã đạt, bước nào lệch.
 
 ## Nguyên tắc
 
@@ -62,6 +62,28 @@
 - [ ] Supabase project delete là vĩnh viễn, xóa database, backups, Storage, Auth, functions, keys/config. Billing project dừng nhưng usage kỳ hiện tại vẫn có thể được tính.
 - [ ] Vercel project delete xóa deployments, domains, env vars và settings. Chuyển domain/traffic cần giữ trước đó.
 - [ ] Cập nhật trạng thái: `repo-removed`, `remote-unverified`, `identified`, `stopped`, `disabled`, `revoked`, `deleted`, `retained`. `deleted` chỉ khi có evidence provider.
+
+## Kết quả đối chiếu với quy trình
+
+Đối chiếu đợt 2026-10-17 với quy trình A–F. Các ô checkbox trong A–F giữ nguyên trạng thái `[ ]` vì là thủ tục tái sử dụng cho lần sau, không phải nhật ký lần này.
+
+| Bước | Kết quả | Mức đạt | Sai lệch cần lưu ý |
+|---|---|---|---|
+| A. Inventory — chọn đúng account/org/project | Xác định được Vercel team `ryantr-statinops-projects`, Supabase org, Apps Script project IDs (do owner cung cấp) | Đạt một phần | **Chưa có** Google Cloud Project ID và chưa lập inventory AppSheet |
+| A. Inventory — một dòng cho mỗi resource | Có bảng status trong `p02-legacy-status.md` và change log host register | Đạt một phần | Dòng Cloud/AppSheet chỉ ở mức `remote-unverified`, chưa có ID |
+| A. Inventory — tìm trigger/executions, OAuth, shares, CI secrets, credential local | Rà được trigger/executions/deployments của hai Apps Script project; Drive lookup theo từ khóa không ra kết quả khớp | Đạt một phần | OAuth grants, IAM, Cloud jobs, AppSheet bots, Vercel env/cron, CI secrets **chưa** rà; Drive không tìm thấy kết quả khớp không phải bằng chứng mọi shared drive trống |
+| A. Inventory — xác nhận consumer khác với owner | Chưa có consumer nào được owner xác nhận bằng văn bản | **Chưa đạt** | Việc xóa vẫn dựa trên owner là chủ sở hữu tài nguyên |
+| B. Dừng workloads — Apps Script trigger/deployment | Hai project bị xóa nên trigger và deployment gắn về bị gỡ theo project | Đạt (tự động) | Không archive riêng được vì không còn project chứa deployment; consumer gọi endpoint sau thời điểm xóa không được theo dõi |
+| B. Dừng workloads — Vercel Git disconnect | Ba project đã disconnect Git ngày 2026-10-16, UI xác nhận | Đạt | Project sau đó đã bị xóa; rollback bằng reconnect không còn áp dụng |
+| B. Dừng workloads — AppSheet, Sheet/Drive | Chưa thao tác | **Chưa đạt** | AppSheet automation, quyền share Sheet/Drive vẫn `remote-unverified` |
+| C. Backup và retention — Supabase export | Không có backup nào được liệt kê trước khi xóa; staging đang paused | **Lệch quy trình** | Bước C yêu cầu export và retention sign-off **trước** khi delete. Thực tế đã xóa `HomeMatch` production **không có backup**. Dữ liệu và backups không thể khôi phục. Không lặp lại cho tài nguyên khác |
+| C. Backup và retention — Google Cloud | Chưa lập inventory nên chưa đánh giá backup | **Chưa đạt** | Project Cloud chưa xác định; chưa đụng tới nhưng vẫn là khoản trống |
+| D. Revoke — service-account key, OAuth, IAM, Supabase/Vercel/CI secrets | Không có revoke nào được xác minh. Hai file local `.env.local` và `scripts/homematch-service-account.json` còn tồn tại | **Chưa đạt** | Xóa project **không** revoke credential. Bản sao key/OAuth có thể còn hiệu lực |
+| E. Verify trước xóa — quan sát qua một chu kỳ thực | `HomeMatch API` 0 execution/7 ngày; `Supabase_Connection_API` 50 execution/7 ngày | Đạt một phần | Xóa diễn ra **ngay sau** quan sát, chưa có cửa sổ xác nhận "không còn executions sau thời điểm dừng". Usage/billing kỳ kế tiếp chưa theo dõi |
+| F. Xóa cuối cùng — điều kiện inventory + backup + retention + owner approval | Ba project Vercel và hai project Apps Script có owner approval. Supabase production **không** có backup | Lệch một phần | Owner approval có, nhưng điều kiện backup/retention của Supabase chưa đạt |
+| F. Xóa cuối cùng — cập nhật trạng thái | Bảng status và evidence log đã cập nhật `deleted`/`remote-unverified` | Đạt | Chỉ đánh dấu `deleted` khi có provider UI confirmation |
+
+**Kết luận đợt này:** phần *hosting và code* đã về `deleted`. Phần *identity* — service-account keys, OAuth grants, IAM, CI/hosting secrets và bản sao local — **chưa được thu hồi**, và đó mới là phần có rủi ro bảo mật còn lại. Domain registration `homematch.id.vn` còn hiệu lực đến 24/06/2028 và hosting WordPress WP-H1 còn tồn tại là tài nguyên riêng.
 
 ## Nhật ký thực hiện đợt này
 
