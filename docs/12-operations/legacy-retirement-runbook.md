@@ -1,7 +1,7 @@
 # Runbook thu hồi tích hợp legacy
 
 **Ngày xác minh nguồn chính thức:** 2026-10-16
-**Trạng thái:** P01 đã gỡ code tích hợp legacy khỏi repository; Cloud/Workspace/Supabase/Vercel và credential bị ignore chưa được xác minh hay thu hồi. Đây là thủ tục cho account owner, không phải bằng chứng đã xóa.
+**Trạng thái:** P01 đã gỡ code tích hợp legacy khỏi repository. Ba Vercel Git connections đã được xác minh là ngắt; project, deployment và domain vẫn được giữ. Google Cloud/Workspace, Supabase, workload Vercel còn lại và credential bị ignore chưa được xác minh hay thu hồi. Đây là thủ tục cho account owner, không phải bằng chứng đã xóa.
 
 ## Nguyên tắc
 
@@ -62,6 +62,29 @@
 - [ ] Supabase project delete là vĩnh viễn, xóa database, backups, Storage, Auth, functions, keys/config. Billing project dừng nhưng usage kỳ hiện tại vẫn có thể được tính.
 - [ ] Vercel project delete xóa deployments, domains, env vars và settings. Chuyển domain/traffic cần giữ trước đó.
 - [ ] Cập nhật trạng thái: `repo-removed`, `remote-unverified`, `identified`, `stopped`, `disabled`, `revoked`, `deleted`, `retained`. `deleted` chỉ khi có evidence provider.
+
+## Nhật ký thực hiện đợt này
+
+Ngày 2026-10-17 (Asia/Saigon), coordinator đã kiểm tra các mục sau. Không có quyền, dữ liệu hay project nào bị xóa hoặc thu hồi trong lượt kiểm tra này.
+
+| Resource | Evidence đã có | Trạng thái | Việc còn thiếu |
+|---|---|---|---|
+| Vercel `home-match`, `home-match-admin`, `homematchvn-api` | Owner xác nhận xóa cả ba; dashboard chuyển về danh sách chỉ còn project ngoài scope `cluster-landing-page` | `deleted`; Vercel project/deployments/settings/domain bindings đã xóa theo dashboard | Domain registration `homematch.id.vn` không bị xóa bởi project deletion; domain/hosting iNET là tài nguyên riêng |
+| Domain `homematch.id.vn`, iNET DNS và hosting | iNET portal ngày 2026-10-17 hiển thị domain `Đang hoạt động`, hết hạn 24/06/2028; owner báo auto-renew đã hủy. Portal ban đầu có `@ A 216.198.79.1` và `www CNAME 2be7d57f713413fb.vercel-dns-017.com`; sau owner xóa, tải lại zone hiển thị `Không có dữ liệu`. OneShield yêu cầu đổi nameserver để zone có hiệu lực; authoritative delegation chưa kiểm tra độc lập. iNET còn liệt kê WordPress Hosting WP-H1 trạng thái `Dùng thử` và panel có một WordPress install cho domain. | Domain registration vẫn đến hạn 24/06/2028 với auto-renew `owner-reported-disabled`; zone iNET đang trống; hosting/WordPress vẫn tồn tại riêng | Nếu muốn retire toàn bộ iNET hosting, xử lý gói WP-H1 và dữ liệu WordPress riêng; việc xóa DNS không hủy hosting. Kiểm tra nameserver delegation để xác nhận hiệu lực public |
+| Google Drive trong account connector hiện tại | Tìm metadata theo `HomeMatch`, `homematch`, `imagecache`, `homematch.id.vn`, `Supabase`, `Google Apps Script`; không có kết quả phù hợp. Root listing đầu tiên không cho thấy tên project | Chưa xác định file/folder Drive thuộc dự án; đây không phải bằng chứng mọi shared drive hoặc account khác đều trống | Owner cung cấp account/project/folder cụ thể hoặc đường dẫn/ID từ Apps Script/Drive cũ để đối chiếu |
+| Local ignored credential/config | Inventory trước cleanup ghi nhận `scripts/homematch-service-account.json` và `.env.local`; nội dung chưa được mở. Yêu cầu xóa hai file bị chặn bởi auto-review vì chưa xác minh ownership/consumer và trạng thái revoke upstream. `gcloud`, `vercel`, `supabase`, `clasp` CLI không có trong PATH hiện tại | `workspace-present; deletion pending owner confirmation`; revoke upstream `unverified` | Xác nhận đúng hai file local có thể xóa; map consumer/owner và revoke key upstream trước khi xóa bản sao |
+| Apps Script `HomeMatch API` (ID che: `1-ohEko…`) | Owner xác nhận đã xóa project Apps Script ngày 2026-10-17. Trước khi xóa, UI cho thấy 0 trigger, 0 execution trong 7 ngày và 4 deployment active: hai web app (version 23, deploy 2026-06-19; version 12 mô tả `v11`, access `Anyone`) cùng hai library deployment. | `deleted` theo xác nhận owner; xóa project đồng thời gỡ web app và library deployments. Consumer traffic ngoài cửa sổ quan sát chưa xác minh. | Nếu phát hiện consumer còn gọi endpoint, cần chuyển consumer sang đích mới; không còn deployment trong project để archive riêng. Kiểm tra project khác/credential copies theo inventory. |
+| Apps Script `Supabase_Connection_API` (ID che: `1L0ppU…`) | Owner xác nhận đã xóa project Apps Script ngày 2026-10-17. Trước khi xóa, project có trigger time-driven `pollSupabaseChanges` mỗi 10 phút (UI error rate 10.03%) và spreadsheet on-edit `installedOnEdit`; history có 50 lần trong 7 ngày, phần lớn hoàn thành và có một số timeout. | `deleted` theo xác nhận owner; xóa project đồng thời gỡ cả hai trigger. Trạng thái chạy trước khi xóa không chứng minh Supabase sync thành công. | Kiểm tra có bản sao script/trigger hoặc consumer độc lập nào còn tồn tại; kiểm tra credential/script properties còn bản sao theo inventory, không ghi secret vào log. |
+| Supabase `HomeMatch` (ID che: `rccszq…`) và `HomeMatch Staging` (ID che: `nawypm…`) | Dashboard org ban đầu liệt kê hai project; staging đang paused. Sau xác nhận của owner, dashboard hiển thị toast `Successfully deleted` riêng cho từng project; danh sách hiện không còn project và database size usage về 0 | `deleted` theo dashboard; dữ liệu và backups của project production không thể khôi phục; staging cũng đã xóa | Theo dõi usage/billing kỳ hiện tại; revoke/rotate credential còn bản sao; kiểm tra local/runner env sau consumer inventory |
+| Google Cloud, AppSheet | Project Cloud cụ thể và AppSheet resources chưa được xác định bằng owner | `remote-unverified` | Lập inventory riêng cho project, consumer, backup/retention, keys và usage trước khi pause/revoke/delete |
+
+### Điểm dừng cần thông tin owner
+
+Không tự chọn Cloud project từ tên HomeMatch hoặc đoán theo file local. Bước tiếp theo là xác định Google account và **Project ID** chứa service account (hoặc mở trực tiếp tài nguyên liên quan trong Cloud Console). Apps Script project IDs đã được owner cung cấp qua link; ghi nhận trên đây chỉ để inventory, không suy ra Cloud project hay quyền truy cập. Khi có Project ID, kiểm tra danh sách service accounts và key metadata trước; không tải hay in private key. Nếu owner chưa biết ID, kiểm tra danh sách project trong account và chỉ ghi tên/ID để owner xác nhận trước khi thay đổi.
+
+**Ghi nhận trước khi xóa cloud, 2026-10-17:** khi đó `HomeMatch API` có web app deployment `Anyone` dù không thấy execution trong cửa sổ 7 ngày; khoảng trống này không chứng minh không còn consumer. `Supabase_Connection_API` đang polling định kỳ và có spreadsheet edit trigger.
+
+**Cập nhật sau đó, 2026-10-17:** owner xác nhận đã xóa ba project Vercel HomeMatch và hai project Supabase HomeMatch qua dashboard; project Vercel `cluster-landing-page` ngoài scope được giữ. Owner đã xóa hai DNS records Vercel khỏi zone iNET; sau khi tải lại, zone hiển thị `Không có dữ liệu`. Domain registration còn hạn đến 24/06/2028 và auto-renew do owner báo đã tắt; WordPress Hosting WP-H1 cùng một WordPress install vẫn còn. Owner xác nhận đã xóa cả hai Apps Script projects `HomeMatch API` và `Supabase_Connection_API`; do đó deployments, triggers và các thành phần gắn với các project đó đã bị gỡ. Việc xóa project chưa xác minh có bản sao hoặc credential còn lại ở Cloud, Sheet/Drive, OAuth, máy local hay runner; tiếp tục inventory các phần này.
 
 ## CLI templates
 
