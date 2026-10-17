@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Container from "../../components/layout/Container";
+import { StatusBadge } from "../../components/ui/StatusBadge";
 import { useInstruments, useCandles, type Instrument, type Candle } from "./api";
 import { useWatchlist } from "./watchlist";
 import { useBinanceStream } from "./stream";
@@ -106,19 +107,19 @@ export function MarketPage() {
 
       <div className="mt-4 flex flex-wrap items-center gap-3 rounded-lg border border-border bg-secondary/50 p-3 text-sm">
         <span className="font-medium">Live stream:</span>
-        <span
-          className={`rounded-full px-2 py-0.5 text-xs font-medium ${
+        <StatusBadge
+          tone={
             stream.state.status === "live"
-              ? "bg-primary text-primary-foreground"
+              ? "success"
               : stream.state.status === "connecting" || stream.state.status === "reconnecting"
-                ? "bg-warning text-foreground"
+                ? "warning"
                 : stream.state.status === "stale" || stream.state.status === "unavailable"
-                  ? "bg-destructive text-white"
-                  : "bg-muted text-muted-foreground"
-          }`}
+                  ? "danger"
+                  : "neutral"
+          }
         >
           {stream.state.status}
-        </span>
+        </StatusBadge>
         {stream.state.reconnectAttempts > 0 && (
           <span className="text-xs text-muted-foreground">
             attempts: {stream.state.reconnectAttempts}
