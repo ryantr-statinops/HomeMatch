@@ -1,7 +1,7 @@
 # Runbook thu hồi tích hợp legacy
 
 **Ngày xác minh nguồn chính thức:** 2026-10-16
-**Trạng thái:** P01 đã gỡ code tích hợp legacy khỏi repository; Cloud/Workspace/Supabase/Vercel và credential bị ignore chưa được xác minh hay thu hồi. Đây là thủ tục cho account owner, không phải bằng chứng đã xóa.
+**Trạng thái:** P01 đã gỡ code tích hợp legacy khỏi repository. Ba Vercel Git connections đã được xác minh là ngắt; project, deployment và domain vẫn được giữ. Google Cloud/Workspace, Supabase, workload Vercel còn lại và credential bị ignore chưa được xác minh hay thu hồi. Đây là thủ tục cho account owner, không phải bằng chứng đã xóa.
 
 ## Nguyên tắc
 
@@ -62,6 +62,21 @@
 - [ ] Supabase project delete là vĩnh viễn, xóa database, backups, Storage, Auth, functions, keys/config. Billing project dừng nhưng usage kỳ hiện tại vẫn có thể được tính.
 - [ ] Vercel project delete xóa deployments, domains, env vars và settings. Chuyển domain/traffic cần giữ trước đó.
 - [ ] Cập nhật trạng thái: `repo-removed`, `remote-unverified`, `identified`, `stopped`, `disabled`, `revoked`, `deleted`, `retained`. `deleted` chỉ khi có evidence provider.
+
+## Nhật ký thực hiện đợt này
+
+Ngày 2026-10-17 (Asia/Saigon), coordinator đã kiểm tra các mục sau. Không có quyền, dữ liệu hay project nào bị xóa hoặc thu hồi trong lượt kiểm tra này.
+
+| Resource | Evidence đã có | Trạng thái | Việc còn thiếu |
+|---|---|---|---|
+| Vercel `home-match`, `home-match-admin`, `homematchvn-api` | [Host register](legacy-host-register.md): project IDs, domains, deployment hosts, production branch `main`; từng trang Git báo không còn kết nối repository | Git auto-deploy đã ngắt; project/deploy/domain được giữ | Kiểm tra riêng cron, env names, traffic/usage, manual/CLI deploy và DNS nếu cần retirement hoàn tất |
+| Google Drive trong account connector hiện tại | Tìm metadata theo `HomeMatch`, `homematch`, `imagecache`, `homematch.id.vn`, `Supabase`, `Google Apps Script`; không có kết quả phù hợp. Root listing đầu tiên không cho thấy tên project | Chưa xác định file/folder Drive thuộc dự án; đây không phải bằng chứng mọi shared drive hoặc account khác đều trống | Owner cung cấp account/project/folder cụ thể hoặc đường dẫn/ID từ Apps Script/Drive cũ để đối chiếu |
+| Local ignored credential/config | `scripts/homematch-service-account.json` và `.env.local` tồn tại; nội dung không được mở. `gcloud`, `vercel`, `supabase`, `clasp` CLI không có trong PATH hiện tại | `local-present-unverified`; không chứng minh key còn hiệu lực | Đối chiếu key ID/principal với đúng Cloud project và mọi consumer; revoke upstream trước khi xóa bản local |
+| Google Cloud, Apps Script, AppSheet, Supabase | Chưa có project/resource ID được đối chiếu trong lượt này | `remote-unverified` | Cần xác định account/organization/project và owner trước khi vào cấu hình hoặc dừng workload |
+
+### Điểm dừng cần thông tin owner
+
+Không tự chọn Cloud project từ tên HomeMatch hoặc đoán theo file local. Bước tiếp theo là xác định Google account và **Project ID** chứa service account/Apps Script (hoặc mở trực tiếp tài nguyên liên quan trong Cloud Console). Khi có project ID, kiểm tra danh sách service accounts và key metadata trước; không tải hay in private key. Nếu owner chưa biết ID, kiểm tra danh sách project trong account và chỉ ghi tên/ID để owner xác nhận trước khi thay đổi.
 
 ## CLI templates
 

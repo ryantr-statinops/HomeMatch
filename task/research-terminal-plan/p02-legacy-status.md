@@ -1,13 +1,15 @@
 # P02 — trạng thái retirement tích hợp legacy
 
-**Ngày:** 2026-10-16
+**Ngày cập nhật:** 2026-10-17
 **Trạng thái:** code legacy đã gỡ theo P01; xác minh và retirement tài nguyên từ xa còn chờ account owner. Đây là checklist, không khẳng định thao tác cloud đã hoàn tất.
 
 ## Ranh giới bằng chứng
 
 - P01 đã gỡ tracked Apps Script, image-cache/Drive consumer, Supabase migrations/seed/config cũ và dependency legacy khỏi scaffold. Xem [P01 completion report](p01-completion-report.md).
 - [Legacy audit](legacy-integrations-audit.md) ghi nhận env và service-account key bị ignore trên máy nhưng không đọc nội dung. File tồn tại không chứng minh key còn hiệu lực hay đã revoke.
-- Apps Script triggers/deployments, Cloud IAM/key, OAuth grant, Sheet/Drive/AppSheet permissions/automation, Supabase project/keys, Vercel env/deployments/domains, CI secrets và bản sao ở máy/runner khác chưa được xác minh.
+- Apps Script triggers/deployments, Cloud IAM/key, OAuth grant, Sheet/Drive/AppSheet permissions/automation, Supabase project/keys, Vercel env/cron/traffic/usage, CI secrets và bản sao ở máy/runner khác chưa được xác minh.
+- Drive metadata lookup trong account connector hiện tại dùng các từ khóa `HomeMatch`, `homematch`, `imagecache`, `homematch.id.vn`, `Supabase`, `Google Apps Script` chưa tìm thấy tài nguyên phù hợp. Đây không phải bằng chứng các account/shared drive khác không chứa dữ liệu dự án.
+- Local inventory chỉ xác nhận file ignored `scripts/homematch-service-account.json` và `.env.local` tồn tại; không mở nội dung. `gcloud`, `vercel`, `supabase`, `clasp` CLI hiện không có trong PATH.
 - PR18 đã merge; web/API/Go checks và Vercel Preview Comments đều thành công. Các preview errors ban đầu của ba project chưa được điều tra build logs. Cả ba Git connections đã ngắt sau khi ghi Project IDs, production domains/deployment URLs trong [host registry](../../docs/12-operations/legacy-host-register.md). Deployments/domains vẫn giữ; database/keys và workload ngoài repo chưa được xác minh.
 - Trạng thái remote hiện là `remote-unverified`; không ghi `disabled`, `revoked` hoặc `deleted` trước evidence provider.
 
@@ -44,7 +46,8 @@ Chi tiết UI/CLI placeholder, rollback và evidence form: [runbook thu hồi t�
 | Sheets/Drive/shares/shared drives | `remote-unverified` | Owner, inherited permission, consumer map, retention decision |
 | AppSheet apps/bots/sources | `remote-unverified` | App/bot owner, audit history, source map, stop/delete evidence |
 | Supabase schema artifacts in repo / remote project | `repo-removed` / `remote-unverified` | Git evidence / project owner-ref, backup, usage, pause/revoke/delete evidence |
-| Vercel project/env/deploy/domain | `remote-unverified` | Team/project map, env names by target, job/traffic map, deployment evidence |
+| Vercel project/Git | `identified` / `Git-disconnected` | Project ID, repository, production branch, domains, deployments và UI xác nhận trong [host register](../../docs/12-operations/legacy-host-register.md) |
+| Vercel env/cron/traffic/usage | `remote-unverified` | Env names by target (không đọc value), job/traffic map, usage interval, deployment evidence |
 | Ignored local env/key and runner copies | `local-present-unverified` per audit | Exact-path inventory, upstream revoke proof, secure deletion evidence |
 
 ## Evidence log
