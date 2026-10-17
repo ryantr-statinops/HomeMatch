@@ -11,6 +11,17 @@ import { PortfolioPage } from "./features/portfolio/PortfolioPage";
 import { queryClient } from "./lib/queryClient";
 import "./styles.css";
 
+if (import.meta.env.DEV) {
+  Promise.all([import("react"), import("react-dom"), import("@axe-core/react")])
+    .then(([React, ReactDOM, axeModule]) => {
+      const axe = axeModule.default;
+      axe(React, ReactDOM, 1000);
+    })
+    .catch(() => {
+      // axe not available in this environment
+    });
+}
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
