@@ -1,5 +1,5 @@
 # Research Terminal — kế hoạch A–Z
-**Trạng thái:** P00 đã merge PR #17; P01 đã merge PR #18 (merge commit `86f1009`). Ba project Vercel legacy đã ngắt Git auto-deploy và vẫn giữ production deployment/domain. Remote credential/database/resource retirement còn pending. P02 đã chạy các spike độc lập, chưa hoàn tất foundation integration; P03–P10 chưa triển khai. [P01 verification](p01-completion-report.md), [P02 execution board](p02-execution-board.md), [Vercel host registry](../../docs/12-operations/legacy-host-register.md).
+**Trạng thái:** P00 merge PR #17; P01 merge PR #18 (`86f1009`); P02 spikes merge PR #19; retirement updates merge PR #20 (`0a98e84`). Ngày 2026-10-17 owner đã xóa ba project Vercel, hai project Supabase và hai project Apps Script HomeMatch. Phần **identity** còn mở: service-account keys, OAuth grants, IAM, CI/hosting secrets, hai bản credential local, cùng domain iNET và hosting WordPress. P02 chưa hoàn tất foundation integration; P03–P10 chưa triển khai. [P01 verification](p01-completion-report.md), [P02 execution board](p02-execution-board.md), [P02 legacy status](p02-legacy-status.md), [retirement runbook](../../docs/12-operations/legacy-retirement-runbook.md), [Vercel host registry](../../docs/12-operations/legacy-host-register.md).
 
 [Báo cáo P00, verification và commit map](completion-report.md).
 
