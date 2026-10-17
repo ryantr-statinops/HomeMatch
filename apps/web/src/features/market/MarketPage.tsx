@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Container from "../../components/layout/Container";
 import { useInstruments, useCandles, type Instrument, type Candle } from "./api";
+import { useWatchlist } from "./watchlist";
 
 const INTERVALS = ["15m", "1h", "1d"] as const;
 type Interval = (typeof INTERVALS)[number];
@@ -81,9 +82,15 @@ export function MarketPage() {
   const instrumentsQuery = useInstruments();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [interval, setInterval] = useState<Interval>("1h");
+  const [watchlistOnly, setWatchlistOnly] = useState(false);
+  const watchlist = useWatchlist();
 
   const effectiveId = selectedId ?? instrumentsQuery.data?.[0]?.instrument_id ?? null;
   const candlesQuery = useCandles(effectiveId, interval);
+
+  const instruments = watchlistOnly
+    ? (instrumentsQuery.data ?? []).filter((i) => watchlist.has(i.instrument_id))
+    : (instrumentsQuery.data ?? []);
 
   return (
     <Container className="py-8 sm:py-12">
@@ -93,9 +100,21 @@ export function MarketPage() {
       </p>
 
       <section aria-labelledby="instruments-heading" className="mt-6">
-        <h2 id="instruments-heading" className="sr-only">
-          Danh sách tài sản
-        </h2>
+        <div className="mb-3 flex items-center justify-between gap-3">
+          <h2 id="instruments-heading" className="text-lg font-semibold">Tài sản</h2>
+          <button
+            type="button"
+            aria-pressed={watchlistOnly}
+            onClick={() => setWatchlistOnly((v) => !v)}
+            className={`rounded-lg border px-3 py-1.5 text-sm ${
+              watchlistOnly
+                ? "border-primary bg-primary text-primary-foreground"
+                : "border-border text-foreground hover:bg-secondary"
+            }`}
+          >
+            {watchlistOnly ? "Watchlist ✓" : "Tất cả"}
+          </button>
+        </div>
         {instrumentsQuery.isLoading ? (
           <LoadingSkeleton />
         ) : instrumentsQuery.isError ? (
@@ -103,29 +122,49 @@ export function MarketPage() {
             message="Không tải được danh sách tài sản."
             onRetry={() => instrumentsQuery.refetch()}
           />
-        ) : !instrumentsQuery.data || instrumentsQuery.data.length === 0 ? (
-          <EmptyState message="Chưa có tài sản nào." />
+        ) : instruments.length === 0 ? (
+          <EmptyState message="Chưa có tài sản nào trong watchlist." />
         ) : (
           <div className="grid gap-4 sm:grid-cols-2">
-            {instrumentsQuery.data.map((inst: Instrument) => {
+            {instruments.map((inst: Instrument) => {
               const isSelected = inst.instrument_id === effectiveId;
+              const isWatched = watchlist.has(inst.instrument_id);
               return (
-                <button
+                <div
                   key={inst.instrument_id}
-                  type="button"
-                  onClick={() => setSelectedId(inst.instrument_id)}
                   className={`panel text-left transition-colors ${
-                    isSelected ? "border-primary ring-1 ring-primary" : "hover:bg-secondary"
+                    isSelected ? "border-primary ring-1 ring-primary" : ""
                   }`}
                 >
-                  <p className="text-xs text-muted-foreground">
-                    {inst.base_asset}/{inst.quote_asset}
-                  </p>
-                  <h3 className="mt-1 text-lg font-semibold">{inst.display_symbol}</h3>
-                  <p className="mt-2 text-xs text-muted-foreground">
-                    {inst.instrument_id}
-                  </p>
-                </button>
+                  <div className="flex items-start justify-between gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedId(inst.instrument_id)}
+                      className="flex-1 text-left"
+                    >
+                      <p className="text-xs text-muted-foreground">
+                        {inst.base_asset}/{inst.quote_asset}
+                      </p>
+                      <h3 className="mt-1 text-lg font-semibold">{inst.display_symbol}</h3>
+                      <p className="mt-2 text-xs text-muted-foreground">
+                        {inst.instrument_id}
+                      </p>
+                    </button>
+                    <button
+                      type="button"
+                      aria-label={isWatched ? "Bỏ khỏi watchlist" : "Thêm vào watchlist"}
+                      aria-pressed={isWatched}
+                      onClick={() => watchlist.toggle(inst.instrument_id)}
+                      className={`rounded-lg border px-2 py-1 text-xs ${
+                        isWatched
+                          ? "border-primary bg-primary text-primary-foreground"
+                          : "border-border text-foreground hover:bg-secondary"
+                      }`}
+                    >
+                      {isWatched ? "★" : "☆"}
+                    </button>
+                  </div>
+                </div>
               );
             })}
           </div>
