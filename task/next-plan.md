@@ -1,11 +1,26 @@
-# Next action
-Canonical roadmap: [Research Terminal](research-terminal-plan/README.md). Đây là pointer, không là roadmap thứ hai.
+# Next steps
 
-## Current state
-- PR #17, #18, #19 và #20 đã merge vào `main`; P01 reset nằm trong `86f1009`, retirement updates trong `0a98e84`.
-- Target: Binance Spot BTCUSDT/ETHUSDT, multi-account news/portfolio, browser Model Lab.
-- P00 documentation và P01 repository reset hoàn tất. Ngày 2026-10-17 owner đã xóa ba project Vercel, hai project Supabase và hai project Apps Script HomeMatch; host/deployment lịch sử được giữ trong registry. P02 có isolated Auth/browser/market-access spikes; app vẫn fixture, chưa auth/feed/ML production.
-- Rủi ro còn lại không nằm ở hosting mà ở **identity**: chưa có credential nào được revoke, hai bản credential local còn trên máy, domain iNET và hosting WordPress còn tồn tại.
+## Trạng thái hiện tại
 
-## Tiếp theo
-Theo [P02 execution board](research-terminal-plan/p02-execution-board.md): hoàn thiện provider/account/storage và browser lifecycle/memory gates. Song song, đóng nốt phần identity retirement theo [runbook legacy](../docs/12-operations/legacy-retirement-runbook.md) — cần owner cấp Google Cloud Project ID để lập inventory service-account key và OAuth grants trước khi disable/revoke; credential cũ không dùng cho scaffold và không xóa bản local trước khi upstream revoke được xác minh.
+Research Terminal là prototype news-first bằng tiếng Việt, định hướng BTC/ETH. Frontend React/Vite, FastAPI fixture API, Go gateway và OpenAPI contract đang có.
+
+- Market, chart, candles và watchlist dùng dữ liệu tổng hợp trong `data/fixtures/`.
+- News có asset filters/provenance nhưng chưa kết nối news source hoặc ingestion.
+- Portfolio hỗ trợ nhập tay/CSV, validation, localStorage và P&L trên giá fixture; chưa có auth hoặc lưu server.
+- Binance WebSocket là opt-in, theo symbol/interval đang chọn và chỉ hiển thị kết nối; chart/portfolio chưa nhận dữ liệu stream.
+- Model Lab là form cùng chỉ số mock gắn `simulated`; chưa chạy training/backtest.
+- API đọc fixture; chưa có database, managed auth hay business persistence.
+
+## Các bước tiếp theo
+
+1. **Source rights và data contract:** lập source register cho market/news, kiểm tra quyền truy cập, lưu trữ, hiển thị, dẫn link và dùng cho research theo khu vực triển khai; chốt freshness, provenance và correction policy trước khi lấy dữ liệu thật.
+2. **Historical market data:** sau khi rights gate đạt, tích hợp một nguồn BTC/ETH, backfill candles 15m/1h/1d, kiểm tra gaps/duplicates/late bars và lưu snapshot có version; giữ fixture làm test dataset.
+3. **News ingestion:** chỉ thêm adapter cho nguồn đã qua rights gate; xử lý dedupe/revisions, publication/first-seen timestamps, instrument mapping và source-limited states.
+4. **Private workspace:** chọn managed auth và persistence trước khi lưu portfolio/experiments phía server; định nghĩa ownership/isolation, export/delete và migration từ local-only data.
+5. **Live market stream:** sau khi source rights xác nhận, nối stream với candle store/chart, merge REST backfill và WebSocket updates, xử lý reconnect/gaps/open-vs-closed bars.
+6. **Model Lab runtime:** chạy feasibility spike cho browser worker/runtime, rồi triển khai baseline có walk-forward validation, costs và reproducible artifacts; bỏ số mock khi có kết quả thực tính.
+7. **Release readiness:** dependency/source-rights/security review, accessibility contrast test, operational recovery/quotas, browser E2E và production data claims.
+
+## Quy trình phát hành thay đổi
+
+Mỗi thay đổi được kiểm tra, commit và push thành mục nhỏ. `main` được bảo vệ và chỉ nhận thay đổi qua PR với hai required status checks; không push trực tiếp hoặc force-push. Rollback bằng `git revert <commit>` sau khi xác định ảnh hưởng contract/dữ liệu.

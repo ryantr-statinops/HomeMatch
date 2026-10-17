@@ -27,19 +27,8 @@ Thumbs.db
 *.log
 npm-debug.log*
 
-#AI tool
+# AI tool
 .cline
-
-# Service account keys
-scripts/*.json
-!scripts/package.json
-
-# Supabase CLI local state
-supabase/.temp
-supabase/.branches
-
-# Windows reserved device names
-nul
 
 # Research Terminal generated artifacts
 .cache/

@@ -1,36 +1,47 @@
 # Research Terminal
-News-first research workspace cho retail trader người Việt: đọc tin theo tài sản, đối chiếu giá, theo dõi danh mục spot và thử nghiệm baseline qua Model Lab form.
 
-## Trạng thái
-PR #17 documentation, PR #18 repository reset, PR #19 P02 spikes và PR #20 retirement updates đã merge vào `main`. P01 có khung React/Vite, Go Gateway, FastAPI và CLI fixture; code Next.js/Admin và integrations legacy đã được gỡ khỏi tracked source. Chưa có auth/account, data feed thật, portfolio hoặc Model Lab. Ngày 2026-10-17 owner đã xóa các project Vercel, Supabase và Apps Script HomeMatch; **credential identity chưa thu hồi** (service-account key, OAuth grants, IAM, CI secrets, hai bản credential local), domain iNET và hosting WordPress vẫn tồn tại — theo dõi trong [legacy retirement runbook](docs/12-operations/legacy-retirement-runbook.md).
+Research workspace tiếng Việt, ưu tiên đọc tin và đối chiếu BTC/ETH cho retail trader. Bản hiện tại là prototype dùng dữ liệu fixture synthetic; không dùng để ra quyết định giao dịch.
 
-Cây thư mục mục tiêu đã được khởi tạo; các README trong web features/workers/services và `data/samples` hiện chỉ ghi ownership, chưa đại diện cho runtime đã triển khai. Xem [repository structure](docs/02-architecture/folder-structure.md).
+## Trạng thái hiện tại
 
-## Chạy bản fixture local
-Node 22.23.1/npm 10.9.8, Go 1.27.2, Python 3.11–3.13 và uv 0.11.28. Dependencies JS được pin trong `package-lock.json`, API trong `services/api/uv.lock`.
+- Market: BTC/ETH, bảng nến, chart, interval và watchlist đều dùng fixture.
+- News: lọc tin fixture theo tài sản; chưa có nguồn tin hoặc ingestion thật.
+- Portfolio: nhập holdings thủ công/CSV, lưu trên thiết bị bằng localStorage và tính P&L từ giá fixture.
+- Stream: kết nối Binance WebSocket chỉ khi người dùng bật; chỉ hiển thị tình trạng kết nối, chưa cập nhật chart hoặc portfolio.
+- Model Lab: form và kết quả mock để minh họa giao diện; chưa có training/backtest runtime.
+- API: FastAPI đọc fixture, Go gateway và OpenAPI contract. Chưa có database, auth/account hay lưu portfolio phía server.
+
+Không yêu cầu exchange trading keys. Quyền sử dụng nguồn market/news phải được xác minh trước khi triển khai ingestion hoặc phát hành dữ liệu thật.
+
+## Chạy fixture local
+
+Yêu cầu Node 22.23.1/npm 10.9.8, Go 1.27.2, Python 3.11–3.13 và uv 0.11.28. JavaScript dependencies nằm trong `package-lock.json`, API dependencies trong `services/api/uv.lock`.
 
 ```powershell
 npm ci
 npm run dev
 ```
 
-Web: http://127.0.0.1:5173/terminal/news. Không cần credential hoặc API để xem fixture. Để thử API, chạy riêng [FastAPI theo hướng dẫn](services/api/README.md), rồi terminal khác:
+Mở http://127.0.0.1:5173/terminal/news. Các route gồm `/terminal/market`, `/terminal/news`, `/terminal/portfolio`, `/terminal/model-lab` và `/terminal/account`. Để chạy API/gateway, xem [hướng dẫn API](services/api/README.md) và [hướng dẫn gateway](services/gateway/README.md).
+
+Frontend gọi `/api` qua Vite proxy đến gateway port 8080; gateway mặc định chuyển tiếp đến API port 8000. Fixture synthetic nằm trong [data/fixtures](data/fixtures/README.md).
+
+## Kiểm tra
 
 ```powershell
-go -C services/gateway run ./cmd/gateway
+npm run security:env-boundaries
+npm run fixtures:check
+npm run test:tooling
+npm run test:web
+npm run lint
+npm run typecheck
+npm run build
 ```
 
-Web proxy `/api` qua gateway port 8080 đến API port 8000. Chỉ gọi localhost; dữ liệu synthetic nằm tại [data/fixtures](data/fixtures/README.md). [Kế hoạch và inventory P01](task/research-terminal-plan/p01-inventory.md) ghi phạm vi dọn dẹp và các việc bên ngoài còn pending.
-
-P02 có [spikes độc lập](experiments/README.md) cho JWT/ownership, public market access và Pyodide/browser. Kết quả chưa được tích hợp vào sản phẩm. [Execution board](task/research-terminal-plan/p02-execution-board.md) ghi evidence và các gate còn mở; [Vercel host registry](docs/12-operations/legacy-host-register.md) giữ thông tin host legacy và trạng thái ngắt auto-deploy.
+API, OpenAPI drift, research và Go checks chạy trong GitHub Actions. Repo bảo vệ `main` và yêu cầu thay đổi đi qua pull request.
 
 ## Tài liệu
+
 - [Documentation index](docs/README.md) và [glossary](docs/glossary.md).
-- [Bốn thị trường và source register](docs/03-market-research/README.md).
-- [Research Terminal roadmap](task/research-terminal-plan/README.md).
-- [Next action](task/next-plan.md).
-
-## Default MVP
-Binance Spot BTCUSDT/ETHUSDT, candles 15m/1h/1d; UI tiếng Việt, news-first. Accounts có workspace riêng; portfolio manual/CSV base USDT; experiments private, browser Web Worker training/backtest và client-computed results. Live public market stream theo tab hoạt động; ingestion theo lịch riêng.
-
-Không yêu cầu exchange trading keys. Nguồn miễn phí, quyền train/public display và chi phí hạ tầng phải được kiểm chứng riêng. Các thị trường Mỹ/FX/Việt Nam là nghiên cứu mở rộng. Tên thư mục repo và deployment hiện tại chưa đổi.
+- [Vision & scope](docs/01-product/vision-and-scope.md).
+- [Next steps](task/next-plan.md).

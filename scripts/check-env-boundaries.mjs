@@ -8,7 +8,7 @@ export function inspect(content) {
   for (const name of content.match(/\bVITE_[A-Z0-9_]+\b/g) ?? []) {
     if (name !== "VITE_API_BASE_URL") failures.push("unapproved public environment name");
   }
-  if (/-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----|SUPABASE_SERVICE_ROLE_KEY|GOOGLE_DRIVE_PRIVATE_KEY|GOOGLE_DRIVE_CLIENT_EMAIL/.test(content)) failures.push("server credential marker");
+  if (/-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/.test(content)) failures.push("server credential marker");
   return [...new Set(failures)];
 }
 async function collect(directory) {

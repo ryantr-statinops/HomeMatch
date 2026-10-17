@@ -1,6 +1,6 @@
 # API contracts
 
-**Trạng thái:** API mục tiêu chưa triển khai; routes legacy không chứng minh có capability Research Terminal.
+**Trạng thái:** API mục tiêu chưa triển khai; routes hiện tại chỉ là fixture, không chứng minh có capability Research Terminal.
 
 1. [Auth và HTTP conventions](auth-and-http.md).
 2. [Capability contracts](capabilities.md).
