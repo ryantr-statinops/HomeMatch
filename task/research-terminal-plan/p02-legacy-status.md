@@ -12,7 +12,8 @@
 - Drive metadata lookup trong account connector hiện tại dùng các từ khóa `HomeMatch`, `homematch`, `imagecache`, `homematch.id.vn`, `Supabase`, `Google Apps Script` chưa tìm thấy tài nguyên phù hợp. Đây không phải bằng chứng các account/shared drive khác không chứa dữ liệu dự án.
 - Local inventory chỉ xác nhận file ignored `scripts/homematch-service-account.json` và `.env.local` tồn tại; không mở nội dung. `gcloud`, `vercel`, `supabase`, `clasp` CLI hiện không có trong PATH.
 - PR18 đã merge; web/API/Go checks và Vercel Preview Comments đều thành công. Các preview errors ban đầu của ba project chưa được điều tra build logs. Cả ba Git connections đã ngắt sau khi ghi Project IDs, production domains/deployment URLs trong [host registry](../../docs/12-operations/legacy-host-register.md). Deployments/domains vẫn giữ; database/keys và workload ngoài repo chưa được xác minh.
-- Trạng thái remote hiện là `remote-unverified`; không ghi `disabled`, `revoked` hoặc `deleted` trước evidence provider.
+- Cập nhật 2026-10-17 sau xác nhận của owner: dashboard Vercel xác nhận xóa ba project `home-match`, `home-match-admin`, `homematchvn-api`; danh sách team còn project ngoài scope `cluster-landing-page`. Dashboard Supabase xác nhận xóa `HomeMatch` và `HomeMatch Staging`; org hiện không còn project. Supabase production không có backup được liệt kê trước khi xóa nên dữ liệu đã bị xóa cùng project. Domain auto-renew do owner báo đã hủy; registrar/expiry/DNS chưa được xác minh.
+- Apps Script còn hai resource: `HomeMatch API` có public web app deployment (`Anyone`) nhưng không có execution trong cửa sổ 7 ngày đã xem; `Supabase_Connection_API` vẫn có hai trigger, trong đó polling trỏ tới Supabase vừa xóa. Chưa dừng/xóa Apps Script, chưa revoke credential. Các kết luận khác vẫn giữ `remote-unverified` cho tới khi có evidence provider.
 
 ## Owner checklist
 
@@ -42,14 +43,15 @@ Chi tiết UI/CLI placeholder, rollback và evidence form: [runbook thu hồi t�
 |---|---|---|
 | Apps Script source trong repo | `repo-removed` | P01 inventory/report, Git diff |
 | Apps Script `HomeMatch API` | `identified` (public web app; consumers unknown) | Đối chiếu API consumers và traffic vượt quá cửa sổ 7 ngày; sau owner/retention sign-off mới archive hoặc đổi access |
-| Apps Script `Supabase_Connection_API` | `identified` (2 active triggers; destination unknown) | Xác định Sheet/Supabase đích, owner, consumers, retention và lịch dừng; sau sign-off mới xóa trigger |
+| Apps Script `Supabase_Connection_API` | `identified` (2 active triggers; Supabase destination deleted) | Xác nhận dừng trigger, đối chiếu Sheet retention, xử lý credential còn bản sao |
 | Các Apps Script khác / script properties | `remote-unverified` | Xác minh inventory đầy đủ theo account/creator và mapping properties tới consumers; không ghi property values |
 | Cloud service accounts/keys/IAM/APIs/jobs/billing | `remote-unverified` | Project inventory, key metadata, IAM policy, usage/audit logs, provider confirmation |
 | Google OAuth grants | `remote-unverified` | Account security review và revoke confirmation |
 | Sheets/Drive/shares/shared drives | `remote-unverified` | Owner, inherited permission, consumer map, retention decision |
 | AppSheet apps/bots/sources | `remote-unverified` | App/bot owner, audit history, source map, stop/delete evidence |
-| Supabase schema artifacts in repo / remote project | `repo-removed` / `remote-unverified` | Git evidence / project owner-ref, backup, usage, pause/revoke/delete evidence |
-| Vercel project/Git | `identified` / `Git-disconnected` | Project ID, repository, production branch, domains, deployments và UI xác nhận trong [host register](../../docs/12-operations/legacy-host-register.md) |
+| Supabase schema artifacts in repo / remote projects | `repo-removed` / `deleted` | Git evidence; dashboard xác nhận xóa `HomeMatch` và `HomeMatch Staging`, org list rỗng sau thao tác |
+| Vercel HomeMatch projects/Git | `deleted` | Dashboard sau xóa còn `cluster-landing-page` ngoài scope; historical metadata ở [host register](../../docs/12-operations/legacy-host-register.md) |
+| Domain registration / DNS | `owner-reported-auto-renew-off` / `unverified` | Xác minh registrar, expiry date, DNS/MX/CNAME/A/TXT; gỡ record cũ trước khi domain hết hạn |
 | Vercel env/cron/traffic/usage | `remote-unverified` | Env names by target (không đọc value), job/traffic map, usage interval, deployment evidence |
 | Ignored local env/key and runner copies | `local-present-unverified` per audit | Exact-path inventory, upstream revoke proof, secure deletion evidence |
 
