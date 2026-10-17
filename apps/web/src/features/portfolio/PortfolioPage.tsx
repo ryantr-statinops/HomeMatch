@@ -8,6 +8,7 @@ import { ManualEntryForm } from "./ManualEntryForm";
 import { CsvImport } from "./CsvImport";
 import { useCandles } from "../market/api";
 import { calculatePortfolioValuation, latestClosedQuote } from "./valuation";
+import { isDataOlderThan } from "../../lib/dataAge";
 
 function instrumentLabel(id: string): string {
   if (id === "binance:spot:BTCUSDT") return "BTC/USDT";
@@ -40,12 +41,16 @@ export function PortfolioPage() {
   const rows = valuation.rows;
   const hasBtc = state.holdings.some((holding) => holding.instrument_id === "binance:spot:BTCUSDT");
   const hasEth = state.holdings.some((holding) => holding.instrument_id === "binance:spot:ETHUSDT");
-  const isRefreshing = (hasBtc && btcCandles.isFetching) || (hasEth && ethCandles.isFetching);
-  const isStale = (hasBtc && btcCandles.isStale) || (hasEth && ethCandles.isStale);
+  const isRefreshing =
+    (hasBtc && btcCandles.data !== undefined && btcCandles.isFetching) ||
+    (hasEth && ethCandles.data !== undefined && ethCandles.isFetching);
+  const isLoadingPrices =
+    (hasBtc && btcCandles.isLoading) || (hasEth && ethCandles.isLoading);
   const valuationTime = state.holdings
     .map((holding) => prices[holding.instrument_id as keyof typeof prices]?.time)
     .filter((time): time is string => time !== undefined)
     .sort((a, b) => Date.parse(a) - Date.parse(b))[0] ?? null;
+  const isStale = isDataOlderThan(valuationTime, 2 * 60 * 60_000);
 
   return (
     <Container className="py-8 sm:py-12">
@@ -89,9 +94,16 @@ export function PortfolioPage() {
           <EmptyState message="Chưa có holding nào. Thêm thủ công hoặc import CSV." />
         ) : (
           <>
+            {isLoadingPrices && (
+              <p role="status" className="mb-3 text-sm text-muted-foreground">Đang tải giá fixture…</p>
+            )}
             {((hasBtc && btcCandles.isError) || (hasEth && ethCandles.isError)) && (
               <div role="alert" className="mb-3 rounded-lg border border-destructive/40 bg-destructive/10 p-3 text-sm">
-                <p className="text-destructive">Không tải được giá fixture cho một hoặc nhiều tài sản.</p>
+                <p className="text-destructive">
+                  {((hasBtc && btcCandles.data !== undefined) || (hasEth && ethCandles.data !== undefined))
+                    ? "Không làm mới được giá; đang giữ dữ liệu đã tải."
+                    : "Không tải được giá fixture cho một hoặc nhiều tài sản."}
+                </p>
                 <div className="mt-2 flex gap-2">
                   {hasBtc && btcCandles.isError && (
                     <button type="button" onClick={() => btcCandles.refetch()} className="underline">Thử lại BTC</button>
@@ -101,9 +113,6 @@ export function PortfolioPage() {
                   )}
                 </div>
               </div>
-            )}
-            {isRefreshing && (
-              <p role="status" className="mb-3 text-sm text-muted-foreground">Đang tải giá fixture…</p>
             )}
             <div className="overflow-x-auto rounded-lg border border-border">
               <table className="w-full text-sm">

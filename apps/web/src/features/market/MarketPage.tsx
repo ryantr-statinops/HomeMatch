@@ -7,6 +7,7 @@ import { useInstruments, useCandles, type Instrument, type Candle } from "./api"
 import { useWatchlist } from "./watchlist";
 import { useBinanceStream } from "./stream";
 import { CandleChart } from "./CandleChart";
+import { isDataOlderThan } from "../../lib/dataAge";
 
 const INTERVALS = ["15m", "1h", "1d"] as const;
 type Interval = (typeof INTERVALS)[number];
@@ -45,6 +46,19 @@ function ErrorState({ message, onRetry }: { message: string; onRetry: () => void
       </button>
     </div>
   );
+}
+
+function latestClosedCandleTime(candles: Candle[] | undefined): string | null {
+  return candles
+    ?.filter((candle) => candle.is_closed && Number.isFinite(Date.parse(candle.close_time)))
+    .reduce<string | null>((latest, candle) => {
+      if (latest === null || Date.parse(candle.close_time) > Date.parse(latest)) return candle.close_time;
+      return latest;
+    }, null) ?? null;
+}
+
+function formatVi(dateStr: string): string {
+  return new Date(dateStr).toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" });
 }
 
 function CandleTable({ candles }: { candles: Candle[] }) {
@@ -101,8 +115,12 @@ export function MarketPage() {
     ? (instrumentsQuery.data ?? []).filter((i) => watchlist.has(i.instrument_id))
     : (instrumentsQuery.data ?? []);
 
-  const isRefreshing = instrumentsQuery.isFetching || candlesQuery.isFetching;
-  const isStale = instrumentsQuery.isStale || candlesQuery.isStale;
+  const isRefreshing =
+    (instrumentsQuery.data !== undefined && instrumentsQuery.isFetching) ||
+    (candlesQuery.data !== undefined && candlesQuery.isFetching);
+  const candleTime = latestClosedCandleTime(candlesQuery.data);
+  const candleAgeLimit = { "15m": 30, "1h": 120, "1d": 2880 }[interval] * 60_000;
+  const isCandleOld = isDataOlderThan(candleTime, candleAgeLimit);
 
   return (
     <Container className="py-8 sm:py-12">
@@ -111,7 +129,13 @@ export function MarketPage() {
       <p className="mt-1 text-sm text-muted-foreground">
         Binance Spot · dữ liệu tổng hợp (fixture)
       </p>
-      {isStale && <div className="mt-2"><StaleBadge since={null} /></div>}
+      {isCandleOld && candleTime && <div className="mt-2"><StaleBadge since={formatVi(candleTime)} /></div>}
+      {instrumentsQuery.isError && instrumentsQuery.data !== undefined && (
+        <div role="alert" className="mt-3 flex items-center gap-3 rounded-lg border border-warning/40 bg-warning/10 p-3 text-sm">
+          <span>Không làm mới được danh sách tài sản; đang giữ dữ liệu đã tải.</span>
+          <button type="button" onClick={() => instrumentsQuery.refetch()} className="underline">Thử lại</button>
+        </div>
+      )}
 
       <div className="mt-4 flex flex-wrap items-center gap-3 rounded-lg border border-border bg-secondary/50 p-3 text-sm">
         <span className="font-medium">Kiểm tra kết nối stream:</span>
@@ -163,7 +187,7 @@ export function MarketPage() {
         </div>
         {instrumentsQuery.isLoading ? (
           <LoadingSkeleton />
-        ) : instrumentsQuery.isError ? (
+        ) : instrumentsQuery.data === undefined && instrumentsQuery.isError ? (
           <ErrorState
             message="Không tải được danh sách tài sản."
             onRetry={() => instrumentsQuery.refetch()}
@@ -241,7 +265,16 @@ export function MarketPage() {
         </div>
 
         <div className="mt-4 space-y-4">
-          {!candlesQuery.isLoading && !candlesQuery.isError && candlesQuery.data && candlesQuery.data.length > 0 && (
+          <p className="text-xs text-muted-foreground">
+            Nến đã đóng mới nhất: {candleTime ? formatVi(candleTime) : "chưa có"} · fixture
+          </p>
+          {candlesQuery.isError && candlesQuery.data !== undefined && (
+            <div role="alert" className="flex items-center gap-3 rounded-lg border border-warning/40 bg-warning/10 p-3 text-sm">
+              <span>Không làm mới được nến; đang giữ dữ liệu đã tải.</span>
+              <button type="button" onClick={() => candlesQuery.refetch()} className="underline">Thử lại</button>
+            </div>
+          )}
+          {!candlesQuery.isLoading && candlesQuery.data && candlesQuery.data.length > 0 && (
             <CandleChart candles={candlesQuery.data} />
           )}
           {candlesQuery.isLoading ? (
@@ -250,7 +283,7 @@ export function MarketPage() {
               <div className="mt-2 h-4 w-full rounded bg-muted" />
               <div className="mt-2 h-4 w-3/4 rounded bg-muted" />
             </div>
-          ) : candlesQuery.isError ? (
+          ) : candlesQuery.data === undefined && candlesQuery.isError ? (
             <ErrorState
               message="Không tải được dữ liệu nến."
               onRetry={() => candlesQuery.refetch()}
