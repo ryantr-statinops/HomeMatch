@@ -2,6 +2,7 @@ import { useState } from "react";
 import Container from "../../components/layout/Container";
 import { useInstruments, useCandles, type Instrument, type Candle } from "./api";
 import { useWatchlist } from "./watchlist";
+import { useBinanceStream } from "./stream";
 
 const INTERVALS = ["15m", "1h", "1d"] as const;
 type Interval = (typeof INTERVALS)[number];
@@ -83,7 +84,9 @@ export function MarketPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [interval, setInterval] = useState<Interval>("1h");
   const [watchlistOnly, setWatchlistOnly] = useState(false);
+  const [streamEnabled, setStreamEnabled] = useState(false);
   const watchlist = useWatchlist();
+  const stream = useBinanceStream("BTCUSDT", "1h", streamEnabled);
 
   const effectiveId = selectedId ?? instrumentsQuery.data?.[0]?.instrument_id ?? null;
   const candlesQuery = useCandles(effectiveId, interval);
@@ -98,6 +101,35 @@ export function MarketPage() {
       <p className="mt-1 text-sm text-muted-foreground">
         Binance Spot · dữ liệu tổng hợp (fixture)
       </p>
+
+      <div className="mt-4 flex flex-wrap items-center gap-3 rounded-lg border border-border bg-secondary/50 p-3 text-sm">
+        <span className="font-medium">Live stream:</span>
+        <span
+          className={`rounded-full px-2 py-0.5 text-xs font-medium ${
+            stream.state.status === "live"
+              ? "bg-primary text-primary-foreground"
+              : stream.state.status === "connecting" || stream.state.status === "reconnecting"
+                ? "bg-warning text-foreground"
+                : stream.state.status === "stale" || stream.state.status === "unavailable"
+                  ? "bg-destructive text-white"
+                  : "bg-muted text-muted-foreground"
+          }`}
+        >
+          {stream.state.status}
+        </span>
+        {stream.state.reconnectAttempts > 0 && (
+          <span className="text-xs text-muted-foreground">
+            attempts: {stream.state.reconnectAttempts}
+          </span>
+        )}
+        <button
+          type="button"
+          onClick={() => setStreamEnabled((v) => !v)}
+          className="ml-auto rounded-lg border border-border px-3 py-1.5 text-sm hover:bg-secondary"
+        >
+          {streamEnabled ? "Dừng stream" : "Kết nối stream"}
+        </button>
+      </div>
 
       <section aria-labelledby="instruments-heading" className="mt-6">
         <div className="mb-3 flex items-center justify-between gap-3">

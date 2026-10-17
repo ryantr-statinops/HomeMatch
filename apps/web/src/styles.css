@@ -13,6 +13,7 @@
   --color-ring: #21684e;
   --color-input: #d7e0da;
   --color-destructive: #b42318;
+  --color-warning: #d97706;
 }
 
 body { margin: 0; background: var(--color-background); color: var(--color-foreground); font-family: system-ui, sans-serif; }
