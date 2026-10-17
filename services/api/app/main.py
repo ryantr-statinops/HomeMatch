@@ -1,4 +1,4 @@
-"""Read-only fixture API. No credentials, legacy settings or external clients."""
+"""Read-only fixture API. No credentials or external clients."""
 from pathlib import Path
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError

@@ -1,11 +1,24 @@
 # Next action
-Canonical roadmap: [Research Terminal](research-terminal-plan/README.md). Đây là pointer, không là roadmap thứ hai.
+
+Canonical roadmap: [Next plan](next-plan.md). Đây là pointer, không là roadmap thứ hai.
 
 ## Current state
-- PR #17, #18, #19 và #20 đã merge vào `main`; P01 reset nằm trong `86f1009`, retirement updates trong `0a98e84`.
-- Target: Binance Spot BTCUSDT/ETHUSDT, multi-account news/portfolio, browser Model Lab.
-- P00 documentation và P01 repository reset hoàn tất. Ngày 2026-10-17 owner đã xóa ba project Vercel, hai project Supabase và hai project Apps Script HomeMatch; host/deployment lịch sử được giữ trong registry. P02 có isolated Auth/browser/market-access spikes; app vẫn fixture, chưa auth/feed/ML production.
-- Rủi ro còn lại không nằm ở hosting mà ở **identity**: chưa có credential nào được revoke, hai bản credential local còn trên máy, domain iNET và hosting WordPress còn tồn tại.
+
+- Idea mới đã chốt: Research Terminal v2 — news-first crypto research workspace cho retail trader VN.
+- Binance Spot BTCUSDT/ETHUSDT, candles 15m/1h/1d, UI tiếng Việt.
+- Codebase hiện tại: fixture shell (React/Vite + FastAPI + Go Gateway + OpenAPI contracts + synthetic fixtures).
+- Chưa có feed thật, portfolio, Model Lab runtime, auth (không dùng auth provider cũ).
+- Legacy product code và credential đã được gỡ khỏi tracked source.
 
 ## Tiếp theo
-Theo [P02 execution board](research-terminal-plan/p02-execution-board.md): hoàn thiện provider/account/storage và browser lifecycle/memory gates. Song song, đóng nốt phần identity retirement theo [runbook legacy](../docs/12-operations/legacy-retirement-runbook.md) — cần owner cấp Google Cloud Project ID để lập inventory service-account key và OAuth grants trước khi disable/revoke; credential cũ không dùng cho scaffold và không xóa bản local trước khi upstream revoke được xác minh.
+
+Theo roadmap idea mới:
+
+1. **Phase 1 — Foundation & Contracts:** Cập nhật OpenAPI contracts cho idea mới; triển khai FastAPI endpoints theo contract; tách routing web thành `/terminal/market`, `/terminal/news`, `/terminal/portfolio` (placeholder).
+2. **Phase 2 — Market Data View:** Hiển thị BTC/ETH, bảng nến, watchlist từ fixture.
+3. **Phase 3 — News Feed:** News-first theo tài sản, lọc theo BTC/ETH.
+4. **Phase 4 — Portfolio Manual/CSV:** Nhập holdings thủ công hoặc import CSV, tính P&L đơn giản.
+5. **Phase 5 — Evaluation & Security Gate:** Kiểm tra source rights, audit dependencies, xác nhận không có credential legacy.
+6. **Phase 6 — Live Stream & Source Rights:** Kết nối public WebSocket Binance (nếu source rights được xác nhận).
+
+Bắt đầu Phase 1 ngay: cập nhật OpenAPI contracts và FastAPI endpoints.

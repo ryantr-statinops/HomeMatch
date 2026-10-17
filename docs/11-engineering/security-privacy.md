@@ -11,6 +11,6 @@ Managed provider lưu password; FastAPI kiểm JWT issuer/audience/signature/exp
 - Cache/IndexedDB namespace theo account; logout xóa private state/worker buffers. Không hứa secure wipe vật lý.
 - Portfolio CSV có thể chứa tài chính cá nhân; không logging body, không commit fixtures từ file thật; retention/export/delete phải được thông báo.
 - Revoke/cancel session không đồng nghĩa xóa data server; account deletion là workflow riêng với retention obligations.
-- Secrets cloud/DB/source chỉ ở service cần; audit legacy không in secret và retirement theo inventory.
+- Secrets cloud/DB/source chỉ ở service cần; audit không in secret.
 
-Chưa có consent/privacy SLA đã vận hành. P02/P09 chốt provider claims, policies, deletion/retention và rate/cost budgets trước public release.
+Chưa có consent/privacy SLA đã vận hành. Phase 5 chốt policies, deletion/retention và rate/cost budgets trước public release.

@@ -1,9 +1,10 @@
 # Development workflow
-**Trạng thái:** local fixture workflow đã có trong P01; nghiệp vụ/provider vẫn target.
 
-P01 chuyển reusable UI và gỡ domain/runtime legacy bằng commit nhỏ. [README setup](../../README.md) và [API setup](../../services/api/README.md) mô tả lệnh hiện có. `npm ci`, `npm run security:env-boundaries`, `npm run fixtures:check`, `npm run test:tooling`, `npm run lint`, `npm run typecheck`, `npm run build` là các checks web. Go dùng `go -C services/gateway test ./...` và `go -C services/ingestion test ./...`. API dùng frozen uv lock và pytest; OpenAPI xuất vào `packages/contracts/openapi.json`. P02 mới chọn managed auth/storage và khóa browser runtime sau spike.
+**Trạng thái:** local fixture workflow đã có; nghiệp vụ/provider vẫn target.
 
-Local mặc định dùng fixtures synthetic/licensed, không gọi sàn/nguồn thật hoặc legacy credential. Network source tests là nhóm opt-in, ghi provider/date/region và không chạy bằng production account trong CI.
+Codebase hiện tại là fixture shell (React/Vite + FastAPI + Go Gateway). [README setup](../../README.md) và [API setup](../../services/api/README.md) mô tả lệnh hiện có. `npm ci`, `npm run security:env-boundaries`, `npm run fixtures:check`, `npm run test:tooling`, `npm run lint`, `npm run typecheck`, `npm run build` là các checks web. Go dùng `go -C services/gateway test ./...` và `go -C services/ingestion test ./...`. API dùng frozen uv lock và pytest; OpenAPI xuất vào `packages/contracts/openapi.json`.
+
+Local mặc định dùng fixtures synthetic, không gọi sàn/nguồn thật hoặc credential. Network source tests là nhóm opt-in, ghi provider/date/region và không chạy bằng production account trong CI.
 
 API contract, manifest và enums có owner. FastAPI OpenAPI/client schema thay cùng implementation; worker message/config/artifact schema versioned để JS/Python không lệch. Money dùng decimal contract; browser quote chỉ display, không là bằng chứng fill.
 

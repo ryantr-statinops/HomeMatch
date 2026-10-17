@@ -34,7 +34,7 @@ def test_non_synthetic_valid_shape_rejected(tmp_path):
     assert TestClient(create_app(tmp_path)).get("/api/v1/demo/market").status_code == 503
 
 @pytest.mark.parametrize("path", ["/api/v1/admin/rooms", "/api/v1/auth/me", "/api/v1/rooms"])
-def test_legacy_routes_removed(client, path):
+def test_removed_routes(client, path):
     response = client.get(path)
     assert response.status_code == 404
     assert "error" in response.json()
