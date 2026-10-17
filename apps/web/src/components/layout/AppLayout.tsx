@@ -7,6 +7,7 @@ const NAV = [
   { to: "/terminal/news", label: "Tin tức" },
   { to: "/terminal/portfolio", label: "Danh mục" },
   { to: "/terminal/model-lab", label: "Model Lab" },
+  { to: "/terminal/account", label: "Tài khoản" },
 ];
 
 export function AppLayout() {
