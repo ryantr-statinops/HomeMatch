@@ -91,10 +91,11 @@ export function MarketPage() {
   const [watchlistOnly, setWatchlistOnly] = useState(false);
   const [streamEnabled, setStreamEnabled] = useState(false);
   const watchlist = useWatchlist();
-  const stream = useBinanceStream("BTCUSDT", "1h", streamEnabled);
 
   const effectiveId = selectedId ?? instrumentsQuery.data?.[0]?.instrument_id ?? null;
   const candlesQuery = useCandles(effectiveId, interval);
+  const streamSymbol = effectiveId === "binance:spot:ETHUSDT" ? "ETHUSDT" : "BTCUSDT";
+  const stream = useBinanceStream(streamSymbol, interval, streamEnabled);
 
   const instruments = watchlistOnly
     ? (instrumentsQuery.data ?? []).filter((i) => watchlist.has(i.instrument_id))
@@ -113,7 +114,7 @@ export function MarketPage() {
       {isStale && <div className="mt-2"><StaleBadge since={null} /></div>}
 
       <div className="mt-4 flex flex-wrap items-center gap-3 rounded-lg border border-border bg-secondary/50 p-3 text-sm">
-        <span className="font-medium">Live stream:</span>
+        <span className="font-medium">Kiểm tra kết nối stream:</span>
         <StatusBadge
           tone={
             stream.state.status === "live"
@@ -139,6 +140,9 @@ export function MarketPage() {
         >
           {streamEnabled ? "Dừng stream" : "Kết nối stream"}
         </button>
+        <p className="w-full text-xs text-muted-foreground">
+          {streamSymbol} · {interval} · Chart và danh mục vẫn dùng fixture.
+        </p>
       </div>
 
       <section aria-labelledby="instruments-heading" className="mt-6">
