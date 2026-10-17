@@ -1,5 +1,7 @@
 import { useState } from "react";
 import Container from "../../components/layout/Container";
+import { RefreshingIndicator } from "../../components/ui/RefreshingIndicator";
+import { StaleBadge } from "../../components/ui/StaleBadge";
 import { StatusBadge } from "../../components/ui/StatusBadge";
 import { useInstruments, useCandles, type Instrument, type Candle } from "./api";
 import { useWatchlist } from "./watchlist";
@@ -98,12 +100,17 @@ export function MarketPage() {
     ? (instrumentsQuery.data ?? []).filter((i) => watchlist.has(i.instrument_id))
     : (instrumentsQuery.data ?? []);
 
+  const isRefreshing = instrumentsQuery.isFetching || candlesQuery.isFetching;
+  const isStale = instrumentsQuery.isStale || candlesQuery.isStale;
+
   return (
     <Container className="py-8 sm:py-12">
+      <RefreshingIndicator visible={isRefreshing} />
       <h1 className="text-2xl font-semibold tracking-tight">Thị trường</h1>
       <p className="mt-1 text-sm text-muted-foreground">
         Binance Spot · dữ liệu tổng hợp (fixture)
       </p>
+      {isStale && <div className="mt-2"><StaleBadge since={null} /></div>}
 
       <div className="mt-4 flex flex-wrap items-center gap-3 rounded-lg border border-border bg-secondary/50 p-3 text-sm">
         <span className="font-medium">Live stream:</span>

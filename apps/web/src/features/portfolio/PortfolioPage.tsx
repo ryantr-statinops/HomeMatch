@@ -1,5 +1,7 @@
 import { useMemo } from "react";
 import Container from "../../components/layout/Container";
+import { RefreshingIndicator } from "../../components/ui/RefreshingIndicator";
+import { StaleBadge } from "../../components/ui/StaleBadge";
 import { usePortfolio } from "./storage";
 import { ManualEntryForm } from "./ManualEntryForm";
 import { CsvImport } from "./CsvImport";
@@ -79,8 +81,12 @@ export function PortfolioPage() {
       ? btcCandles.data[btcCandles.data.length - 1].close_time
       : null;
 
+  const isRefreshing = btcCandles.isFetching || ethCandles.isFetching;
+  const isStale = btcCandles.isStale || ethCandles.isStale;
+
   return (
     <Container className="py-8 sm:py-12">
+      <RefreshingIndicator visible={isRefreshing} />
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold tracking-tight">Danh mục</h1>
         {state.holdings.length > 0 && (
@@ -207,6 +213,7 @@ export function PortfolioPage() {
                     ? new Date(valuationTime).toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })
                     : "—"}
                 </p>
+                {isStale && <div className="mt-1"><StaleBadge since={null} /></div>}
               </div>
             </div>
 

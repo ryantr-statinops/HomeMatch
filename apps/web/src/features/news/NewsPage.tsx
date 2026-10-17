@@ -1,5 +1,7 @@
 import { useState } from "react";
 import Container from "../../components/layout/Container";
+import { RefreshingIndicator } from "../../components/ui/RefreshingIndicator";
+import { StaleBadge } from "../../components/ui/StaleBadge";
 import { useArticles, type Article } from "./api";
 
 const FILTERS = [
@@ -108,10 +110,12 @@ export function NewsPage() {
 
   return (
     <Container className="py-8 sm:py-12">
+      <RefreshingIndicator visible={articlesQuery.isFetching} />
       <h1 className="text-2xl font-semibold tracking-tight">Tin tức</h1>
       <p className="mt-1 text-sm text-muted-foreground">
         News-first · dữ liệu tổng hợp (fixture)
       </p>
+      {articlesQuery.isStale && <div className="mt-2"><StaleBadge since={null} /></div>}
 
       <div className="mt-6 flex flex-wrap gap-2" role="tablist" aria-label="Lọc theo tài sản">
         {FILTERS.map((f) => (
