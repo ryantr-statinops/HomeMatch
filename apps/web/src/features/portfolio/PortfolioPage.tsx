@@ -121,6 +121,7 @@ export function PortfolioPage() {
           <>
             <div className="overflow-x-auto rounded-lg border border-border">
               <table className="w-full text-sm">
+                <caption className="sr-only">Bảng holdings và P&amp;L</caption>
                 <thead className="bg-secondary text-left text-muted-foreground">
                   <tr>
                     <th className="px-3 py-2">Tài sản</th>

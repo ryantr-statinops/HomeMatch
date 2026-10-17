@@ -50,6 +50,7 @@ function CandleTable({ candles }: { candles: Candle[] }) {
   return (
     <div className="overflow-x-auto rounded-lg border border-border">
       <table className="w-full text-sm">
+        <caption className="sr-only">Bảng nến OHLCV</caption>
         <thead className="bg-secondary text-left text-muted-foreground">
           <tr>
             <th className="px-3 py-2">Mở</th>

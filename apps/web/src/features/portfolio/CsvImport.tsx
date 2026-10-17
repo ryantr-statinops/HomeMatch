@@ -88,6 +88,7 @@ export function CsvImport({ onImport }: Props) {
         <>
           <div className="overflow-x-auto rounded-lg border border-border">
             <table className="w-full text-sm">
+              <caption className="sr-only">Xem trước dữ liệu CSV</caption>
               <thead className="bg-secondary text-left text-muted-foreground">
                 <tr>
                   <th className="px-3 py-2">Tài sản</th>
