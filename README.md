@@ -15,7 +15,7 @@ npm ci
 npm run dev
 ```
 
-Web: http://127.0.0.1:5173/terminal/news. Không cần credential hoặc API để xem fixture. Để thử API, chạy riêng [FastAPI theo hướng dẫn](services/api/README.md), rồi terminal khác:
+Web: http://127.0.0.1:5173/terminal/news. Routes: `/terminal/market`, `/terminal/news`, `/terminal/portfolio`, `/terminal/model-lab`, `/terminal/account`. Không cần credential hoặc API để xem fixture. Để thử API, chạy riêng [FastAPI theo hướng dẫn](services/api/README.md), rồi terminal khác:
 
 ```powershell
 go -C services/gateway run ./cmd/gateway
