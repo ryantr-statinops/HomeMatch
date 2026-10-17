@@ -24,7 +24,7 @@ function EmptyState({ message }: { message: string }) {
 }
 
 export function PortfolioPage() {
-  const { state, add, remove, clear } = usePortfolio();
+  const { state, add, addMany, remove, clear, storageWarning, validationError } = usePortfolio();
   const btcCandles = useCandles("binance:spot:BTCUSDT", "1h");
   const ethCandles = useCandles("binance:spot:ETHUSDT", "1h");
 
@@ -65,6 +65,11 @@ export function PortfolioPage() {
       <p className="mt-1 text-sm text-muted-foreground">
         Spot long/cash · base USDT · dữ liệu giá từ fixture
       </p>
+      {(storageWarning || validationError) && (
+        <p role="alert" className="mt-3 rounded-lg border border-warning/40 bg-warning/10 p-3 text-sm text-warning">
+          {validationError ?? storageWarning}
+        </p>
+      )}
 
       <section className="mt-6">
         <ManualEntryForm onAdd={add} />
@@ -75,11 +80,7 @@ export function PortfolioPage() {
         <p className="mb-2 text-xs text-muted-foreground">
           Header: <code className="font-mono">instrument_id,amount,avg_cost</code>
         </p>
-        <CsvImport
-          onImport={(rows) => {
-            for (const r of rows) add(r);
-          }}
-        />
+        <CsvImport onImport={addMany} />
       </section>
 
       <section className="mt-8">
