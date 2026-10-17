@@ -12,7 +12,7 @@
 | apps-script + clasp, build-image-cache | Gỡ tracked integrations/scripts; không tự revoke credential hoặc xóa Cloud/Sheet/Drive |
 | supabase migrations/seed/config | Gỡ artifacts của schema cũ khỏi active repo; không chạy SQL hoặc drop DB |
 | assets DB.pdf, logo HomeMatch/public logo | Gỡ branding/data artifacts cũ; lịch sử vẫn trong Git |
-| root .env.local và ignored service-account key | Giữ nguyên, không đọc/in giá trị, không stage; ngừng consumer legacy trong code mới |
+| root .env.local và ignored service-account key | Quyết định ban đầu là giữ nguyên, không đọc/in giá trị; cleanup sau P01 cần xác minh owner/consumer và trạng thái revoke trước khi xóa |
 | node_modules/.next/old venv | Generated local artifacts, không source; dọn theo exact paths sau khi replacement sẵn sàng |
 
 ## Work packages

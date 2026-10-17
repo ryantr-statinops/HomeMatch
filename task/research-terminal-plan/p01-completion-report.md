@@ -5,7 +5,7 @@ Ngày 2026-10-16. Baseline: `cac773f` ([PR #17](https://github.com/ryantr-statin
 ## Phạm vi đã làm
 Giữ docs/history và 4 UI primitives có consumer. Thay Next/Admin/rental bằng React/Vite fixture shell, Go Gateway, FastAPI read-only, Go fixture ingestion validator và Python fixture inspector. Gỡ tracked Apps Script/ImageCache, Google SDK dependency, Supabase schema/seed và branding/DB PDF cũ. Không chạy SQL, không đổi database, IAM, key, Sheet/Drive, triggers hoặc deployment.
 
-Fixture ghi rõ synthetic; không chứng minh dữ liệu Binance/news, permission sử dụng source hoặc năng lực ML. Không có auth, portfolio, live stream, user training/backtest. Ignored env/key/venv cũ được giữ nguyên; runtime mới không load chúng. Root env example chỉ có localhost gateway config.
+Fixture ghi rõ synthetic; không chứng minh dữ liệu Binance/news, permission sử dụng source hoặc năng lực ML. Không có auth, portfolio, live stream, user training/backtest. `.env.local` và ignored service-account key cũ từng được giữ lại sau P01; cleanup hiện tại đang chờ xác nhận owner do chưa xác minh revoke/ownership. Runtime mới không load chúng. Root env example chỉ có localhost gateway config.
 
 ## Verification
 | Kiểm tra | Kết quả |
