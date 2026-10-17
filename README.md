@@ -2,7 +2,9 @@
 News-first research workspace cho retail trader người Việt: đọc tin theo tài sản, đối chiếu giá, theo dõi danh mục spot và thử nghiệm baseline qua Model Lab form.
 
 ## Trạng thái
-PR #17 documentation đã merge vào main. P01 có khung React/Vite, Go Gateway, FastAPI và CLI fixture trên nhánh reset; code Next.js/Admin và integrations legacy đã được gỡ khỏi tracked source. Chưa có auth/account, data feed thật, portfolio hoặc Model Lab. Deployment cũ và tài nguyên bên ngoài chưa được thay đổi.
+PR #17 documentation đã merge vào main. P01 có khung React/Vite, Go Gateway, FastAPI và CLI fixture trên nhánh reset; code Next.js/Admin và integrations legacy đã được gỡ khỏi tracked source. Chưa có auth/account, data feed thật, portfolio hoặc Model Lab. Owner đã xóa các project Vercel, Supabase và Apps Script HomeMatch; trạng thái hosting/domain iNET và một số credential/OAuth copies vẫn được theo dõi riêng trong [legacy retirement runbook](docs/12-operations/legacy-retirement-runbook.md).
+
+Cây thư mục mục tiêu đã được khởi tạo; các README trong web features/workers/services và `data/samples` hiện chỉ ghi ownership, chưa đại diện cho runtime đã triển khai. Xem [repository structure](docs/02-architecture/folder-structure.md).
 
 ## Chạy bản fixture local
 Node 22.23.1/npm 10.9.8, Go 1.27.2, Python 3.11–3.13 và uv 0.11.28. Dependencies JS được pin trong `package-lock.json`, API trong `services/api/uv.lock`.
